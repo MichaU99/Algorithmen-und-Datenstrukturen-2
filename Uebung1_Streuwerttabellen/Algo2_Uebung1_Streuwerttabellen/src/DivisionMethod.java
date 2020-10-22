@@ -4,4 +4,9 @@ public class DivisionMethod extends AbstractHashFunction{
     public DivisionMethod (int N) {
         super(N);
     }
+
+    @Override
+    public int compute(Object key) {
+        return 0;
+    }
 }

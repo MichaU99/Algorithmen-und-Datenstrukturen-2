@@ -15,4 +15,9 @@ public class MultiplicationMethod extends AbstractHashFunction{
         bits = p;
         seed = s;
     }
+
+    @Override
+    public int compute(Object key) {
+        return 0;
+    }
 }
