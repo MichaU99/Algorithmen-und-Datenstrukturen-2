@@ -1,7 +1,12 @@
 // Implementierung von Streuwerttabellen mit Verkettung.
+import java.util.ArrayList;
 public class HashTableChaining implements HashTable {
     // Streuwerttabelle mit Streuwertfunktion f.
+
+    int N=5; //groesse
+
     public HashTableChaining(HashFunction f) {
+
     }
 
     @Override

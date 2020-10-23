@@ -7,6 +7,7 @@ public class DivisionMethod extends AbstractHashFunction{
 
     @Override
     public int compute(Object key) {
-        return 0;
+        int h=key.hashCode();
+        return (h>=0 ? h: -h) % size; //??? Abgeschrieben aus dem Skript
     }
 }
