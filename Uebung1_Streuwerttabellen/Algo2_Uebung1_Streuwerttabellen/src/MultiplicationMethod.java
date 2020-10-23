@@ -1,6 +1,8 @@
 // Streuwertfunktion gemäß Multiplikationsmethode
 // (Implementierung mit 32-Bit-Ganzzahlarithmetik).
 import java.lang.Math;
+import java.math.BigDecimal;
+
 public class MultiplicationMethod extends AbstractHashFunction{
 
     // Anzahl p von Bits.
@@ -20,11 +22,11 @@ public class MultiplicationMethod extends AbstractHashFunction{
     @Override
     public int compute(Object key) {
         int h=key.hashCode(); //Hashcode ist der Streuwert?
-        double i,v,u;
+        BigDecimal v,u,i;
 
-        u=(h*seed);
-        v=u%Math.pow(2.0,bits);
-        i=v/(Math.pow(2,32-bits));
-        return (int) i;
+        u =new BigDecimal(seed).multiply(new BigDecimal(h));
+        v= u.remainder(new BigDecimal(Math.pow(2,32)));
+        i =v.divide(new BigDecimal(Math.pow(2,32-bits)));
+        return i.intValue();
     }
 }
