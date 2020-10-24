@@ -1,9 +1,22 @@
 import java.lang.Math;
 public class Simple_Test {
     public static void main(String[] args){
-    MultiplicationMethod h = new MultiplicationMethod(10, (int) (((Math.sqrt(5)-1)/2)*Math.pow(2,32)));
+    /*MultiplicationMethod h = new MultiplicationMethod(10, (int) (((Math.sqrt(5)-1)/2)*Math.pow(2,32)));
         System.out.println((h.compute(500))) ;
         DivisionMethod d=new DivisionMethod((int) (((Math.sqrt(5)-1)/2)*Math.pow(2,32)));
-        System.out.println(d.compute(500));
+        System.out.println(d.compute(500));*/
+        HashTableChaining hashtable=new HashTableChaining(new HashFunction() {
+            @Override
+            public int size() {
+                return 0;
+            }
+
+            @Override
+            public int compute(Object key) {
+                return 0;
+            }
+        });
+        System.out.println(hashtable.put(5,10));
+
     }
 }
