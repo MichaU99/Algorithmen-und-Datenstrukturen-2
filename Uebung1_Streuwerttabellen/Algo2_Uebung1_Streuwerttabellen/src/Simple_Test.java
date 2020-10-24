@@ -1,6 +1,10 @@
 import java.lang.Math;
+import java.util.Random;
+
 public class Simple_Test {
     public static void main(String[] args){
+        Random random= new Random();
+        int i;
     /*MultiplicationMethod h = new MultiplicationMethod(10, (int) (((Math.sqrt(5)-1)/2)*Math.pow(2,32)));
         System.out.println((h.compute(500))) ;
         DivisionMethod d=new DivisionMethod((int) (((Math.sqrt(5)-1)/2)*Math.pow(2,32)));
@@ -16,7 +20,9 @@ public class Simple_Test {
                 return 0;
             }
         });
-        System.out.println(hashtable.put(5,10));
-
+        for(i=0;i<=10000;i++){
+            hashtable.put(random.nextInt(100),random.nextInt(101));
+        }
+        hashtable.dump();
     }
 }
