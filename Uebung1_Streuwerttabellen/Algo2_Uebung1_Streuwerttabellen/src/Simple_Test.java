@@ -5,11 +5,12 @@ public class Simple_Test {
     public static void main(String[] args){
         Random random= new Random();
         int i;
-        /*MultiplicationMethod h = new MultiplicationMethod(10, (int) (((Math.sqrt(5)-1)/2)*Math.pow(2,32)));
-        System.out.println((h.compute(500))) ;
-        DivisionMethod d=new DivisionMethod((int) (((Math.sqrt(5)-1)/2)*Math.pow(2,32)));
-        System.out.println(d.compute(500));*/
-        HashTableChaining hashtable=new HashTableChaining(new HashFunction() {
+        MultiplicationMethod m = new MultiplicationMethod(10, (int) (((Math.sqrt(5)-1)/2)*Math.pow(2,32)));
+        DivisionMethod d=new DivisionMethod((int) (Math.pow(2,10)));
+        for(i=0;i<100;i++) {
+            System.out.println("Mit Input i="+i+" M="+m.compute(i)+" D="+d.compute(i));
+        }
+        /*HashTableChaining hashtable=new HashTableChaining(new HashFunction() {
             @Override
             public int size() {
                 return 0;
@@ -20,8 +21,10 @@ public class Simple_Test {
                 return 0;
             }
         });
-        hashtable.put_test(2,"bruder");
-        hashtable.put_test(2,"bruder2");
-    hashtable.dump_t();
+        Random rand=new Random();
+        for(i=0;i<10000;i++) {
+            hashtable.put(i, rand.nextInt(9999999));
+        }
+    hashtable.dump();*/
     }
 }
