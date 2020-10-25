@@ -20,9 +20,8 @@ public class Simple_Test {
                 return 0;
             }
         });
-        for(i=0;i<=10000;i++){
-            hashtable.put(random.nextInt(100),random.nextInt(101));
-        }
-        hashtable.dump();
+        hashtable.put("hallo","bruder");
+
+    hashtable.dump();
     }
 }

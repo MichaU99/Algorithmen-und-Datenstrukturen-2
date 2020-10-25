@@ -5,10 +5,10 @@ public class HashTableChaining implements HashTable {
     // Streuwerttabelle mit Streuwertfunktion f.
 
     //Java besitzt unter java.util.HashMap selbst eine Implementation einer Hashmap, können/ sollen wir die benutzen oder Eigenimplementation?
-
-    int N=100; //groesse
+    int p=10;
+    int N= (1 << p); //groesse
     int verkettung_len=1; //Länge der max Verkettung im Array, zu Beginn immer 1
-
+    MultiplicationMethod platz=new MultiplicationMethod(p,(int) (((Math.sqrt(5)-1)/2)*Math.pow(2,32)));
 
     Object[][] hashtable=new Object[N][verkettung_len];
 
@@ -24,7 +24,7 @@ public class HashTableChaining implements HashTable {
         boolean verlaengern=true;
         Object tmp;
 
-        index=key.hashCode(); //Unbekannt ob es stimmt, dummy implementation für weiteren code
+        index= platz.compute(key); //Vermutlich braucht man hier eine Implementation der HashFunction aktuell inkompatible N, dummy implementation für weiteren code
         if (key==null && val==null) return false;
         if(hashtable[index][0] instanceof Object){ //sollte testen ob bereits ein Objekt ins Array an der Stelle index eingefügt wurde
             tmp=hashtable[index][0];
@@ -62,7 +62,6 @@ public class HashTableChaining implements HashTable {
 
     @Override //Implementierung stimmt nicht!!!! Muss vor abgabe noch geändert werden, wie müssen die gechainten Elemente nummeriert werden???
     public void dump() {
-        int[] tiefenfrage=new int[100];
 
         int i,j; //lauf
         for (i=0;i<=N-1;i++){
@@ -70,16 +69,7 @@ public class HashTableChaining implements HashTable {
                 if(hashtable[i][j]==null) break;
                 else System.out.println("Stelle im Table key:"+i+" chaindeapth:"+j+" val:"+hashtable[i][j]);
             }
-            tiefenfrage[i]=j;
         }
-        int test=0;
-        for(i=0;i<=N-1;i++){
-            System.out.print(tiefenfrage[i]+" ");
-            test=test+tiefenfrage[i];
-        }
-
-        System.out.println();
-        System.out.println("du bists "+test);
     }
     public void array_tiefe_vergroessen(Object[][] array){ //Vergroessert HashTable in zweiter Dimension (verkettung_len) um 1 und kopiert alle Elemente aus dem uebergebenen Array, speichert das Ergebnis in HashTable
         Object[][] tmp_arr=new Object[N][++verkettung_len];
