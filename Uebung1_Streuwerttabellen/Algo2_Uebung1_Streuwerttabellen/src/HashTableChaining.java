@@ -6,16 +6,14 @@ public class HashTableChaining implements HashTable {
 
     //Java besitzt unter java.util.HashMap selbst eine Implementation einer Hashmap, können/ sollen wir die benutzen oder Eigenimplementation?
     HashFunction HFunction;
-    int p=20;
-    int N= (1 << p); //groesse später auf HFunction.size() ändern
-    int verkettung_len=1; //Länge der max Verkettung im Array, zu Beginn immer 1
-    MultiplicationMethod platz=new MultiplicationMethod(p,(int) (((Math.sqrt(5)-1)/2)*Math.pow(2,32)));
-    DivisionMethod platz_d=new DivisionMethod(N);
+    int N;
 
-    ListElement[] hashtable= new ListElement[N];
+    ListElement[] hashtable;
 
     public HashTableChaining(HashFunction f) {
-    this.HFunction=f;
+    HFunction=f;
+    N=HFunction.size();
+    hashtable= new ListElement[N];
     }
 
     @Override
@@ -23,7 +21,7 @@ public class HashTableChaining implements HashTable {
         int index;
 
         if (key==null && val==null) return false;
-        index= platz.compute(key); //Dummy Implementation, später HFunction.compute(key)
+        index= HFunction.compute(key); //Dummy Implementation, später HFunction.compute(key)
 
         if(hashtable[index]!=null){ //sollte testen ob bereits ein Objekt ins Array an der Stelle index eingefügt wurde
 
@@ -44,14 +42,22 @@ public class HashTableChaining implements HashTable {
 
     @Override
     public Object get(Object key) {
-        int index= platz.compute(key);
+        int index= HFunction.compute(key);
         return hashtable[index].search(key);
     }
 
     @Override
     public boolean remove(Object key) {
-        int index= platz.compute(key);
-        return hashtable[index].remove(key);
+        int index= HFunction.compute(key);
+        switch (hashtable[index].remove(key)) {
+            case -1:                //Element wurde gefunden, ist aber das einzige in der Liste
+                hashtable[index]=null;
+            case 1:                 //Element wurde gefunden
+                return true;
+            default:                //Element wurde nicht gefunden
+                return false;
+
+        }
     }
 
 

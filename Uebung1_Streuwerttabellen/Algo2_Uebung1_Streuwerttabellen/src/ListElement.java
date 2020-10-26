@@ -21,15 +21,16 @@ public class ListElement {
         else return next.search(key);
    }
 
-   public boolean remove(Object key){
+   public int remove(Object key){
        if(this.key.equals(key)){
-           next.last=last;
-           last.next=next;
+           if(next==null && last==null) return -1;
+           if(!(next==null)) next.last=last;
+           if(!(last==null)) last.next=next;
            this.last=null;
            this.next=null;
-           return true;
+           return 1;
        }
-       if(this.next==null)return false;
+       if(this.next==null)return 0;
        else return next.remove(key);
    }
 
