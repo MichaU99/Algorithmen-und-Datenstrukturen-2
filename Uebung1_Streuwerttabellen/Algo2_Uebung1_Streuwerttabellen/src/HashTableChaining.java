@@ -42,9 +42,11 @@ public class HashTableChaining implements HashTable {
 
     @Override
     public Object get(Object key) {
+        Object val;
         int index= HFunction.compute(key);
         if(hashtable[index]==null) return null;
-        return hashtable[index].search(key);
+        if(hashtable[index].search(key)==null) return null;
+        else return hashtable[index].search(key).val;
     }
 
     @Override
