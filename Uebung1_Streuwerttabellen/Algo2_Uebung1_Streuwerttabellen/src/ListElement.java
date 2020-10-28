@@ -1,4 +1,3 @@
-import java.util.List;
 
 public class ListElement {
     public ListElement last;

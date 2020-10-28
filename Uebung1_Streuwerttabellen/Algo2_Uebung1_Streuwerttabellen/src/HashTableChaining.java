@@ -7,13 +7,12 @@ public class HashTableChaining implements HashTable {
     //Java besitzt unter java.util.HashMap selbst eine Implementation einer Hashmap, können/ sollen wir die benutzen oder Eigenimplementation?
     HashFunction HFunction;
     int N;
-
     ListElement[] hashtable;
 
     public HashTableChaining(HashFunction f) {
-    HFunction=f;
-    N=HFunction.size();
-    hashtable= new ListElement[N];
+        HFunction=f;
+        N=HFunction.size();
+        hashtable= new ListElement[N];
     }
 
     @Override
@@ -21,7 +20,7 @@ public class HashTableChaining implements HashTable {
         int index;
 
         if (key==null && val==null) return false;
-        index= HFunction.compute(key); //Dummy Implementation, später HFunction.compute(key)
+        index= HFunction.compute(key);
 
         if(hashtable[index]!=null){ //sollte testen ob bereits ein Objekt ins Array an der Stelle index eingefügt wurde
 
@@ -36,6 +35,7 @@ public class HashTableChaining implements HashTable {
             hashtable[index]=new ListElement(key,val,null);
             return true;
         }
+        //Kann hier ein False rauskommen?
     }
 
 
@@ -43,12 +43,14 @@ public class HashTableChaining implements HashTable {
     @Override
     public Object get(Object key) {
         int index= HFunction.compute(key);
+        if(hashtable[index]==null) return null;
         return hashtable[index].search(key);
     }
 
     @Override
     public boolean remove(Object key) {
         int index= HFunction.compute(key);
+        if(hashtable[index]==null) return false;
         switch (hashtable[index].remove(key)) {
             case -1:                //Element wurde gefunden, ist aber das einzige in der Liste
                 hashtable[index]=null;
