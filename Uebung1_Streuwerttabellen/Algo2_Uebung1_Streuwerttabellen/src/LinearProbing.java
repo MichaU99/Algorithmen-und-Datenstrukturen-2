@@ -1,5 +1,7 @@
 // Sondierungssequenz gemäß linearer Sondierung.
 public class LinearProbing extends AbstractHashSequence{
+    int count,ausgangselement;
+    Object key;
     // Lineare Sondierung mit Streuwertfunktion f.
     public LinearProbing (HashFunction f) {
         super(f);
@@ -7,11 +9,15 @@ public class LinearProbing extends AbstractHashSequence{
 
     @Override
     public int first(Object key) {
-        return 0;
+        this.key=key;
+        count=1;
+        return ausgangselement=func.compute(key);
     }
 
     @Override
     public int next() {
-        return 0;
+        //assert key==null: "Fehlerhafter next() Aufruf ohne key";
+        if(ausgangselement+count>size()) return -1;
+        else return ausgangselement+count++;
     }
 }
