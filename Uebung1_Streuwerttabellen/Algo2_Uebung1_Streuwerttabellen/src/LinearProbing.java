@@ -17,7 +17,7 @@ public class LinearProbing extends AbstractHashSequence{
     @Override
     public int next() {
         //assert key==null: "Fehlerhafter next() Aufruf ohne key";
-        if(ausgangselement+count>size()) return -1;
+        if((ausgangselement+count)>=func.size()) return -1;
         else return ausgangselement+count++;
     }
 }

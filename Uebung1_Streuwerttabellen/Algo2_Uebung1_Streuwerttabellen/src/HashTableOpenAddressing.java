@@ -20,7 +20,7 @@ public class HashTableOpenAddressing implements HashTable{
 
         index=HSequence.first(key); //Ersten Index berechnen & testen
         while (index>0){
-            index=HSequence.next();
+
             if(hashtable[index]==null) {
                 hashtable[index] = new Speicher(key, val);
                 ges_anzahl_Objekte++;
@@ -30,6 +30,7 @@ public class HashTableOpenAddressing implements HashTable{
                 hashtable[index].val=val;
                 return true;
             }
+            index=HSequence.next();
         }
         return false;
     }
