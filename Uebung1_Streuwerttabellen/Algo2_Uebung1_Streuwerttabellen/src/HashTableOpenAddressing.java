@@ -39,7 +39,7 @@ public class HashTableOpenAddressing implements HashTable{
     public Object get(Object key) {
         int index=HSequence.first(key);
 
-        while(index>0){
+        while(index>=0){
             if(hashtable[index]==null) return null;
             if(hashtable[index].key.equals(key)) return hashtable[index].val;
             index=HSequence.next();
@@ -50,7 +50,7 @@ public class HashTableOpenAddressing implements HashTable{
     @Override
     public boolean remove(Object key) {
         int index=HSequence.first(key);
-        while(index>0){
+        while(index>=0){
             if(hashtable[index].key.equals(key)){
                 hashtable[index]=null;
                 return true;
