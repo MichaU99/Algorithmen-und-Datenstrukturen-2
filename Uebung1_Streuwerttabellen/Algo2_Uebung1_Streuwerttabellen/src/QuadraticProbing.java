@@ -22,8 +22,11 @@ public class QuadraticProbing extends AbstractHashSequence{
 
     @Override
     public int next() {
-        if((int) ((count+Math.pow(count,2))/2)>=func.size()) return -1;
-        else   ausgangselement= (int) ((count++)+(Math.pow(count++,2))/2);
-        return  ausgangselement;
+        int quadratischer_sprung= (int) ((count+Math.pow(count,2))/2);
+        if(count>=(size()-1)) return -1; //Muss extra getested werden
+        ausgangselement=(ausgangselement+(int) ((count+Math.pow(count,2))/2)) % size();
+        count++;
+        return ausgangselement;
+
     }
 }
