@@ -19,7 +19,7 @@ public class HashTableOpenAddressing implements HashTable{
         if(key==null && val==null) return false; //Fehlerhafte Eingabe abfangen
 
         index=HSequence.first(key); //Ersten Index berechnen & testen
-        while (index>0){
+        while (index>=0){
 
             if(hashtable[index]==null) {
                 hashtable[index] = new Speicher(key, val);
