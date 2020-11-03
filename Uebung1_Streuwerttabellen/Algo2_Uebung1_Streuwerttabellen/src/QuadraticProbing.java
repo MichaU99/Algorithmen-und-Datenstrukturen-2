@@ -1,14 +1,12 @@
 // Sondierungssequenz gemäß quadratischer Sondierung
 // (Implementierung nur mit Ganzzahlarithmetik).
 
-import org.w3c.dom.ls.LSOutput;
-
 import java.lang.Math;
 
 public class QuadraticProbing extends AbstractHashSequence{
     // Quadratische Sondierung mit Streuwertfunktion f.
     Object key;
-    int ausgangselement,count;
+    int ausgangselement,count,ausgabeelement;
     public QuadraticProbing (HashFunction f) {
         super(f);
     }
@@ -22,11 +20,10 @@ public class QuadraticProbing extends AbstractHashSequence{
 
     @Override
     public int next() {
-        int quadratischer_sprung= (int) ((count+Math.pow(count,2))/2);
         if(count>=(size()-1)) return -1; //Muss extra getested werden
-        ausgangselement=(ausgangselement+(int) ((count+Math.pow(count,2))/2)) % size();
+        ausgabeelement=(ausgangselement+(int) ((count+Math.pow(count,2))/2)) % size();
         count++;
-        return ausgangselement;
+        return ausgabeelement;
 
     }
 }

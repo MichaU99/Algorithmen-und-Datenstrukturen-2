@@ -1,4 +1,4 @@
-import org.w3c.dom.html.HTMLDListElement;
+
 
 // Implementierung von Streuwerttabellen mit Verkettung.
 public class HashTableChaining implements HashTable {
