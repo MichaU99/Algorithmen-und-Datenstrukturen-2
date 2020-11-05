@@ -21,12 +21,19 @@ public class MultiplicationMethod extends AbstractHashFunction{
 
     @Override
     public int compute(Object key) {
-        int h=key.hashCode(); //Hashcode ist der Streuwert?
+        boolean klaus=false;
+        int h=key.hashCode(),j; //Hashcode ist der Streuwert?
         BigDecimal v,u,i;
 
-        u =new BigDecimal(seed).multiply(new BigDecimal(h));
-        v= u.remainder(new BigDecimal(Math.pow(2,32)));
-        i =v.divide(new BigDecimal(Math.pow(2,32-bits)));
-        return i.intValue();
+        if(klaus=true) {
+            u = new BigDecimal(seed).multiply(new BigDecimal(h));
+            v = u.remainder(new BigDecimal(Math.pow(2, 32)));
+            i = v.divide(new BigDecimal(Math.pow(2, 32 - bits)));
+            return i.intValue();
+        }
+        else {
+            j = h * seed >>> 32 - bits; // = (h * seed) >>> (32 -bits);
+            return j;
+        }
     }
 }
