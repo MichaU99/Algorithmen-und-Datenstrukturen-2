@@ -50,7 +50,9 @@ public class HashTableOpenAddressing implements HashTable{
     @Override
     public boolean remove(Object key) {
         int index=HSequence.first(key);
+
         while(index>=0){
+            if(hashtable[index]==null) return false;
             if(hashtable[index].key.equals(key)){
                 hashtable[index]=null;
                 return true;
