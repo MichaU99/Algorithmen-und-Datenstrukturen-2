@@ -23,9 +23,10 @@ public class MultiplicationMethod extends AbstractHashFunction{
     public int compute(Object key) {
         boolean klaus=false;
         int h=key.hashCode(),j; //Hashcode ist der Streuwert?
-        BigDecimal v,u,i;
 
-        if(klaus=true) {
+
+        if(klaus) {
+            BigDecimal v,u,i;
             u = new BigDecimal(seed).multiply(new BigDecimal(h));
             v = u.remainder(new BigDecimal(Math.pow(2, 32)));
             i = v.divide(new BigDecimal(Math.pow(2, 32 - bits)));
