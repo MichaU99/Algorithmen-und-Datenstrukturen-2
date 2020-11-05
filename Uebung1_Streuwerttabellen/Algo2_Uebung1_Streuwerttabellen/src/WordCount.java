@@ -91,8 +91,10 @@ public class WordCount {
             if (count == null) count = 0;
             tab.put(word, count + 1);
         }
-
+        r= new java.io.BufferedReader(
+                new java.io.InputStreamReader());
         // Inhalt der Tabelle ausgeben.
+        String pruefen= r.readLine();
         tab.dump();
     }
 }
