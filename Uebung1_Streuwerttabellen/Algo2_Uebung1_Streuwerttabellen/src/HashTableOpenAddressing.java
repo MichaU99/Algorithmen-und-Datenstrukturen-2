@@ -43,7 +43,7 @@ public class HashTableOpenAddressing implements HashTable{
 
             while (index >= 0) {
                 if (hashtable[index] == null) return null;
-                if (hashtable[index].key.equals(key)) return hashtable[index].val;
+                if (hashtable[index].key.equals(key) && hashtable[index].loeschmarkierung==false) return hashtable[index].val;
                 index = HSequence.next();
             }
             return null;
@@ -57,6 +57,7 @@ public class HashTableOpenAddressing implements HashTable{
             int index = HSequence.first(key);
             while (index >= 0) {
                 if (hashtable[index].key.equals(key)) {
+                    if(hashtable[index].loeschmarkierung==true) return false;
                     hashtable[index].loeschmarkierung=true;
                     return true;
                 }
