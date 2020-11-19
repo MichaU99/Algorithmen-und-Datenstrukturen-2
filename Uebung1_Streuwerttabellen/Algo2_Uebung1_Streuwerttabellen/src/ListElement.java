@@ -23,14 +23,30 @@ public class ListElement {
    public int remove(Object key){
        if(this.key.equals(key)){
            if(next==null && last==null) return -1;
-           if(!(next==null)) next.last=last;
-           if(!(last==null)) last.next=next;
+           if(this.last==null){
+               this.val=next.val;
+               this.key=next.key;
+               remove2nd(next);
+           }
+           if(next!=null) next.last=last;
+           if(last!=null) last.next=next;
            this.last=null;
            this.next=null;
            return 1;
        }
        if(this.next==null)return 0;
        else return next.remove(key);
+   }
+
+   private void remove2nd(ListElement e){
+        if (e==this) {
+            if(next!=null) next.last=last;
+            if(last!=null) last.next=next;
+            this.last=null;
+            this.next=null;
+        }
+        if (next==null) return;
+        else next.remove(e);
    }
 
    public void dump(int nr){
