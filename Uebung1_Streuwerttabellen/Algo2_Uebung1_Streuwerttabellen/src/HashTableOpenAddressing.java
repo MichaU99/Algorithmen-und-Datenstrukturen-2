@@ -21,7 +21,7 @@ public class HashTableOpenAddressing implements HashTable{
         index=HSequence.first(key); //Ersten Index berechnen & testen
         while (index>=0){
 
-            if(hashtable[index]==null) {
+            if(hashtable[index]==null || hashtable[index].loeschmarkierung==true) {
                 hashtable[index] = new Speicher(key, val);
                 ges_anzahl_Objekte++;
                 return true;
@@ -57,7 +57,7 @@ public class HashTableOpenAddressing implements HashTable{
             int index = HSequence.first(key);
             while (index >= 0) {
                 if (hashtable[index].key.equals(key)) {
-                    hashtable[index] = null;
+                    hashtable[index].loeschmarkierung=true;
                     return true;
                 }
                 index = HSequence.next();
@@ -70,7 +70,7 @@ public class HashTableOpenAddressing implements HashTable{
     public void dump() {
         int i;
         for (i=0;i<N;i++){
-            if(hashtable[i]!=null) System.out.println(i+" "+hashtable[i].key+" "+hashtable[i].val);
+            if(hashtable[i]!=null && hashtable[i].loeschmarkierung==false) System.out.println(i+" "+hashtable[i].key+" "+hashtable[i].val);
         }
 
     }
