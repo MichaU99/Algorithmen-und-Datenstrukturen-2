@@ -19,7 +19,7 @@ public class HashTableChaining implements HashTable {
     public boolean put(Object key, Object val) {
         int index;
 
-        if (key==null && val==null) return false;
+        if (key==null && val==null) return false; //Stimmt das so?
         index= HFunction.compute(key);
 
         if(hashtable[index]!=null){ //sollte testen ob bereits ein Objekt ins Array an der Stelle index eingefügt wurde
@@ -42,26 +42,32 @@ public class HashTableChaining implements HashTable {
 
     @Override
     public Object get(Object key) {
-        ListElement tmp;
-        int index= HFunction.compute(key);
-        if(hashtable[index]==null) return null;
-        tmp=hashtable[index].search(key);
-        if(tmp==null) return null;
-        else return tmp.val;
+        if (key == null) return false;
+        else {
+            ListElement tmp;
+            int index = HFunction.compute(key);
+            if (hashtable[index] == null) return null;
+            tmp = hashtable[index].search(key);
+            if (tmp == null) return null;
+            else return tmp.val;
+        }
     }
 
     @Override
     public boolean remove(Object key) {
-        int index= HFunction.compute(key);
-        if(hashtable[index]==null) return false;
-        switch (hashtable[index].remove(key)) {
-            case -1:                //Element wurde gefunden, ist aber das einzige in der Liste
-                hashtable[index]=null;
-            case 1:                 //Element wurde gefunden
-                return true;
-            default:                //Element wurde nicht gefunden
-                return false;
+        if (key == null) return false;
+        else {
+            int index = HFunction.compute(key);
+            if (hashtable[index] == null) return false;
+            switch (hashtable[index].remove(key)) {
+                case -1:                //Element wurde gefunden, ist aber das einzige in der Liste
+                    hashtable[index] = null;
+                case 1:                 //Element wurde gefunden
+                    return true;
+                default:                //Element wurde nicht gefunden
+                    return false;
 
+            }
         }
     }
 

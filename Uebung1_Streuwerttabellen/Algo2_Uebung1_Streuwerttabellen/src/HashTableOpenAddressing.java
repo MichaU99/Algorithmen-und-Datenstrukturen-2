@@ -37,25 +37,31 @@ public class HashTableOpenAddressing implements HashTable{
 
     @Override
     public Object get(Object key) {
-        int index=HSequence.first(key);
+        if (key == null) return false;
+        else {
+            int index = HSequence.first(key);
 
-        while(index>=0){
-            if(hashtable[index]==null) return null;
-            if(hashtable[index].key.equals(key)) return hashtable[index].val;
-            index=HSequence.next();
+            while (index >= 0) {
+                if (hashtable[index] == null) return null;
+                if (hashtable[index].key.equals(key)) return hashtable[index].val;
+                index = HSequence.next();
+            }
+            return null;
         }
-        return null;
     }
 
     @Override
     public boolean remove(Object key) {
-        int index=HSequence.first(key);
-        while(index>=0){
-            if(hashtable[index].key.equals(key)){
-                hashtable[index]=null;
-                return true;
+        if (key==null) return false;
+        else {
+            int index = HSequence.first(key);
+            while (index >= 0) {
+                if (hashtable[index].key.equals(key)) {
+                    hashtable[index] = null;
+                    return true;
+                }
+                index = HSequence.next();
             }
-            index=HSequence.next();
         }
         return false;
     }
