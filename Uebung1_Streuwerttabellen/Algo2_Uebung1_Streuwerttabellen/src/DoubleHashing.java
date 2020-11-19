@@ -21,7 +21,7 @@ public class DoubleHashing extends AbstractHashSequence{
 
     @Override
     public int next() {
-        if(count>=(size()-1)) return -1; //Muss extra getested werden
+        if(count>=(size())) return -1; //Muss extra getested werden
         return ausgangselement_2=ausgangselement_1+(count++)*func2.compute(key);
     }
 }

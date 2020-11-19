@@ -20,7 +20,7 @@ public class QuadraticProbing extends AbstractHashSequence{
 
     @Override
     public int next() {
-        if(count>=(size()-1)) return -1; //Muss extra getested werden
+        if(count>=(size())) return -1; //Muss extra getested werden
         ausgabeelement=(ausgangselement+(int) ((count+Math.pow(count,2))/2)) % size();
         count++;
         return ausgabeelement;
