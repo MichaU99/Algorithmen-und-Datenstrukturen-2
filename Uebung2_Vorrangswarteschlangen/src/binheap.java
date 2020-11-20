@@ -6,12 +6,9 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	private int size=0;
 	private Entry head=null; //Das Element mit der niedrifsten Priorität das den Baum "startet"
 
-	public BinHeap(){
-		versuch = new P (1);
-	} //Standartkonstruktor
+	public BinHeap(){} //Standartkonstruktor
 	public BinHeap(Entry e){ //Konstruktur für Baum mit einem Element
 		head=e;
-		versuch = new P (1);
 	}
 
 	public int size() {
@@ -23,26 +20,29 @@ class BinHeap <P extends Comparable<? super P>, D> {
  		Node n=new Node(e);
  		BinHeap tmpheap= new BinHeap(e);
 
- 		mergeHeap(this,tmpheap);
+ 		this.head=mergeHeap(this,tmpheap);
 		return e;
 	}
 	public int compareTo(){
 		return 0; //nicht implementiert
 	}
-	public boolean mergeHeap(BinHeap H1,BinHeap H2){
+	public Entry mergeHeap(BinHeap H1,BinHeap H2){
 		int i,k=0;
+		int pos1=0,pos2=0;
 		int filling_zwischensp=0; //Beschreibt wie viele Elemente in tmpHeap enthalten sind
+		BinHeap buildH=null;
 		BinHeap[] zwischensp=new BinHeap[3]; //Zwischenspeicher für bis zu drei Bäume
 
 		while((H1.head!=null)||(H2.head!=null)||(filling_zwischensp!=0)){
 			if(H1.head.node.degree==k) { //Codedopplung mit dem nächsten if-Statement, vielleicht Hilfsmethode?
-				for (i = 0; i <= 2; i++) {
+				for (i = 0; i <= 2; i++) { //ISt es möglich das das Array volläuft??
 					if (zwischensp[i] == null){
 						zwischensp[i] = new BinHeap(H1.head);
 						filling_zwischensp++;
 						break; // bis wohin geht brak raus
 					}
 				}
+				H1.head.node =H1.head.node.sibling; //Reicht das damit der Knoten von der Garbage Collection aufgesammelt wird?
 			}
 			// head rausnehmen aus H1 wenn es in den zwischenspeicher kommt
 			if(H2.head.node.degree==k) {
@@ -53,22 +53,52 @@ class BinHeap <P extends Comparable<? super P>, D> {
 						break;
 					}
 				}
+				H2.head.node =H2.head.node.sibling; //Reicht das damit der Knoten von der Garbage Collection aufgesammelt wird?
 			}
 			if(filling_zwischensp==1 || filling_zwischensp==3){
-
+				if(filling_zwischensp==3) pos1=0;
+				else{
+					for(i=0;i<=2;i++){
+						if(zwischensp[i]!=null) pos1=i;
+						break;
+					}
+				}
+				if(buildH==null) buildH.head=zwischensp[pos1].head;
+				else {
+					Entry arbeitsentry=buildH.head;
+					while (arbeitsentry.node.sibling != null) arbeitsentry.node = arbeitsentry.node.sibling;
+					arbeitsentry.node.sibling = zwischensp[pos1].head.node;
+				}
+				zwischensp[pos1]=null;
+				filling_zwischensp--;
 			}
 			if (filling_zwischensp==2) {
-
+				if(zwischensp[0]==null){
+					pos1=1;
+					pos2=2;
+				}
+				if(zwischensp[1]==null){
+					pos1=0;
+					pos2=2;
+				}
+				else{
+					pos1=0;
+					pos2=1;
+				}
+				zwischensp[pos1]=mergeEqTree(zwischensp[pos1].head,zwischensp[pos2].head); //Ist das eine gute Idee? Kann man den entstehenden Tree besser übergeben?
+				zwischensp[pos2]=null;
+				filling_zwischensp--;
 			}
+			k++;
 		}
-		return false; //Löschen
+		return buildH.head;
 	}
 
 		public BinHeap mergeEqTree(Entry H1, Entry H2){ //Hilfsoperation zur Vereinigung zweier Bäume des gleichen Grads
 
 			int degree=H1.node.degree;
 			Entry dom,sub;
-			if(degree!=H2.node.degree) return false;
+			if(degree!=H2.node.degree) return null;
 			if(H1.prio().compareTo(H2.prio())<0) { //compareTo muss im Typ P implementiert werden?
 				dom = H1;
 				sub = H2;
