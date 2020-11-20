@@ -3,27 +3,114 @@
 // Comparable<P> oder Comparable<P'> für einen Obertyp P' von P
 // implementieren muss) und zusätzlichen Daten eines beliebigen Typs D.
 class BinHeap <P extends Comparable<? super P>, D> {
-    // Eintrag einer solchen Warteschlange bzw. Halde, bestehend aus
+	private int size=0;
+	private Entry head=null; //Das Element mit der niedrifsten Priorität das den Baum "startet"
+
+	public BinHeap(){
+		versuch = new P (1);
+	} //Standartkonstruktor
+	public BinHeap(Entry e){ //Konstruktur für Baum mit einem Element
+		head=e;
+		versuch = new P (1);
+	}
+
+	public int size() {
+		return size;
+	}
+
+	public Entry<P, D> insert(P p, D d) {
+		Entry e= new Entry(p,d);
+ 		Node n=new Node(e);
+ 		BinHeap tmpheap= new BinHeap(e);
+
+ 		mergeHeap(this,tmpheap);
+		return e;
+	}
+	public int compareTo(){
+		return 0; //nicht implementiert
+	}
+	public boolean mergeHeap(BinHeap H1,BinHeap H2){
+		int i,k=0;
+		int filling_zwischensp=0; //Beschreibt wie viele Elemente in tmpHeap enthalten sind
+		BinHeap[] zwischensp=new BinHeap[3]; //Zwischenspeicher für bis zu drei Bäume
+
+		while((H1.head!=null)||(H2.head!=null)||(filling_zwischensp!=0)){
+			if(H1.head.node.degree==k) { //Codedopplung mit dem nächsten if-Statement, vielleicht Hilfsmethode?
+				for (i = 0; i <= 2; i++) {
+					if (zwischensp[i] == null){
+						zwischensp[i] = new BinHeap(H1.head);
+						filling_zwischensp++;
+						break; // bis wohin geht brak raus
+					}
+				}
+			}
+			// head rausnehmen aus H1 wenn es in den zwischenspeicher kommt
+			if(H2.head.node.degree==k) {
+				for (i = 0; i <= 2; i++) {
+					if (zwischensp[i] == null){
+						zwischensp[i] = new BinHeap(H2.head);
+						filling_zwischensp++;
+						break;
+					}
+				}
+			}
+			if(filling_zwischensp==1 || filling_zwischensp==3){
+
+			}
+			if (filling_zwischensp==2) {
+
+			}
+		}
+		return false; //Löschen
+	}
+
+		public BinHeap mergeEqTree(Entry H1, Entry H2){ //Hilfsoperation zur Vereinigung zweier Bäume des gleichen Grads
+
+			int degree=H1.node.degree;
+			Entry dom,sub;
+			if(degree!=H2.node.degree) return false;
+			if(H1.prio().compareTo(H2.prio())<0) { //compareTo muss im Typ P implementiert werden?
+				dom = H1;
+				sub = H2;
+			}
+
+			else{
+				dom = H2;
+				sub = H1;
+			}
+			dom.node.sibling=null;
+			dom.node.degree=dom.node.degree+1;
+			sub.node.parent=dom.node;
+			if (dom.node.child==null) dom.node.child=sub.node.sibling=sub.node; //Funktioniert das?
+			else {
+				sub.node.sibling=dom.node.child.sibling;
+				dom.node.child=dom.node.child.sibling=sub.node;
+			}
+			return new BinHeap(dom);
+		}
+
+
+	// Eintrag einer solchen Warteschlange bzw. Halde, bestehend aus
     // einer Priorität prio mit Typ P und zusätzlichen Daten data mit
     // Typ D.
     // Wenn der Eintrag momentan tatsächlich zu einer Halde gehört,
     // verweist node auf den zugehörigen Knoten eines Binomialbaums
     // dieser Halde.
     public static class Entry <P, D> {
-	// Priorität, zusätzliche Daten und zugehöriger Knoten.
-	private P prio;
-	private D data;
-	private Node<P, D> node;
+		// Priorität, zusätzliche Daten und zugehöriger Knoten.
+		private P prio;
+		private D data;
+		private Node<P, D> node;
 
-	// Eintrag mit Priorität p und zusätzlichen Daten d erzeugen.
-	private Entry (P p, D d) {
-	    prio = p;
-	    data = d;
-	}
+			// Eintrag mit Priorität p und zusätzlichen Daten d erzeugen.
+		private Entry (P p, D d) {
+	    	prio = p;
+	    	data = d;
+		}
 
-	// Priorität bzw. zusätzliche Daten liefern.
-	public P prio () { return prio; }
-	public D data () { return data; }
+		// Priorität bzw. zusätzliche Daten liefern.
+		public P prio () { return prio; }
+		public D data () { return data; }
     }
 
     // Knoten eines Binomialbaums innerhalb einer solchen Halde.
@@ -31,34 +118,34 @@ class BinHeap <P extends Comparable<? super P>, D> {
     // sibling), enthält der Knoten einen Verweis auf den zugehörigen
     // Eintrag.
     private static class Node <P, D> {
-	// Zugehöriger Eintrag.
-	private Entry<P, D> entry;
+		// Zugehöriger Eintrag.
+		private Entry<P, D> entry;
 
-	// Grad des Knotens.
-	private int degree;
+		// Grad des Knotens.
+		private int degree;
 
-	// Vorgänger (falls vorhanden; bei einem Wurzelknoten null).
-	private Node<P, D> parent;
+		// Vorgänger (falls vorhanden; bei einem Wurzelknoten null).
+		private Node<P, D> parent=null;
 
-	// Nachfolger mit dem größten Grad
-	// (falls vorhanden; bei einem Blattknoten null).
-	private Node<P, D> child;
+		// Nachfolger mit dem größten Grad
+		// (falls vorhanden; bei einem Blattknoten null).
+		private Node<P, D> child=null;
 
-	// Zirkuläre Verkettung aller Nachfolger eines Knotens
-	// bzw. einfache Verkettung aller Wurzelknoten einer Halde,
-	// jeweils sortiert nach aufsteigendem Grad.
-	private Node<P, D> sibling;
+		// Zirkuläre Verkettung aller Nachfolger eines Knotens
+		// bzw. einfache Verkettung aller Wurzelknoten einer Halde,
+		// jeweils sortiert nach aufsteigendem Grad.
+		private Node<P, D> sibling=null;
 
-	// Knoten erzeugen, der auf den Eintrag e verweist
-	// und umgekehrt.
-	private Node (Entry<P, D> e) {
-	    entry = e;
-	    e.node = this;
-	}
+		// Knoten erzeugen, der auf den Eintrag e verweist
+		// und umgekehrt.
+		private Node (Entry<P, D> e) {
+	    	entry = e;
+	    	e.node = this;
+		}
 
-	// Priorität des Knotens, d. h. des zugehörigen Eintrags
-	// liefern.
-	private P prio () { return entry.prio; }
+		// Priorität des Knotens, d. h. des zugehörigen Eintrags
+		// liefern.
+		private P prio () { return entry.prio; }
     }
 
 }
