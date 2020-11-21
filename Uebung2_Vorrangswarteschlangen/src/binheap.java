@@ -3,7 +3,6 @@
 // Comparable<P> oder Comparable<P'> für einen Obertyp P' von P
 // implementieren muss) und zusätzlichen Daten eines beliebigen Typs D.
 class BinHeap <P extends Comparable<? super P>, D> {
-	private int size=0;
 	private Entry head=null; //Das Element mit der niedrifsten Priorität das den Baum "startet"
 
 	public BinHeap(){} //Standartkonstruktor
@@ -11,14 +10,53 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		head=e;
 	}
 
-	public int size() {
-		return size;
-	}
-
 	public Entry<P, D> insert(P p, D d) {
 		Entry e= new Entry(p,d);
  		this.head=mergeHeap(this,new BinHeap(e));
 		return e;
+	}
+
+	public boolean isEmpty(){
+		if (head==null) return true;
+		return false;
+	}
+	public int size(){
+		int size=0;
+		Entry arbeitsentry=head;
+		while(arbeitsentry!=null && arbeitsentry.node.sibling!=null){
+			size++;
+			arbeitsentry.node=arbeitsentry.node.sibling;
+		}
+		return size;
+	}
+	/*public void dump(){
+		Entry arbeitsentry =head;
+		while (arbeitsentry.node.parent==null && arbeitsentry.node.sibling!=null){ //Bedingung unvollständig, würde bei abstieg in den Baum abbrechen
+
+		}
+	} */
+
+	private void dump(){ //Läuft durch die Wurzelknoten
+		Node laufNode=head.node;
+		while (laufNode!=null && laufNode.sibling!=null) { //Ist ist die node von head.node= null auch null?
+			dump(laufNode,0);
+			laufNode=laufNode.sibling;
+		}
+	}
+
+	private void dump(Node n,int Tiefe){ //Ruft Rekursiv die Children des übergebenen Wurzelknotens auf
+		char platzhalterVorlage=' ';
+		String platzhalter;
+		Node tmpHead=n;
+		int i;
+
+		do{
+			platzhalter=null;
+			if(n.child!=null) dump(n.child,Tiefe+1);
+			for(i=0;i<Tiefe;i++)	platzhalter=platzhalter+platzhalterVorlage; //Experimentell
+			System.out.println(platzhalter+n.entry.prio+n.entry.data);
+			tmpHead=tmpHead.sibling;
+		}while (n!=tmpHead);//Sibling kann hier eigentlich nicht null sein!
 	}
 
 	public Entry mergeHeap(BinHeap H1,BinHeap H2){
