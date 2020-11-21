@@ -68,7 +68,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	public void dump(){ //Läuft durch die Wurzelknoten
 		Node laufNode=head.node;
-		while (laufNode!=null && laufNode.sibling!=null) { //Ist ist die node von head.node= null auch null?
+		while (laufNode!=null ) { //Ist ist die node von head.node= null auch null?
 			dump(laufNode,0);
 			laufNode=laufNode.sibling;
 		}
@@ -81,19 +81,19 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		int i;
 
 		do{
-			platzhalter=null;
+			platzhalter="";
 			for(i=0;i<Tiefe;i++)	platzhalter=platzhalter+platzhalterVorlage; //Experimentell
-			System.out.println(platzhalter+n.entry.prio+n.entry.data);
+			System.out.println(platzhalter+n.entry.prio+" "+n.entry.data);
 			if(n.child!=null) dump(n.child,Tiefe+1);
 			tmpHead=tmpHead.sibling;
-		}while (n!=tmpHead);//Sibling kann hier eigentlich nicht null sein!
+		}while (n!=tmpHead && n.parent!=null);//Sibling kann hier eigentlich nicht null sein!
 	}
 
 	public Entry mergeHeap(BinHeap H1,BinHeap H2){
 		int i,k=0;
 		int pos1=0,pos2=0;
 		int filling_zwischensp=0; //Beschreibt wie viele Elemente in tmpHeap enthalten sind
-		BinHeap buildH=null;
+		BinHeap buildH=new BinHeap();
 		BinHeap[] zwischensp=new BinHeap[3]; //Zwischenspeicher für bis zu drei Bäume
 
 		while((H1.head!=null)||(H2.head!=null)||(filling_zwischensp!=0)){
@@ -102,10 +102,11 @@ class BinHeap <P extends Comparable<? super P>, D> {
 					if (zwischensp[i] == null){
 						zwischensp[i] = new BinHeap(H1.head);
 						filling_zwischensp++;
-						break; // bis wohin geht break raus
+						break;
 					}
 				}
-				H1.head.node =H1.head.node.sibling; //Reicht das damit der Knoten von der Garbage Collection aufgesammelt wird?
+				if(H1.head.node.sibling==null) H1.head=null;
+				else H1.head.node =H1.head.node.sibling; //Reicht das damit der Knoten von der Garbage Collection aufgesammelt wird?
 			}
 			// head rausnehmen aus H1 wenn es in den zwischenspeicher kommt
 			if(H2.head!=null && H2.head.node.degree==k) {
@@ -116,7 +117,8 @@ class BinHeap <P extends Comparable<? super P>, D> {
 						break;
 					}
 				}
-				H2.head.node =H2.head.node.sibling; //Reicht das damit der Knoten von der Garbage Collection aufgesammelt wird?
+				if(H2.head.node.sibling==null) H2.head=null;
+				else H2.head.node =H2.head.node.sibling; //Reicht das damit der Knoten von der Garbage Collection aufgesammelt wird?
 			}
 			if(filling_zwischensp==1 || filling_zwischensp==3){
 				if(filling_zwischensp==3) pos1=0;
