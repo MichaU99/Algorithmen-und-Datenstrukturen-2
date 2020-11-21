@@ -4,7 +4,7 @@ public class TestMain {
         H.insert(5,'a');
         H.insert(10,"da");
         H.insert(10,"da");
-        H.insert(10,"da");
+        H.insert(9,"da");
         H.dump();
 
     }
