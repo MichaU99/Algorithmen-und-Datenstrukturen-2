@@ -17,15 +17,10 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	public Entry<P, D> insert(P p, D d) {
 		Entry e= new Entry(p,d);
- 		Node n=new Node(e);
- 		BinHeap tmpheap= new BinHeap(e);
-
- 		this.head=mergeHeap(this,tmpheap);
+ 		this.head=mergeHeap(this,new BinHeap(e));
 		return e;
 	}
-	public int compareTo(){
-		return 0; //nicht implementiert
-	}
+
 	public Entry mergeHeap(BinHeap H1,BinHeap H2){
 		int i,k=0;
 		int pos1=0,pos2=0;
@@ -39,7 +34,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 					if (zwischensp[i] == null){
 						zwischensp[i] = new BinHeap(H1.head);
 						filling_zwischensp++;
-						break; // bis wohin geht brak raus
+						break; // bis wohin geht break raus
 					}
 				}
 				H1.head.node =H1.head.node.sibling; //Reicht das damit der Knoten von der Garbage Collection aufgesammelt wird?
@@ -63,7 +58,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 						break;
 					}
 				}
-				if(buildH==null) buildH.head=zwischensp[pos1].head;
+				if(buildH.head==null) buildH.head=zwischensp[pos1].head;
 				else {
 					Entry arbeitsentry=buildH.head;
 					while (arbeitsentry.node.sibling != null) arbeitsentry.node = arbeitsentry.node.sibling;
