@@ -81,10 +81,10 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		int i;
 
 		do{
-			platzhalter="";
-			for(i=0;i<Tiefe;i++)	platzhalter=platzhalter+platzhalterVorlage; //Experimentell
-			System.out.println(platzhalter+n.entry.prio+" "+n.entry.data);
-			if(n.child!=null) dump(n.child,Tiefe+1);
+			platzhalter=""; //Reset
+			for(i=0;i<Tiefe;i++)	platzhalter=platzhalter+platzhalterVorlage; //Setzt die Leerzeichen für die Ausgabe auf die richtige Länge
+			System.out.println(platzhalter+tmpHead.entry.prio+" "+tmpHead.entry.data);
+			if(tmpHead.child!=null) dump(tmpHead.child,Tiefe+1);
 			tmpHead=tmpHead.sibling;
 		}while (n!=tmpHead && n.parent!=null);//Sibling kann hier eigentlich nicht null sein!
 	}
@@ -92,33 +92,40 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	public Entry mergeHeap(BinHeap H1,BinHeap H2){
 		int i,k=0;
 		int pos1=0,pos2=0;
-		int filling_zwischensp=0; //Beschreibt wie viele Elemente in tmpHeap enthalten sind
+		int filling_zwischensp=0; //Beschreibt wie viele Elemente in zwischensp enthalten sind
+		Entry tmp;
 		BinHeap buildH=new BinHeap();
 		BinHeap[] zwischensp=new BinHeap[3]; //Zwischenspeicher für bis zu drei Bäume
 
 		while((H1.head!=null)||(H2.head!=null)||(filling_zwischensp!=0)){
 			if(H1.head!=null && H1.head.node.degree==k) { //Codedopplung mit dem nächsten if-Statement, vielleicht Hilfsmethode?
 				for (i = 0; i <= 2; i++) { //ISt es möglich das das Array volläuft??
+
 					if (zwischensp[i] == null){
-						zwischensp[i] = new BinHeap(H1.head);
+						tmp=H1.head;
+						if(H1.head.node.sibling==null) H1.head=null;
+						else H1.head = H1.head.node.sibling.entry; //Reicht das damit der Knoten von der Garbage Collection aufgesammelt wird?
+						tmp.node.sibling=null;
+						zwischensp[i] = new BinHeap(tmp);
 						filling_zwischensp++;
 						break;
 					}
 				}
-				if(H1.head.node.sibling==null) H1.head=null;
-				else H1.head.node =H1.head.node.sibling; //Reicht das damit der Knoten von der Garbage Collection aufgesammelt wird?
 			}
 			// head rausnehmen aus H1 wenn es in den zwischenspeicher kommt
 			if(H2.head!=null && H2.head.node.degree==k) {
 				for (i = 0; i <= 2; i++) {
 					if (zwischensp[i] == null){
-						zwischensp[i] = new BinHeap(H2.head);
+						tmp=H2.head;
+						if(H2.head.node.sibling==null) H2.head=null;
+						else H2.head =H2.head.node.sibling.entry; //Reicht das damit der Knoten von der Garbage Collection aufgesammelt wird?
+						tmp.node.sibling=null;
+						zwischensp[i] = new BinHeap(tmp);
 						filling_zwischensp++;
 						break;
 					}
 				}
-				if(H2.head.node.sibling==null) H2.head=null;
-				else H2.head.node =H2.head.node.sibling; //Reicht das damit der Knoten von der Garbage Collection aufgesammelt wird?
+
 			}
 			if(filling_zwischensp==1 || filling_zwischensp==3){
 				if(filling_zwischensp==3) pos1=0;
