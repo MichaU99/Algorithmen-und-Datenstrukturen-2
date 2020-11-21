@@ -14,6 +14,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	public Entry<P, D> insert(P p, D d) {
 		Entry e= new Entry(p,d);
+		e.node=new Node(e);
  		this.head=mergeHeap(this,new BinHeap(e));
  		size++;
 		return e;
@@ -65,7 +66,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 	} */
 
-	private void dump(){ //Läuft durch die Wurzelknoten
+	public void dump(){ //Läuft durch die Wurzelknoten
 		Node laufNode=head.node;
 		while (laufNode!=null && laufNode.sibling!=null) { //Ist ist die node von head.node= null auch null?
 			dump(laufNode,0);
@@ -96,7 +97,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		BinHeap[] zwischensp=new BinHeap[3]; //Zwischenspeicher für bis zu drei Bäume
 
 		while((H1.head!=null)||(H2.head!=null)||(filling_zwischensp!=0)){
-			if(H1.head.node.degree==k) { //Codedopplung mit dem nächsten if-Statement, vielleicht Hilfsmethode?
+			if(H1.head!=null && H1.head.node.degree==k) { //Codedopplung mit dem nächsten if-Statement, vielleicht Hilfsmethode?
 				for (i = 0; i <= 2; i++) { //ISt es möglich das das Array volläuft??
 					if (zwischensp[i] == null){
 						zwischensp[i] = new BinHeap(H1.head);
@@ -107,7 +108,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				H1.head.node =H1.head.node.sibling; //Reicht das damit der Knoten von der Garbage Collection aufgesammelt wird?
 			}
 			// head rausnehmen aus H1 wenn es in den zwischenspeicher kommt
-			if(H2.head.node.degree==k) {
+			if(H2.head!=null && H2.head.node.degree==k) {
 				for (i = 0; i <= 2; i++) {
 					if (zwischensp[i] == null){
 						zwischensp[i] = new BinHeap(H2.head);
@@ -161,7 +162,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			int degree=H1.node.degree;
 			Entry dom,sub;
 			if(degree!=H2.node.degree) return null;
-			if(H1.prio().compareTo(H2.prio())<0) { //compareTo muss im Typ P implementiert werden?
+			if(H1.prio().toString().compareTo(H2.prio().toString())<0) { //compareTo muss im Typ P implementiert werden?
 				dom = H1;
 				sub = H2;
 			}
@@ -180,6 +181,9 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			}
 			return new BinHeap(dom);
 		}
+
+	public void changePrio(Entry<P, D> entry, P s) {
+	}
 
 
 	// Eintrag einer solchen Warteschlange bzw. Halde, bestehend aus
