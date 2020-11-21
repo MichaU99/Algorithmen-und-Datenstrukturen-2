@@ -3,30 +3,59 @@
 // Comparable<P> oder Comparable<P'> für einen Obertyp P' von P
 // implementieren muss) und zusätzlichen Daten eines beliebigen Typs D.
 class BinHeap <P extends Comparable<? super P>, D> {
+	public int size=0;
 	private Entry head=null; //Das Element mit der niedrifsten Priorität das den Baum "startet"
 
 	public BinHeap(){} //Standartkonstruktor
-	public BinHeap(Entry e){ //Konstruktur für Baum mit einem Element
+	private BinHeap(Entry e){ //Konstruktur für Baum mit einem Element
 		head=e;
+		size=1;
 	}
 
 	public Entry<P, D> insert(P p, D d) {
 		Entry e= new Entry(p,d);
  		this.head=mergeHeap(this,new BinHeap(e));
+ 		size++;
 		return e;
 	}
 
 	public boolean isEmpty(){
+		//assert ((head==null && size!=0) || head!=null && size==0);
 		if (head==null) return true;
 		return false;
 	}
-	public int size(){
-		int size=0;
-		Entry arbeitsentry=head;
-		while(arbeitsentry!=null && arbeitsentry.node.sibling!=null){
-			size++;
-			arbeitsentry.node=arbeitsentry.node.sibling;
+
+	public Entry<P, D> minimum(){
+		return head;
+	}
+
+	public Entry<P, D> extractMin (){
+		Entry E =head;
+		remove(head);
+		return E;
+	}
+	public boolean contains (Entry<P, D> e){
+		return false ;//dummy Implemetation
+	}
+
+	private Entry<P, D> contains_with_element (Entry<P, D> e){
+		if(false){
+			return e;
 		}
+		else return null;
+	}
+
+	public boolean remove (Entry<P, D> e){
+		Entry<P, D> zulöschen=contains_with_element(e);
+		if(zulöschen==null) {
+			return false;
+		}
+		//Warum sollte ich hier den Aufwand betreiben die Prio zu ändern anstatt es so zu machen
+		size--;
+		return true;
+	}
+
+	public int size(){
 		return size;
 	}
 	/*public void dump(){
@@ -45,7 +74,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	}
 
 	private void dump(Node n,int Tiefe){ //Ruft Rekursiv die Children des übergebenen Wurzelknotens auf
-		char platzhalterVorlage=' ';
+		char platzhalterVorlage=' '; //Funktioniert das????
 		String platzhalter;
 		Node tmpHead=n;
 		int i;
