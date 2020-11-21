@@ -81,9 +81,9 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 		do{
 			platzhalter=null;
-			if(n.child!=null) dump(n.child,Tiefe+1);
 			for(i=0;i<Tiefe;i++)	platzhalter=platzhalter+platzhalterVorlage; //Experimentell
 			System.out.println(platzhalter+n.entry.prio+n.entry.data);
+			if(n.child!=null) dump(n.child,Tiefe+1);
 			tmpHead=tmpHead.sibling;
 		}while (n!=tmpHead);//Sibling kann hier eigentlich nicht null sein!
 	}
