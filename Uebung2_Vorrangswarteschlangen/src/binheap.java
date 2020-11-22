@@ -27,12 +27,19 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	}
 
 	public Entry<P, D> minimum(){
-		return head;
+		Entry min=head;
+		Node laufnode=min.node;
+		while(laufnode.sibling!=null){
+			if(laufnode.entry.prio.toString().compareTo(min.prio.toString())<0) min=laufnode.entry; //Irgendwas stimmt mit Prios noch nicht
+			laufnode=laufnode.sibling;
+		}
+
+		return min;
 	}
 
 	public Entry<P, D> extractMin (){
-		Entry E =head;
-		remove(head);
+		Entry E =minimum();
+		remove(minimum());
 		return E;
 	}
 	public boolean contains (Entry<P, D> e){
@@ -47,7 +54,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	}
 
 	public boolean remove (Entry<P, D> e){
-		Entry<P, D> zulöschen=contains_with_element(e);
+		Entry<P, D> zulöschen=contains_with_element(e); //Schaut ob das Element existiert
 		if(zulöschen==null) {
 			return false;
 		}
@@ -137,13 +144,11 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				}
 				if(buildH.head==null) buildH.head=zwischensp[pos1].head;
 
-				else { //Sehr fragwürdige umsetzung, arbeitsentry sollte eigentlich eine Kopie von buildH.head sein ist aber eine Referenz weshalb workaround gemacht wurden pls fix
-					Node n=buildH.head.node; //Kopie der Originalnode
-					Entry arbeitsentry=buildH.head;
-					while (arbeitsentry.node.sibling != null) arbeitsentry.node = arbeitsentry.node.sibling; //Fehler
-					arbeitsentry.node.sibling = zwischensp[pos1].head.node;
-					buildH.head.node=n; //Zurücksetzen auf Originalstatus
-				}
+				else { //Sehr fragwürdige umsetzung, laufnode sollte eigentlich eine Kopie von buildH.head sein ist aber eine Referenz weshalb workaround gemacht wurden pls fix
+					Node laufnode=buildH.head.node;
+					while (laufnode.sibling != null) laufnode = laufnode.sibling; //Fehler
+					laufnode.sibling = zwischensp[pos1].head.node;
+					}
 				zwischensp[pos1]=null;
 				filling_zwischensp--;
 			}
