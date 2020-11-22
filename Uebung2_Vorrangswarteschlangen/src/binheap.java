@@ -63,7 +63,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		return true;
 	}
 
-	public int size(){
+	public int size(){ //Vielleicht deckung auch innerhalb von Nodes?
 		return size;
 	}
 	/*public void dump(){
@@ -82,18 +82,34 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	}
 
 	private void dump(Node n,int Tiefe){ //Ruft Rekursiv die Children des übergebenen Wurzelknotens auf
-		char platzhalterVorlage=' '; //Funktioniert das????
+		String platzhalterVorlage="  "; //Funktioniert das????
 		String platzhalter;
 		Node tmpHead=n;
-		int i;
+		int i=-1;
+		if(tmpHead.parent!=null) {
+			while (n != tmpHead || i == -1) {
+				tmpHead = tmpHead.sibling;
+				if (tmpHead == null) break;
+				platzhalter = ""; //Reset
+				for (i = 0; i < Tiefe; i++)
+					platzhalter = platzhalter + platzhalterVorlage; //Setzt die Leerzeichen für die Ausgabe auf die richtige Länge
+				System.out.println(platzhalter + tmpHead.entry.prio + " " + tmpHead.entry.data);
+				//if(tmpHead.parent!=null && tmpHead.degree<tmpHead.sibling.degree) System.out.println("ALAAARM ");
+				if (tmpHead.child != null) dump(tmpHead.child, Tiefe + 1);
 
-		do{
-			platzhalter=""; //Reset
-			for(i=0;i<Tiefe;i++)	platzhalter=platzhalter+platzhalterVorlage; //Setzt die Leerzeichen für die Ausgabe auf die richtige Länge
-			System.out.println(platzhalter+tmpHead.entry.prio+" "+tmpHead.entry.data);
-			if(tmpHead.child!=null) dump(tmpHead.child,Tiefe+1);
-			tmpHead=tmpHead.sibling;
-		}while (n!=tmpHead && n.parent!=null);//Sibling kann hier eigentlich nicht null sein!
+			}
+		}
+		else {
+			do {
+				platzhalter = ""; //Reset
+				for (i = 0; i < Tiefe; i++)
+					platzhalter = platzhalter + platzhalterVorlage; //Setzt die Leerzeichen für die Ausgabe auf die richtige Länge
+				System.out.println(platzhalter + tmpHead.entry.prio + " " + tmpHead.entry.data);
+				//if(tmpHead.parent!=null && tmpHead.degree<tmpHead.sibling.degree) System.out.println("ALAAARM ");
+				if (tmpHead.child != null) dump(tmpHead.child, Tiefe + 1);
+				tmpHead = tmpHead.sibling;
+			} while (n != tmpHead && n.parent != null);//Sibling kann hier eigentlich nicht null sein!
+		}
 	}
 
 	public Entry mergeHeap(BinHeap H1,BinHeap H2){
