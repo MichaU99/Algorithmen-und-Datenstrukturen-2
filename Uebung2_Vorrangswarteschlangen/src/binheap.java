@@ -13,7 +13,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	}
 
 	public Entry<P, D> insert(P p, D d) {
-		Entry e= new Entry(p,d);
+		Entry<P, D> e= new Entry(p,d);
 		e.node=new Node(e);
  		this.head=mergeHeap(this,new BinHeap(e));
  		size++;
@@ -136,10 +136,13 @@ class BinHeap <P extends Comparable<? super P>, D> {
 					}
 				}
 				if(buildH.head==null) buildH.head=zwischensp[pos1].head;
-				else {
+
+				else { //Sehr fragwürdige umsetzung, arbeitsentry sollte eigentlich eine Kopie von buildH.head sein ist aber eine Referenz weshalb workaround gemacht wurden pls fix
+					Node n=buildH.head.node; //Kopie der Originalnode
 					Entry arbeitsentry=buildH.head;
-					while (arbeitsentry.node.sibling != null) arbeitsentry.node = arbeitsentry.node.sibling;
+					while (arbeitsentry.node.sibling != null) arbeitsentry.node = arbeitsentry.node.sibling; //Fehler
 					arbeitsentry.node.sibling = zwischensp[pos1].head.node;
+					buildH.head.node=n; //Zurücksetzen auf Originalstatus
 				}
 				zwischensp[pos1]=null;
 				filling_zwischensp--;
