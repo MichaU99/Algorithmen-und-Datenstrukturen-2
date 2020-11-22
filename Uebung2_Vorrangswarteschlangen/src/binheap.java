@@ -5,6 +5,7 @@ import java.util.Comparator;
 // Comparable<P> oder Comparable<P'> für einen Obertyp P' von P
 // implementieren muss) und zusätzlichen Daten eines beliebigen Typs D.
 class BinHeap <P extends Comparable<? super P>, D> {
+	String Debug="";
 	public int size=0;
 	private Entry head; //Das Element mit der niedrifsten Priorität das den Baum "startet"
 
@@ -96,6 +97,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				for (i = 0; i < Tiefe; i++)
 					platzhalter = platzhalter + platzhalterVorlage; //Setzt die Leerzeichen für die Ausgabe auf die richtige Länge
 				System.out.println(platzhalter + tmpHead.entry.prio + " " + tmpHead.entry.data);
+				Debug=Debug+platzhalter + tmpHead.entry.prio + " " + tmpHead.entry.data+"\n"; //Extra Debug String für Vergleiche
 				//if(tmpHead.parent!=null && tmpHead.degree<tmpHead.sibling.degree) System.out.println("ALAAARM ");
 				if (tmpHead.child != null) dump(tmpHead.child, Tiefe + 1);
 
@@ -107,6 +109,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				for (i = 0; i < Tiefe; i++)
 					platzhalter = platzhalter + platzhalterVorlage; //Setzt die Leerzeichen für die Ausgabe auf die richtige Länge
 				System.out.println(platzhalter + tmpHead.entry.prio + " " + tmpHead.entry.data);
+				Debug=Debug+platzhalter + tmpHead.entry.prio + " " + tmpHead.entry.data+"\n"; //Extra Debug String für Vergleiche
 				//if(tmpHead.parent!=null && tmpHead.degree<tmpHead.sibling.degree) System.out.println("ALAAARM ");
 				if (tmpHead.child != null) dump(tmpHead.child, Tiefe + 1);
 				tmpHead = tmpHead.sibling;
