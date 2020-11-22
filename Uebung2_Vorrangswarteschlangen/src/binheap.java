@@ -1,16 +1,22 @@
+import java.util.Comparator;
+
 // Als Binomial-Halde implementierte Minimum-Vorrangwarteschlange
 // mit Prioritäten eines beliebigen Typs P (der die Schnittstelle
 // Comparable<P> oder Comparable<P'> für einen Obertyp P' von P
 // implementieren muss) und zusätzlichen Daten eines beliebigen Typs D.
 class BinHeap <P extends Comparable<? super P>, D> {
 	public int size=0;
-	private Entry head=null; //Das Element mit der niedrifsten Priorität das den Baum "startet"
+	private Entry head; //Das Element mit der niedrifsten Priorität das den Baum "startet"
 
-	public BinHeap(){} //Standartkonstruktor
+	public BinHeap(){head=null;} //Standartkonstruktor
 	private BinHeap(Entry e){ //Konstruktur für Baum mit einem Element
 		head=e;
 		size=1;
 	}
+	public int compareTo(P p){
+		return 0;
+	}
+
 
 	public Entry<P, D> insert(P p, D d) {
 		Entry<P, D> e= new Entry(p,d);
@@ -74,11 +80,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	} */
 
 	public void dump(){ //Läuft durch die Wurzelknoten
-		Node laufNode=head.node;
-		while (laufNode!=null ) { //Ist ist die node von head.node= null auch null?
-			dump(laufNode,0);
-			laufNode=laufNode.sibling;
-		}
+		for (Node laufNode= head.node; laufNode!=null;laufNode=laufNode.sibling) dump(laufNode,0);
 	}
 
 	private void dump(Node n,int Tiefe){ //Ruft Rekursiv die Children des übergebenen Wurzelknotens auf
