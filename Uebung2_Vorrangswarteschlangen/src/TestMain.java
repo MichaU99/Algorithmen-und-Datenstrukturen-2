@@ -23,10 +23,10 @@ public class TestMain {
         H.insert("j",9);
         H.insert("k",10);
         */
-        for (int i=0;i<=3;i++) H.insert(i,100);
+        for (int i=0;i<=100;i++) H.insert(i,100);
 
         H.dump();
-        System.out.println(H.contains(H.test(3,100)));
+        System.out.println(H.contains(H.test(100,100)));
 
         while (scanFile.hasNextLine()){
             filedata=filedata+ scanFile.nextLine()+"\n";

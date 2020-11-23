@@ -68,14 +68,20 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		Node tmpHead=n;
 
 		do {
-			if(tmpHead.entry.equals(zusuchen)) return tmpHead.entry;
-			if (tmpHead.child != null && (tmpHead.child.prio().toString().compareTo(zusuchen.prio.toString())<=0)) contains_rekursive(tmpHead.child,zusuchen);
+			if(tmpHead.entry.prio.equals(zusuchen.prio) && tmpHead.entry.data.equals(zusuchen.data)){
+				return tmpHead.entry;
+			} //sollte ein .equals sein
+			if (tmpHead.child != null && (tmpHead.child.prio().toString().compareTo(zusuchen.prio.toString())<=0)){
+				Entry <P,D> rueckgabe=contains_rekursive(tmpHead.child,zusuchen);
+				if (rueckgabe!=null) return rueckgabe;
+				else return null;
+			}
 			tmpHead = tmpHead.sibling;
 		} while (n != tmpHead && n.parent != null);//Sibling kann hier eigentlich nicht null sein!
 		return null;
 	}
 
-	private Entry<P, D> contains_with_element (Entry<P, D> e){
+	private Entry<P, D> contains_with_element (Entry<P, D> e){ //Theoretisch gleich zu
 		if(false){
 			return e;
 		}
