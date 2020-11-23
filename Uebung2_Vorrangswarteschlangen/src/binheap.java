@@ -64,6 +64,19 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		return false;
 	} //Wie in guter Laufzeit lösen??????
 
+	private Entry<P, D> contains_with_element (Entry<P, D> e){ //Theoretisch gleich zu
+		Entry rueckgabe=null,contains=null;
+		if(this.head==null) return null;
+		for (Node laufNode= head.node; laufNode!=null;laufNode=laufNode.sibling){
+			if(laufNode.prio().toString().compareTo(e.prio.toString())>0) continue;
+			else { //Durchsucht den Baum des Wurzelknotens rekursiv
+				rueckgabe=contains_rekursive(laufNode,e);
+				if(rueckgabe!=null) contains=rueckgabe;
+				if (rueckgabe!=null) return rueckgabe;
+			}
+		}
+		return null;
+	}
 	private Entry<P,D> contains_rekursive(Node<P,D> n,Entry<P,D> zusuchen){
 		Node tmpHead=n;
 
@@ -81,12 +94,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		return null;
 	}
 
-	private Entry<P, D> contains_with_element (Entry<P, D> e){ //Theoretisch gleich zu
-		if(false){
-			return e;
-		}
-		else return null;
-	}
+
 
 	public boolean remove (Entry<P, D> e){
 		Entry<P, D> zulöschen=contains_with_element(e); //Schaut ob das Element existiert
