@@ -1,0 +1,5 @@
+-Was ist der Unterschied zwischen Entry und Entry <P,D> in der Praxis des Programms?
+-Braucht contains im Worst Case nicht immer n-Aufrufe da alle Elemente gecheckt werden müssen?
+(Beispiel: Baum mit x-identischen Elementen und ein gesuchtes Element mit höherer Prio als die im Baum)
+-Wie funktioniert das .compareTo in unserem Fall (toString mit compareTo ist höchstwahrscheinlich falsch)
+-Wann sind zwei Einträge gleich? Bei gleicher Prio und Entry oder auch alle nodes (tendiere zu letzterem)
