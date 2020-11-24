@@ -5,8 +5,9 @@ import java.util.Scanner;
 public class DefaultTest {
 
     public static void main(String[] args) throws IOException {
+        int prio=0,data=0;
         BinHeap H =new BinHeap();
-        int alarm=0;
+        int alarm=0,textdatei=0;
         Random rand=new Random();
         String filedata="";
 
@@ -21,39 +22,38 @@ public class DefaultTest {
         for(int j=0;j<1;j++) { //male wie oft der Test durchgerführt wird
             H=new BinHeap();
             if (!fileout.exists()) fileout.createNewFile();
-            for (int i = 0; i < 1000; i++) {
-                int prio = rand.nextInt();
-                int data = rand.nextInt();
+            for (int i = 0; i < 5; i++) {
+                prio = rand.nextInt();
+                data = rand.nextInt();
                 write.write(prio + " " + data + " ");
                 H.insert(prio, data);
             }
+            write.flush();
             while (scanFile.hasNext()) {
-                int prio = scanFile.nextInt();
-                int data = scanFile.nextInt();
+
+                prio = scanFile.nextInt();
+                data = scanFile.nextInt();
 
                 if (!H.contains(H.test(prio, data))) {
-                    alarm++;
-                    System.out.println("ALAAARM prio= " + prio + " data= " + data + " "+ alarm);
-
+                    System.out.println("ALAAARM prio= " + prio + " data= " + data + " "+ alarm++);
                 }
                 //System.out.println("   |||   "+prio+" | "+data.toString()+"  |||  ");
             }
 
             //Vergleich mit
-
+            //System.out.println(textdatei);
             H.dump();System.out.println(H.size+" "+alarm);
             fileout.delete();
         }
 
 
 
-        while (scanFile.hasNextLine()){
+        /*while (scanFile.hasNextLine()){
             filedata=filedata+ scanFile.nextLine()+"\n";
-        }
+        }*/
         //System.out.println(H.Test);
-        System.out.println("Stimmt die Testfile mit dump() überein? "+filedata.equals(H.Debug));
-
-
+        //System.out.println("Stimmt die Testfile mit dump() überein? "+filedata.equals(H.Debug));
+        System.out.println(textdatei);
         write.close();
         fileout.delete();
 
