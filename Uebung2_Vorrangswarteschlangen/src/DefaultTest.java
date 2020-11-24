@@ -18,7 +18,7 @@ public class DefaultTest {
 
 
 
-        for(int j=0;j<1;j++) {
+        for(int j=0;j<1;j++) { //male wie oft der Test durchgerführt wird
             H=new BinHeap();
             if (!fileout.exists()) fileout.createNewFile();
             for (int i = 0; i < 1000; i++) {
@@ -39,7 +39,7 @@ public class DefaultTest {
                 //System.out.println("   |||   "+prio+" | "+data.toString()+"  |||  ");
             }
 
-
+            //Vergleich mit
 
             H.dump();System.out.println(H.size+" "+alarm);
             fileout.delete();
