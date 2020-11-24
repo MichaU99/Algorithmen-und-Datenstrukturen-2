@@ -36,7 +36,15 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		//Nullinsert abfrage?
 		Entry<P, D> e= new Entry(p,d);
 		e.node=new Node(e);
- 		this.head=mergeHeap(this,new BinHeap(e));
+
+		/*Entry<P,D> b = new Entry ("l",4); test nur kann weg
+		b.node = new Node (b);
+		int a;
+		a=e.prio().compareTo(b.prio());
+		//System.out.println("Vergleich von "+e.prio+" und "+b.prio+" :"+a);
+		//System.out.println("Vergleich von Konoten:"+e.node.entry.prio+" und "+b.prio+" : "+e.node.entry.prio.compareTo(b.prio));
+ 		*/
+		this.head=mergeHeap(this,new BinHeap(e));
  		size++;
 		return e;
 	}
@@ -49,11 +57,13 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	public Entry<P, D> minimum(){
 		Entry <P,D > min=head;
-		for(Node laufnode=min.node;laufnode.sibling!=null;laufnode=laufnode.sibling){
-			if(laufnode.entry.prio.toString().compareTo(min.prio.toString())<0) min=laufnode.entry; //Irgendwas stimmt mit Prios noch nicht
+
+		for( Node laufnode=min.node;laufnode.sibling!=null;laufnode=laufnode.sibling){
+			Entry<P, D> Versuch = laufnode.entry;
+			if( (Versuch.prio.compareTo(min.prio))< 0) min=Versuch; //(Irgendwas stimmt mit Prios noch nicht) habe gefixt // Doppelklammer benötigz?
 		}
 
-		return min;
+		return min; // wird nur die Referenz übergeben, richtig so?
 	}
 
 	public Entry<P, D> extractMin (){

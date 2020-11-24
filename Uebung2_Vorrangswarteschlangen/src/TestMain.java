@@ -11,7 +11,7 @@ public class TestMain {
         File file=new File("C:\\Users\\Veronika\\Documents\\GitHub\\Algorithmen-und-Datenstrukturen-2\\Uebung2_Vorrangswarteschlangen\\src\\Testfile");
         Scanner scanFile=new Scanner(file);
         //Scanner scanDebug=new Scanner()
-        /*H.insert("a",0);
+        H.insert("a",0);
         H.insert("b",1);
         H.insert("c",2);
         H.insert("d",3);
@@ -22,18 +22,21 @@ public class TestMain {
         H.insert("i",8);
         H.insert("j",9);
         H.insert("k",10);
-        */
-        for (int i=0;i<=100;i++) H.insert(i,100);
+
+
+        System.out.println("hier minimum "+ H.minimum() );
+
+        //for (int i=0;i<=100;i++) H.insert(i,100);
 
         H.dump();
-        System.out.println(H.contains(H.test(0,1000)));
+        //System.out.println(H.contains(H.test(0,1000)));
 
-        while (scanFile.hasNextLine()){
-            filedata=filedata+ scanFile.nextLine()+"\n";
-        }
+        //while (scanFile.hasNextLine()){
+        //    filedata=filedata+ scanFile.nextLine()+"\n";
+        //}
 
-        System.out.println(H.Test);
-        System.out.println("Stimmt die Testfile mit dump() überein? "+filedata.equals(H.Debug));
+        //System.out.println(H.Test);
+        //System.out.println("Stimmt die Testfile mit dump() überein? "+filedata.equals(H.Debug));
 
         //System.out.println(H.minimum().prio());
 
