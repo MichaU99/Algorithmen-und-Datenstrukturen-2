@@ -238,7 +238,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			int degree=H1.node.degree;
 			Entry<P,D> dom,sub;
 			if(degree!=H2.node.degree) return null;
-			if(H1.prio().toString().compareTo(H2.prio().toString())<0) { //compareTo muss im Typ P implementiert werden?
+			if(H1.prio.compareTo(H2.prio)<0) { //compareTo muss im Typ P implementiert werden?
 				dom = H1;
 				sub = H2;
 			}
