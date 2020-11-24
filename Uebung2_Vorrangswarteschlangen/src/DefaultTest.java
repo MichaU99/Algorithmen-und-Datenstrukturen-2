@@ -7,7 +7,7 @@ public class DefaultTest {
     public static void main(String[] args) throws IOException {
         int prio=0,data=0;
         BinHeap H =new BinHeap();
-        int alarm=0,textdatei=0;
+        int alarm=0;
         Random rand=new Random();
         String filedata="";
 
@@ -41,7 +41,7 @@ public class DefaultTest {
             }
 
             //Vergleich mit
-            //System.out.println(textdatei);
+
             H.dump();System.out.println(H.size+" "+alarm);
             fileout.delete();
         }
