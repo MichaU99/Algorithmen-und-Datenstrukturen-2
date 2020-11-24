@@ -4,9 +4,17 @@ import java.util.Comparator;
 // mit Prioritäten eines beliebigen Typs P (der die Schnittstelle
 // Comparable<P> oder Comparable<P'> für einen Obertyp P' von P
 // implementieren muss) und zusätzlichen Daten eines beliebigen Typs D.
+class P implements Comparable<P> {
+	private P test;
 
-//Es ist möglich das an alle Entry ein <P,D> ran muss
-//.equals muss vermutlich für Entrys implementiert werden
+	public P ( P prio){
+		test = prio;
+	}
+	@Override
+	public int compareTo(P that) {
+		return test.compareTo(that.test);
+	}
+}
 class BinHeap <P extends Comparable<? super P>, D> {
 	static int Test; //Kann später entfert werden soll nur zum Test der Aufrufzahl von Methoden dienen
 	String Debug="";
@@ -95,8 +103,6 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		} while (n != tmpHead && n.parent != null);//Sibling kann hier eigentlich nicht null sein!
 		return null;
 	}
-
-
 
 	public boolean remove (Entry<P, D> e){
 		Entry<P, D> zulöschen=contains_with_element(e); //Schaut ob das Element existiert
@@ -253,7 +259,26 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			return new BinHeap(dom);
 		}
 
-	public void changePrio(Entry<P, D> entry, P s) {
+	public void changePrio(Entry<P, D> entry, P s) { // muss noch boolena werden
+		Entry tam;
+		Node parentNode,childnode;
+
+		if( s.toString().compareTo(entry.prio().toString())<=0){
+			entry.prio = s;
+			while( entry.prio().toString().compareTo(entry.node.parent.prio().toString())<0){
+				childnode = entry.node;
+				parentNode=entry.node.parent;
+
+				entry.node.parent.entry=entry;
+				entry.node.parent.entry.node=entry.node;
+
+				parentNode.entry=entry;
+				parentNode.entry.node=parentNode;
+
+				//entry=childnode.entry;
+				//entry.node= entry.node.parent;
+			}
+		}
 	}
 
 
