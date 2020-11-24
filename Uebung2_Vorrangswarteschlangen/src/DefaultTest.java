@@ -3,8 +3,10 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class DefaultTest {
+
     public static void main(String[] args) throws IOException {
         BinHeap H =new BinHeap();
+        int alarm=0;
         Random rand=new Random();
         String filedata="";
 
@@ -14,30 +16,41 @@ public class DefaultTest {
         BufferedWriter write=new BufferedWriter(new FileWriter(fileout.getAbsoluteFile()));
 
 
-        if(!fileout.exists()) fileout.createNewFile();
 
-        for (int i=0;i<=10;i++){
-            Comparable prio= rand.nextInt();
-            Comparable data= rand.nextInt();
-            write.write( prio.toString()+" "+ data.toString()+" ");
-            H.insert(prio,data);
+
+        for(int j=0;j<1;j++) {
+            H=new BinHeap();
+            if (!fileout.exists()) fileout.createNewFile();
+            for (int i = 0; i < 1000; i++) {
+                Comparable prio = rand.nextInt();
+                Comparable data = rand.nextInt();
+                write.write(prio.toString() + " " + data.toString() + " ");
+                H.insert(prio, data);
+            }
+            while (scanFile.hasNext()) {
+                Comparable prio = scanFile.next();
+                Comparable data = scanFile.next();
+
+                if (!H.contains(H.test(prio, data))) {
+                    alarm++;
+                    System.out.println("ALAAARM prio= " + prio + " data= " + data + " "+ alarm);
+
+                }
+                //System.out.println("   |||   "+prio+" | "+data.toString()+"  |||  ");
+            }
+
+
+
+            H.dump();System.out.println(H.size+" "+alarm);
+            fileout.delete();
         }
 
-        while(scanFile.hasNext()){
-            Comparable prio= scanFile.next();
-            Comparable data=scanFile.next();
 
-            if(!H.contains(H.test(prio,data))) System.out.println("ALAAARM prio= "+prio+" data= "+data+" ");
-        //System.out.println("   |||   "+prio+" | "+data.toString()+"  |||  ");
-        }
-
-        H.dump();
-        System.out.println(H.contains(H.test(0,1000)));
 
         while (scanFile.hasNextLine()){
             filedata=filedata+ scanFile.nextLine()+"\n";
         }
-        System.out.println(H.Test);
+        //System.out.println(H.Test);
         System.out.println("Stimmt die Testfile mit dump() überein? "+filedata.equals(H.Debug));
 
 
