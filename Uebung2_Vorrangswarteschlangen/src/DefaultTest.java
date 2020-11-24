@@ -10,8 +10,8 @@ public class DefaultTest {
         Random rand=new Random();
         String filedata="";
 
-        File file=new File("C:\\Users\\Michael Ulrich\\IdeaProjects\\Algorithmen-und-Datenstrukturen-2\\Uebung2_Vorrangswarteschlangen\\src\\Testfile");
-        File fileout=new File("C:\\Users\\Michael Ulrich\\IdeaProjects\\Algorithmen-und-Datenstrukturen-2\\Uebung2_Vorrangswarteschlangen\\src\\DefaultTestFile");
+        File file=new File("C:\\Users\\Veronika\\Documents\\GitHub\\Algorithmen-und-Datenstrukturen-2\\Uebung2_Vorrangswarteschlangen\\src\\Testfile");
+        File fileout=new File("C:\\Users\\Veronika\\Documents\\GitHub\\Algorithmen-und-Datenstrukturen-2\\Uebung2_Vorrangswarteschlangen\\src\\DefaultTestFile");
         Scanner scanFile=new Scanner(fileout);
         BufferedWriter write=new BufferedWriter(new FileWriter(fileout.getAbsoluteFile()));
 
@@ -21,11 +21,12 @@ public class DefaultTest {
         for(int j=0;j<1;j++) { //male wie oft der Test durchgerführt wird
             H=new BinHeap();
             if (!fileout.exists()) fileout.createNewFile();
-            for (int i = 0; i < 1000; i++) {
+            for (int i = 0; i < 100; i++) {
                 int prio = rand.nextInt();
                 int data = rand.nextInt();
                 write.write(prio + " " + data + " ");
                 H.insert(prio, data);
+
             }
             while (scanFile.hasNext()) {
                 int prio = scanFile.nextInt();
