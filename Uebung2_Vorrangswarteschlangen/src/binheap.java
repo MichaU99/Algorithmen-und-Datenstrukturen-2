@@ -19,32 +19,24 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	static int Test; //Kann später entfert werden soll nur zum Test der Aufrufzahl von Methoden dienen
 	String Debug="";
 	public int size=0;
-	private Entry head; //Das Element mit der niedrifsten Priorität das den Baum "startet"
+	private Entry <P,D>head; //Das Element mit der niedrifsten Priorität das den Baum "startet"
 
 	public BinHeap(){head=null;} //Standartkonstruktor
-	private BinHeap(Entry e){ //Konstruktur für Baum mit einem Element
+	private BinHeap(Entry <P,D> e){ //Konstruktur für Baum mit einem Element
 		head=e;
 		size=1;
 	}
 
 
 	public Entry<P,D> test(P p, D d){
-		return new Entry(p,d);
+		return new Entry<>(p,d);
 	} //Kann entfert werden, dient nur zum testen fehlerhafter Entries
 
 	public Entry<P, D> insert(P p, D d) {
 		//Nullinsert abfrage?
-		Entry<P, D> e= new Entry(p,d);
+		Entry e= new Entry<P,D>(p,d);
 		e.node=new Node(e);
-
-		/*Entry<P,D> b = new Entry ("l",4); test nur kann weg
-		b.node = new Node (b);
-		int a;
-		a=e.prio().compareTo(b.prio());
-		//System.out.println("Vergleich von "+e.prio+" und "+b.prio+" :"+a);
-		//System.out.println("Vergleich von Konoten:"+e.node.entry.prio+" und "+b.prio+" : "+e.node.entry.prio.compareTo(b.prio));
- 		*/
-		this.head=mergeHeap(this,new BinHeap(e));
+ 		this.head=mergeHeap(this,new BinHeap<>(e));
  		size++;
 		return e;
 	}
@@ -58,7 +50,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	public Entry<P, D> minimum(){
 		Entry <P,D > min=head;
 
-		for( Node laufnode=min.node;laufnode.sibling!=null;laufnode=laufnode.sibling){
+		for( Node<P,D> laufnode=min.node;laufnode.sibling!=null;laufnode=laufnode.sibling){
 			Entry<P, D> Versuch = laufnode.entry;
 			if(Versuch.prio.compareTo(min.prio)< 0) min=Versuch; //(Irgendwas stimmt mit Prios noch nicht) habe gefixt // Doppelklammer benötigz?
 		}
@@ -99,7 +91,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		return null;
 	}
 	private Entry<P,D> contains_rekursive(Node<P,D> n,Entry<P,D> zusuchen){
-		Node tmpHead=n;
+		Node<P,D> tmpHead=n;
 		Test++;
 		do {
 			if(tmpHead.entry.prio.equals(zusuchen.prio) && tmpHead.entry.data.equals(zusuchen.data)){ return tmpHead.entry;			} //sollte ein .equals sein
@@ -213,7 +205,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				if(buildH.head==null) buildH.head=zwischensp[pos1].head;
 
 				else { //Sehr fragwürdige umsetzung, laufnode sollte eigentlich eine Kopie von buildH.head sein ist aber eine Referenz weshalb workaround gemacht wurden pls fix
-					Node laufnode=buildH.head.node;
+					Node<P,D> laufnode=buildH.head.node;
 					while (laufnode.sibling != null) laufnode = laufnode.sibling; //Fehler
 					laufnode.sibling = zwischensp[pos1].head.node;
 					}
@@ -242,10 +234,10 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		return buildH.head;
 	}
 
-		public BinHeap mergeEqTree(Entry H1, Entry H2){ //Hilfsoperation zur Vereinigung zweier Bäume des gleichen Grads
+		public BinHeap mergeEqTree(Entry<P,D> H1, Entry<P,D> H2){ //Hilfsoperation zur Vereinigung zweier Bäume des gleichen Grads
 
 			int degree=H1.node.degree;
-			Entry dom,sub;
+			Entry<P,D> dom,sub;
 			if(degree!=H2.node.degree) return null;
 			if(H1.prio().toString().compareTo(H2.prio().toString())<0) { //compareTo muss im Typ P implementiert werden?
 				dom = H1;
@@ -264,11 +256,11 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				sub.node.sibling=dom.node.child.sibling;
 				dom.node.child=dom.node.child.sibling=sub.node;
 			}
-			return new BinHeap(dom);
+			return new BinHeap<P,D>(dom);
 		}
 
 	public void changePrio(Entry<P, D> entry, P s) { // muss noch boolena werden
-		Entry tam;
+		Entry<P,D> tam;
 		Node parentNode,childnode;
 
 		if( s.toString().compareTo(entry.prio().toString())<=0){
