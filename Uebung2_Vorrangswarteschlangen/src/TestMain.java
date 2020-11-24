@@ -26,13 +26,13 @@ public class TestMain {
         for (int i=0;i<=100;i++) H.insert(i,100);
 
         H.dump();
-        System.out.println(H.contains(H.test(100,100)));
+        System.out.println(H.contains(H.test(0,1000)));
 
         while (scanFile.hasNextLine()){
             filedata=filedata+ scanFile.nextLine()+"\n";
         }
 
-        System.out.println();
+        System.out.println(H.Test);
         System.out.println("Stimmt die Testfile mit dump() überein? "+filedata.equals(H.Debug));
 
         //System.out.println(H.minimum().prio());

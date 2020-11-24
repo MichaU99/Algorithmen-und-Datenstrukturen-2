@@ -8,6 +8,7 @@ import java.util.Comparator;
 //Es ist möglich das an alle Entry ein <P,D> ran muss
 //.equals muss vermutlich für Entrys implementiert werden
 class BinHeap <P extends Comparable<? super P>, D> {
+	static int Test; //Kann später entfert werden soll nur zum Test der Aufrufzahl von Methoden dienen
 	String Debug="";
 	public int size=0;
 	private Entry head; //Das Element mit der niedrifsten Priorität das den Baum "startet"
@@ -21,7 +22,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	public Entry<P,D> test(P p, D d){
 		return new Entry(p,d);
-	}
+	} //Kann entfert werden, dient nur zum testen fehlerhafter Entries
 
 	public Entry<P, D> insert(P p, D d) {
 		//Nullinsert abfrage?
@@ -55,10 +56,10 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	public boolean contains (Entry<P, D> e){ //Iteriert über alle Wurzelknoten
 		if(this.head==null) return false;
 		for (Node laufNode= head.node; laufNode!=null;laufNode=laufNode.sibling){
+			Test++;
 			if(laufNode.prio().toString().compareTo(e.prio.toString())>0) continue;
 			else { //Durchsucht den Baum des Wurzelknotens rekursiv
 				if (contains_rekursive(laufNode,e)!=null) return true;
-				else return false;
 			}
 		}
 		return false;
@@ -66,6 +67,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	private Entry<P, D> contains_with_element (Entry<P, D> e){ //Theoretisch gleich zu
 		Entry rueckgabe=null,contains=null;
+		Test++;
 		if(this.head==null) return null;
 		for (Node laufNode= head.node; laufNode!=null;laufNode=laufNode.sibling){
 			if(laufNode.prio().toString().compareTo(e.prio.toString())>0) continue;
@@ -79,7 +81,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	}
 	private Entry<P,D> contains_rekursive(Node<P,D> n,Entry<P,D> zusuchen){
 		Node tmpHead=n;
-
+		Test++;
 		do {
 			if(tmpHead.entry.prio.equals(zusuchen.prio) && tmpHead.entry.data.equals(zusuchen.data)){
 				return tmpHead.entry;

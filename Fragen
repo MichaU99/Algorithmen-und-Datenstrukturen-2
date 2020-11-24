@@ -2,4 +2,15 @@
 -Braucht contains im Worst Case nicht immer n-Aufrufe da alle Elemente gecheckt werden müssen?
 (Beispiel: Baum mit x-identischen Elementen und ein gesuchtes Element mit höherer Prio als die im Baum)
 -Wie funktioniert das .compareTo in unserem Fall (toString mit compareTo ist höchstwahrscheinlich falsch)
--Wann sind zwei Einträge gleich? Bei gleicher Prio und Entry oder auch alle nodes (tendiere zu letzterem)
+-Wann sind zwei Einträge gleich (im Sinne von Contains)? Bei gleicher Prio und Entry oder auch alle nodes (tendiere zu letzterem)
+-Soll null bei Insert abgefangen werden und wenn ja wie?
+
+
+
+
+-------------------------
+Mögliche Bugs:
+für:
+for (int i=0;i<=100;i++) H.insert(i,100);
+H.contains(H.test(1000,100))
+Werden die Children des Baums nicht überprüft möglicher Fehler im compareTo Statement in contains(Entry e)
