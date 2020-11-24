@@ -29,6 +29,7 @@ public class TestMain {
             //filedata=filedata+ scanFile.nextLine()+"\n";
             H.insert(scanFile.nextInt(),scanFile.nextInt());
         }
+        System.out.println(H.minimum());
         H.dump();
         Scanner scan2nd=new Scanner(file);
         while(scan2nd.hasNext()){

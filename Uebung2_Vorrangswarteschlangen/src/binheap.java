@@ -51,26 +51,24 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		Entry <P,D > min=head;
 
 		for( Node<P,D> laufnode=min.node;laufnode.sibling!=null;laufnode=laufnode.sibling){
-			Entry<P, D> Versuch = laufnode.entry;
-			if(Versuch.prio.compareTo(min.prio)< 0) min=Versuch; //(Irgendwas stimmt mit Prios noch nicht) habe gefixt // Doppelklammer benötigz?
+			if(laufnode.entry.prio.compareTo(min.prio)< 0) min= laufnode.entry; //(Irgendwas stimmt mit Prios noch nicht) habe gefixt // Doppelklammer benötigz?
 		}
 
 		return min; // wird nur die Referenz übergeben, richtig so?
 	}
 
 	public Entry<P, D> extractMin (){
-		Entry E =minimum();
+		Entry <P,D> E =minimum();
 		remove(minimum());
 		return E;
 	}
 	public boolean contains (Entry<P, D> e){ //Iteriert über alle Wurzelknoten
 		if(this.head==null) return false;
-		for (Node laufNode= head.node; laufNode!=null;laufNode=laufNode.sibling){
+		for (Node <P,D> laufNode= head.node; laufNode!=null;laufNode=laufNode.sibling){
 			Test++;
-			Entry<P,D> Versuch = laufNode.entry;
-			if(Versuch.prio.compareTo(e.prio) > 0) continue;
+			if(laufNode.entry.prio.compareTo(e.prio) > 0) continue;
 			else { //Durchsucht den Baum des Wurzelknotens rekursiv
-				if (contains_rekursive(Versuch.node,e)!=null) return true;
+				if (contains_rekursive(laufNode,e)!=null) return true;
 			}
 		}
 		return false;
