@@ -95,7 +95,8 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		Test++;
 		do {
 			if(tmpHead.entry.prio.equals(zusuchen.prio) && tmpHead.entry.data.equals(zusuchen.data)){ return tmpHead.entry;			} //sollte ein .equals sein
-			if (tmpHead.child != null && (tmpHead.child.prio().toString().compareTo(zusuchen.prio.toString())<=0)){            //compare Befehl stimmt nicht
+
+			if (tmpHead.child != null ){            //compare Befehl stimmt nicht
 				Entry <P,D> rueckgabe=contains_rekursive(tmpHead.child,zusuchen);
 				if (rueckgabe!=null) return rueckgabe;
 			}

@@ -8,7 +8,7 @@ public class TestMain {
         BinHeap H =new BinHeap();
         String filedata="";
 
-        File file=new File("C:\\Users\\Michael Ulrich\\IdeaProjects\\Algorithmen-und-Datenstrukturen-2\\Uebung2_Vorrangswarteschlangen\\src\\Testfile");
+        File file=new File("C:\\Users\\Veronika\\Documents\\GitHub\\Algorithmen-und-Datenstrukturen-2\\Uebung2_Vorrangswarteschlangen\\src\\Testfile");
         Scanner scanFile=new Scanner(file);
         //Scanner scanDebug=new Scanner()
         /*H.insert("a",0);
@@ -42,7 +42,7 @@ public class TestMain {
 
 
         //System.out.println(H.Test);
-        System.out.println("Stimmt die Testfile mit dump() überein? "+filedata.equals(H.Debug));
+       // System.out.println("Stimmt die Testfile mit dump() überein? "+filedata.equals(H.Debug));
 
         //System.out.println(H.minimum().prio());
 
