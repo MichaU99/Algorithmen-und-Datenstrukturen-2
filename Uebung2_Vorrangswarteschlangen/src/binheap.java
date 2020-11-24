@@ -51,9 +51,13 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		Entry <P,D > min=head;
 		for(Node<P,D> laufnode=min.node;laufnode.sibling!=null;laufnode=laufnode.sibling){
 			if(laufnode.entry.prio.toString().compareTo(min.prio.toString())<0) min=laufnode.entry; //Irgendwas stimmt mit Prios noch nicht
-		}
 
-		return min;
+		for( Node laufnode=min.node;laufnode.sibling!=null;laufnode=laufnode.sibling){
+			Entry<P, D> Versuch = laufnode.entry;
+			if( (Versuch.prio.compareTo(min.prio))< 0) min=Versuch; //(Irgendwas stimmt mit Prios noch nicht) habe gefixt // Doppelklammer benötigz?
+		}}
+
+		return min; // wird nur die Referenz übergeben, richtig so?
 	}
 
 	public Entry<P, D> extractMin (){
