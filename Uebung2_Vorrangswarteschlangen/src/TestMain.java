@@ -24,7 +24,7 @@ public class TestMain {
         H.insert("k",10);
 
 
-        System.out.println("hier minimum "+ H.minimum() );
+        System.out.println("hier minimum "+ H.minimum().prio() );
 
         //for (int i=0;i<=100;i++) H.insert(i,100);
 
