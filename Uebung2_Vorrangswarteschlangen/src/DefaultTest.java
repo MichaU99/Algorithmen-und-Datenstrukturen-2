@@ -53,7 +53,6 @@ public class DefaultTest {
         }*/
         //System.out.println(H.Test);
         //System.out.println("Stimmt die Testfile mit dump() überein? "+filedata.equals(H.Debug));
-        System.out.println(textdatei);
         write.close();
         fileout.delete();
 

@@ -77,10 +77,10 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		Entry rueckgabe=null,contains=null;
 		Test++;
 		if(this.head==null) return null;
-		for (Node laufNode= head.node; laufNode!=null;laufNode=laufNode.sibling){
-			if(laufNode.prio().toString().compareTo(e.prio.toString())>0) continue;
+		for (Node laufNode2= head.node; laufNode2!=null;laufNode2=laufNode2.sibling){
+			if(laufNode2.prio().toString().compareTo(e.prio.toString())>0) continue;
 			else { //Durchsucht den Baum des Wurzelknotens rekursiv
-				rueckgabe=contains_rekursive(laufNode,e);
+				rueckgabe=contains_rekursive(laufNode2,e);
 				if(rueckgabe!=null) contains=rueckgabe;
 				if (rueckgabe!=null) return rueckgabe;
 			}
@@ -91,13 +91,10 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		Node tmpHead=n;
 		Test++;
 		do {
-			if(tmpHead.entry.prio.equals(zusuchen.prio) && tmpHead.entry.data.equals(zusuchen.data)){
-				return tmpHead.entry;
-			} //sollte ein .equals sein
-			if (tmpHead.child != null && (tmpHead.child.prio().toString().compareTo(zusuchen.prio.toString())<=0)){
+			if(tmpHead.entry.prio.equals(zusuchen.prio) && tmpHead.entry.data.equals(zusuchen.data)){ return tmpHead.entry;			} //sollte ein .equals sein
+			if (tmpHead.child != null && (tmpHead.child.prio().toString().compareTo(zusuchen.prio.toString())<=0)){            //compare Befehl stimmt nicht
 				Entry <P,D> rueckgabe=contains_rekursive(tmpHead.child,zusuchen);
 				if (rueckgabe!=null) return rueckgabe;
-				else return null;
 			}
 			tmpHead = tmpHead.sibling;
 		} while (n != tmpHead && n.parent != null);//Sibling kann hier eigentlich nicht null sein!
