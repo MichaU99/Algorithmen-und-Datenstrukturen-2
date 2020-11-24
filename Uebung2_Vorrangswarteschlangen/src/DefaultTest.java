@@ -22,14 +22,14 @@ public class DefaultTest {
             H=new BinHeap();
             if (!fileout.exists()) fileout.createNewFile();
             for (int i = 0; i < 1000; i++) {
-                Comparable prio = rand.nextInt();
-                Comparable data = rand.nextInt();
-                write.write(prio.toString() + " " + data.toString() + " ");
+                int prio = rand.nextInt();
+                int data = rand.nextInt();
+                write.write(prio + " " + data + " ");
                 H.insert(prio, data);
             }
             while (scanFile.hasNext()) {
-                Comparable prio = scanFile.next();
-                Comparable data = scanFile.next();
+                int prio = scanFile.nextInt();
+                int data = scanFile.nextInt();
 
                 if (!H.contains(H.test(prio, data))) {
                     alarm++;
