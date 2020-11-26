@@ -32,12 +32,21 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		return new Entry<>(p,d);
 	} //Kann entfert werden, dient nur zum testen fehlerhafter Entries
 
+	Entry a= new Entry(55555,5);
+	Entry b= new Entry(5,5);
+
 	public Entry<P, D> insert(P p, D d) {
 		//Nullinsert abfrage?
 		Entry e= new Entry<P,D>(p,d);
 		e.node=new Node(e);
  		this.head=mergeHeap(this,new BinHeap<>(e));
  		size++;
+
+
+		System.out.println("vor change: "+ a.prio);
+		changePrio(a, (P) b.prio);
+		System.out.println("nach change: "+ e.prio);
+
 		return e;
 	}
 
@@ -107,6 +116,9 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		Entry<P, D> zulöschen=contains_with_element(e); //Schaut ob das Element existiert
 		if(zulöschen==null) {
 			return false;
+		}
+		else{
+			changePrio(e,)
 		}
 		//Warum sollte ich hier den Aufwand betreiben die Prio zu ändern anstatt es so zu machen
 		size--;
@@ -258,26 +270,41 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			return new BinHeap<P,D>(dom);
 		}
 
-	public void changePrio(Entry<P, D> entry, P s) { // muss noch boolena werden
+	public boolean changePrio(Entry<P, D> entry, P s) { // muss noch boolena werden
 		Entry<P,D> tam;
 		Node parentNode,childnode;
 
-		if( s.toString().compareTo(entry.prio().toString())<=0){
+		if( s.compareTo(entry.prio) <=0){
 			entry.prio = s;
-			while( entry.prio().toString().compareTo(entry.node.parent.prio().toString())<0){
+			while( entry.prio.compareTo(entry.node.parent.entry.prio)<0){
 				childnode = entry.node;
 				parentNode=entry.node.parent;
 
 				entry.node.parent.entry=entry;
 				entry.node.parent.entry.node=entry.node;
 
-				parentNode.entry=entry;
-				parentNode.entry.node=parentNode;
+				entry = parentNode.entry;
+				entry.node=parentNode;
 
-				//entry=childnode.entry;
-				//entry.node= entry.node.parent;
+
 			}
+			return true;
 		}
+		if ( s.compareTo(entry.prio) > 1){
+			if(entry.node.child == null) {
+				entry.prio=s;
+				return true;
+			}
+			else{
+				Entry test = entry;
+				remove(entry);
+				D b = (D) test.data;
+				insert(s,b);
+				size--;
+			}
+			return true;
+		}
+		return false;
 	}
 
 
