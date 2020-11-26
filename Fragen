@@ -5,7 +5,7 @@
 -Wann sind zwei Einträge gleich (im Sinne von Contains)? Bei gleicher Prio und Entry oder auch alle nodes (tendiere zu letzterem)
 -Soll null bei Insert abgefangen werden und wenn ja wie?
 -Generics im Programm, wann klammern, wann nicht
-
+-Muss remove prüfen ob das übergebene Element im baum existiert
 
 
 -------------------------

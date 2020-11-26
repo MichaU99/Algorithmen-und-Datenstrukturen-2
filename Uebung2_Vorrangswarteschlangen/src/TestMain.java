@@ -8,7 +8,7 @@ public class TestMain {
         BinHeap H =new BinHeap();
         String filedata="";
 
-        File file=new File("C:\\Users\\Veronika\\Documents\\GitHub\\Algorithmen-und-Datenstrukturen-2\\Uebung2_Vorrangswarteschlangen\\src\\Testfile");
+        File file=new File("C:\\Users\\Michael Ulrich\\IdeaProjects\\Algorithmen-und-Datenstrukturen-2\\Uebung2_Vorrangswarteschlangen\\src\\Testfile");
         Scanner scanFile=new Scanner(file);
         //Scanner scanDebug=new Scanner()
         /*H.insert("a",0);
@@ -24,20 +24,32 @@ public class TestMain {
         H.insert("k",10);
         */
         //for (int i=0;i<=100;i++) H.insert(i,100);
-
+        BinHeap.Entry e=null;
         while (scanFile.hasNextLine()){
+
+            int prio=scanFile.nextInt();
+            int data=scanFile.nextInt();
             //filedata=filedata+ scanFile.nextLine()+"\n";
-            H.insert(scanFile.nextInt(),scanFile.nextInt());
+            if(prio==-633449019){
+                e=H.insert(prio,data);
+            }
+            else H.insert(prio,data);
         }
 
         H.dump();
         Scanner scan2nd=new Scanner(file);
-        while(scan2nd.hasNext()){
-            int prio=scan2nd.nextInt();
-            int data=scan2nd.nextInt();
-            if(!H.contains(H.test(prio,data))){
-                System.out.println("Fehler Prio: "+prio+" Data: "+data);
-            };
+        System.out.println(H.remove(e));
+        if(H.contains(H.test(-633449019,-330117133))){
+            System.out.println("Fehler");
+            H.dump();
+            while(scan2nd.hasNext()) {
+                int prio = scan2nd.nextInt();
+                int data = scan2nd.nextInt();
+                if (!H.contains(H.test(prio, data))) {
+                    System.out.println("Fehler Prio: " + prio + " Data: " + data);
+                }
+            }
+
         }
 
 
