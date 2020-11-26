@@ -32,8 +32,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		return new Entry<>(p,d);
 	} //Kann entfert werden, dient nur zum testen fehlerhafter Entries
 
-	Entry a= new Entry(55555,5);
-	Entry b= new Entry(5,5);
+
 
 	public Entry<P, D> insert(P p, D d) {
 		//Nullinsert abfrage?
@@ -42,10 +41,12 @@ class BinHeap <P extends Comparable<? super P>, D> {
  		this.head=mergeHeap(this,new BinHeap<>(e));
  		size++;
 
+		Entry a= new Entry(55555,5);
+		a.node=new Node(a);
 
-		System.out.println("vor change: "+ a.prio);
-		changePrio(a, (P) b.prio);
-		System.out.println("nach change: "+ e.prio);
+		System.out.println("davor a: "+a.prio);
+ 		changePrio(a, (P) e.prio());
+		System.out.println("a: "+a.prio);
 
 		return e;
 	}
@@ -117,10 +118,23 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		if(zulöschen==null) {
 			return false;
 		}
-		else{
-			changePrio(e,)
+		Node parentN;
+
+		while( e.node.parent != null) {
+
+			parentN = e.node.parent;
+
+			e.node.parent.entry = e;
+			e.node.parent.entry.node = e.node;
+
+			e = parentN.entry;
+			e.node = parentN;
 		}
-		//Warum sollte ich hier den Aufwand betreiben die Prio zu ändern anstatt es so zu machen
+		changePrio(e,e.node.child.prio());
+		extractMin();
+
+
+			//Warum sollte ich hier den Aufwand betreiben die Prio zu ändern anstatt es so zu machen
 		size--;
 		return true;
 	}
@@ -276,7 +290,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 		if( s.compareTo(entry.prio) <=0){
 			entry.prio = s;
-			while( entry.prio.compareTo(entry.node.parent.entry.prio)<0){
+			while( entry.node.parent != null && entry.prio.compareTo(entry.node.parent.entry.prio)<0){
 				childnode = entry.node;
 				parentNode=entry.node.parent;
 
