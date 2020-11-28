@@ -34,20 +34,19 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 
 
-	public Entry<P, D> insert(P p, D d) {
+	public Entry<P,D> insert(P p, D d) {
 		//Nullinsert abfrage?
-		Entry e= new Entry<P,D>(p,d);
+		Entry<P,D> e= new Entry(p,d);
 		e.node=new Node(e);
- 		this.head=mergeHeap(this,new BinHeap<>(e));
- 		size++;
-
-		Entry a= new Entry(55555,5);
-		a.node=new Node(a);
-
-		System.out.println("davor a: "+a.prio);
+		/*System.out.println("davor a: "+a.prio);
  		changePrio(a, (P) e.prio());
 		System.out.println("a: "+a.prio);
-
+*/
+		return insert(e);
+	}
+	private Entry<P,D> insert(Entry<P,D> e){
+		this.head=mergeHeap(this,new BinHeap<>(e));
+		size++;
 		return e;
 	}
 
@@ -114,10 +113,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	}
 
 	public boolean remove (Entry<P, D> e){
-		Entry<P, D> zulöschen=contains_with_element(e); //Schaut ob das Element existiert
-		if(zulöschen==null) {
-			return false;
-		}
+		int tmpsize=size;
 		Node parentN;
 
 		while( e.node.parent != null) {
@@ -130,12 +126,26 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			e = parentN.entry;
 			e.node = parentN;
 		}
-		changePrio(e,e.node.child.prio());
-		extractMin();
+
+		for(Node <P,D> laufnode=this.head.node;laufnode!=null;laufnode=laufnode.sibling) {
+			if (laufnode.sibling.equals(e.node)) {
+				laufnode.sibling = e.node.sibling;
+				break;
+			}
+		}
+		Node<P,D> laufnode=e.node.child;
+		do { //unsicher ob diese Schleife notwendig ist oder ob insert das erfüllt
+			laufnode.parent=null;
+			laufnode=laufnode.child;
+		}while(laufnode!=e.node.child);
+
+		this.head=mergeHeap(this,new BinHeap<P,D>(e.node.child.entry));
+		//changePrio(e,e.node.child.prio()); Sollte Praktisch damit umgesetzt werden, keine Ahnung wie
+		//extractMin();
 
 
 			//Warum sollte ich hier den Aufwand betreiben die Prio zu ändern anstatt es so zu machen
-		size--;
+		size=tmpsize-1;
 		return true;
 	}
 
@@ -145,13 +155,13 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	public void dump(){ //Läuft durch die Wurzelknoten
 		if(this.head==null) return;
-		for (Node laufNode= head.node; laufNode!=null;laufNode=laufNode.sibling) dump(laufNode,0);
+		for (Node<P,D> laufNode= head.node; laufNode!=null;laufNode=laufNode.sibling) dump(laufNode,0);
 	}
 
-	private void dump(Node n,int Tiefe){ //Ruft Rekursiv die Children des übergebenen Wurzelknotens auf
+	private void dump(Node<P,D> n,int Tiefe){ //Ruft Rekursiv die Children des übergebenen Wurzelknotens auf
 		String platzhalterVorlage="  "; //Funktioniert das????
 		String platzhalter;
-		Node tmpHead=n;
+		Node<P,D> tmpHead=n;
 		int i=-1;
 		if(tmpHead.parent!=null) { //Umständlich implementiert wegen unterschiedlichen ausgaben für Wurzeln und children
 			while (n != tmpHead || i == -1) {
@@ -181,13 +191,13 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 	}
 
-	public Entry mergeHeap(BinHeap H1,BinHeap H2){
+	public Entry<P,D> mergeHeap(BinHeap<P,D> H1,BinHeap<P,D> H2){
 		int i,k=0;
 		int pos1=0,pos2=0;
 		int filling_zwischensp=0; //Beschreibt wie viele Elemente in zwischensp enthalten sind
-		Entry tmp;
-		BinHeap buildH=new BinHeap();
-		BinHeap[] zwischensp=new BinHeap[3]; //Zwischenspeicher für bis zu drei Bäume
+		Entry<P,D> tmp;
+		BinHeap<P,D> buildH=new BinHeap<>();
+		BinHeap<P,D>[] zwischensp=new BinHeap[3]; //Zwischenspeicher für bis zu drei Bäume
 
 		while((H1.head!=null)||(H2.head!=null)||(filling_zwischensp!=0)){
 			if(H1.head!=null && H1.head.node.degree==k) { //Codedopplung mit dem nächsten if-Statement, vielleicht Hilfsmethode?
@@ -223,8 +233,10 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				if(filling_zwischensp==3) pos1=0;
 				else{
 					for(i=0;i<=2;i++){
-						if(zwischensp[i]!=null) pos1=i;
-						break;
+						if(zwischensp[i]!=null) {
+							pos1 = i;
+							break;
+						}
 					}
 				}
 				if(buildH.head==null) buildH.head=zwischensp[pos1].head;
@@ -281,7 +293,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				sub.node.sibling=dom.node.child.sibling;
 				dom.node.child=dom.node.child.sibling=sub.node;
 			}
-			return new BinHeap<P,D>(dom);
+			return new BinHeap<>(dom);
 		}
 
 	public boolean changePrio(Entry<P, D> entry, P s) { // muss noch boolena werden
