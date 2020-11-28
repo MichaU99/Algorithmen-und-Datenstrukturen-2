@@ -27,9 +27,11 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		size=1;
 	}
 
-
+	//Testmethode
 	public Entry<P,D> test(P p, D d){
-		return new Entry<>(p,d);
+		Entry e=new Entry<>(p,d);
+		Node n= new Node(e);
+		return e;
 	} //Kann entfert werden, dient nur zum testen fehlerhafter Entries
 
 
@@ -38,15 +40,17 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		//Nullinsert abfrage?
 		Entry<P,D> e= new Entry(p,d);
 		e.node=new Node(e);
-		/*System.out.println("davor a: "+a.prio);
+ 		this.head=mergeHeap(this,new BinHeap<>(e));
+ 		size++;
+
+ 		/*
+		Entry a= new Entry(55555,5);
+		a.node=new Node(a);
+
+		System.out.println("davor a: "+a.prio);
  		changePrio(a, (P) e.prio());
 		System.out.println("a: "+a.prio);
-*/
-		return insert(e);
-	}
-	private Entry<P,D> insert(Entry<P,D> e){
-		this.head=mergeHeap(this,new BinHeap<>(e));
-		size++;
+		*/
 		return e;
 	}
 
@@ -83,20 +87,6 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		return false;
 	} //Wie in guter Laufzeit lösen??????
 
-	private Entry<P, D> contains_with_element (Entry<P, D> e){ //Theoretisch gleich zu
-		Entry rueckgabe=null,contains=null;
-		Test++;
-		if(this.head==null) return null;
-		for (Node laufNode2= head.node; laufNode2!=null;laufNode2=laufNode2.sibling){
-			if(laufNode2.prio().toString().compareTo(e.prio.toString())>0) continue;
-			else { //Durchsucht den Baum des Wurzelknotens rekursiv
-				rueckgabe=contains_rekursive(laufNode2,e);
-				if(rueckgabe!=null) contains=rueckgabe;
-				if (rueckgabe!=null) return rueckgabe;
-			}
-		}
-		return null;
-	}
 	private Entry<P,D> contains_rekursive(Node<P,D> n,Entry<P,D> zusuchen){
 		Node<P,D> tmpHead=n;
 		Test++;
@@ -112,20 +102,55 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		return null;
 	}
 
+	/* Unbekannt ob benötigt, würde testen und gleich element bei existenz liefern
+	private Entry<P, D> contains_with_element (Entry<P, D> e){ //Theoretisch gleich zu
+		Entry rueckgabe=null,contains=null;
+		Test++;
+		if(this.head==null) return null;
+		for (Node laufNode2= head.node; laufNode2!=null;laufNode2=laufNode2.sibling){
+			if(laufNode2.prio().toString().compareTo(e.prio.toString())>0) continue;
+			else { //Durchsucht den Baum des Wurzelknotens rekursiv
+				rueckgabe=contains_rekursive(laufNode2,e);
+				if(rueckgabe!=null) contains=rueckgabe;
+				if (rueckgabe!=null) return rueckgabe;
+			}
+		}
+		return null;
+	}
+	 */
+
+
 	public boolean remove (Entry<P, D> e){
+
+		if (e==null || e.node==null) return false;
+		// Entry<P, D> zulöschen=contains_with_element(e); //Schaut ob das Element existiert muss glaub nicht gemacht werden
 		int tmpsize=size;
-		Node parentN;
 
-		/*while( e.node.parent != null) {
 
-			parentN = e.node.parent;
 
-			e.node.parent.entry = e;
-			e.node.parent.entry.node = e.node;
+		while(e.node.parent!=null){
+			Node<P,D> parent=new Node(e.node.parent.entry);
+			parent.sibling=e.node.parent.sibling;
+			parent.child=e.node.parent.child;
+			parent.parent=e.node.parent.parent;
+			e.node.parent.entry=e;
+			e.node.entry=parent.entry;
+			e.node.parent=e.node;
+			//e.node.parent.entry=parent.entry;
+			e.node=parent;
+			//e.node.entry=e;
+		}
+		Entry<P,D> min=e.node.child.entry;
+		Node<P,D> tmpHead=e.node.child;
+		do {
+			if(min.prio.compareTo(tmpHead.entry.prio)>0) min=tmpHead.entry;
+			tmpHead = tmpHead.sibling;
+		} while (e.node.child != tmpHead );
 
-			e = parentN.entry;
-			e.node = parentN;
-		}*/
+		min.node.child=e.node.child;
+
+		e=min;
+
 
 		for(Node <P,D> laufnode=this.head.node;laufnode!=null;laufnode=laufnode.sibling) {
 			if(laufnode==e.node) {
@@ -133,7 +158,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				break;
 			}
 			else{
-				if(laufnode.sibling.equals(e.node)) {
+				if(laufnode.sibling==e.node) {
 					laufnode.sibling = e.node.sibling;
 					break;
 				}
@@ -158,7 +183,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		//extractMin();
 
 
-			//Warum sollte ich hier den Aufwand betreiben die Prio zu ändern anstatt es so zu machen
+		//Warum sollte ich hier den Aufwand betreiben die Prio zu ändern anstatt es so zu machen
 		size=tmpsize-1;
 		return true;
 	}
@@ -169,13 +194,13 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	public void dump(){ //Läuft durch die Wurzelknoten
 		if(this.head==null) return;
-		for (Node<P,D> laufNode= head.node; laufNode!=null;laufNode=laufNode.sibling) dump(laufNode,0);
+		for (Node laufNode= head.node; laufNode!=null;laufNode=laufNode.sibling) dump(laufNode,0);
 	}
 
-	private void dump(Node<P,D> n,int Tiefe){ //Ruft Rekursiv die Children des übergebenen Wurzelknotens auf
+	private void dump(Node n,int Tiefe){ //Ruft Rekursiv die Children des übergebenen Wurzelknotens auf
 		String platzhalterVorlage="  "; //Funktioniert das????
 		String platzhalter;
-		Node<P,D> tmpHead=n;
+		Node tmpHead=n;
 		int i=-1;
 		if(tmpHead.parent!=null) { //Umständlich implementiert wegen unterschiedlichen ausgaben für Wurzeln und children
 			while (n != tmpHead || i == -1) {
@@ -205,13 +230,13 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 	}
 
-	public Entry<P,D> mergeHeap(BinHeap<P,D> H1,BinHeap<P,D> H2){
+	public Entry mergeHeap(BinHeap H1,BinHeap H2){
 		int i,k=0;
 		int pos1=0,pos2=0;
 		int filling_zwischensp=0; //Beschreibt wie viele Elemente in zwischensp enthalten sind
-		Entry<P,D> tmp;
-		BinHeap<P,D> buildH=new BinHeap<>();
-		BinHeap<P,D>[] zwischensp=new BinHeap[3]; //Zwischenspeicher für bis zu drei Bäume
+		Entry tmp;
+		BinHeap buildH=new BinHeap();
+		BinHeap[] zwischensp=new BinHeap[3]; //Zwischenspeicher für bis zu drei Bäume
 
 		while((H1.head!=null)||(H2.head!=null)||(filling_zwischensp!=0)){
 			if(H1.head!=null && H1.head.node.degree==k) { //Codedopplung mit dem nächsten if-Statement, vielleicht Hilfsmethode?
@@ -247,10 +272,8 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				if(filling_zwischensp==3) pos1=0;
 				else{
 					for(i=0;i<=2;i++){
-						if(zwischensp[i]!=null) {
-							pos1 = i;
-							break;
-						}
+						if(zwischensp[i]!=null) pos1=i;
+						break;
 					}
 				}
 				if(buildH.head==null) buildH.head=zwischensp[pos1].head;
@@ -307,7 +330,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				sub.node.sibling=dom.node.child.sibling;
 				dom.node.child=dom.node.child.sibling=sub.node;
 			}
-			return new BinHeap<>(dom);
+			return new BinHeap<P,D>(dom);
 		}
 
 	public boolean changePrio(Entry<P, D> entry, P s) { // muss noch boolena werden
