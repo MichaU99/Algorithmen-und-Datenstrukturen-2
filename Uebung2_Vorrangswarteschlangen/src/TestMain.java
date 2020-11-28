@@ -39,9 +39,10 @@ public class TestMain {
         H.dump();
         Scanner scan2nd=new Scanner(file);
         System.out.println(H.remove(e));
+        H.dump();
         if(H.contains(H.test(-633449019,-330117133))){
             System.out.println("Fehler");
-            H.dump();
+
             while(scan2nd.hasNext()) {
                 int prio = scan2nd.nextInt();
                 int data = scan2nd.nextInt();
