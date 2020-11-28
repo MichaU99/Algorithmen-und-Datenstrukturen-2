@@ -6,7 +6,7 @@
 -Soll null bei Insert abgefangen werden und wenn ja wie?
 -Generics im Programm, wann klammern, wann nicht
 -Muss remove prüfen ob das übergebene Element im baum existiert
-
+-Wie kann man eine minus unendliche Prio umsetzen wenn der Datentyp der Prio nicht bekannt ist
 
 -------------------------
 Mögliche Bugs:
