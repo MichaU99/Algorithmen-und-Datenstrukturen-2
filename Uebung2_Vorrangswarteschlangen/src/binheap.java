@@ -116,7 +116,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		int tmpsize=size;
 		Node parentN;
 
-		while( e.node.parent != null) {
+		/*while( e.node.parent != null) {
 
 			parentN = e.node.parent;
 
@@ -125,19 +125,33 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 			e = parentN.entry;
 			e.node = parentN;
-		}
+		}*/
 
 		for(Node <P,D> laufnode=this.head.node;laufnode!=null;laufnode=laufnode.sibling) {
-			if (laufnode.sibling.equals(e.node)) {
-				laufnode.sibling = e.node.sibling;
+			if(laufnode==e.node) {
+				this.head = e.node.sibling.entry;
 				break;
+			}
+			else{
+				if(laufnode.sibling.equals(e.node)) {
+					laufnode.sibling = e.node.sibling;
+					break;
+				}
 			}
 		}
 		Node<P,D> laufnode=e.node.child;
-		do { //unsicher ob diese Schleife notwendig ist oder ob insert das erfüllt
+		if(laufnode==null){//Abbruch falls e degree 0 hat
+			size--;
+			return true;
+		}
+		while(true) { //unsicher ob diese Schleife notwendig ist oder ob insert das erfüllt
 			laufnode.parent=null;
-			laufnode=laufnode.child;
-		}while(laufnode!=e.node.child);
+			if(laufnode.sibling==e.node.child){
+				laufnode.sibling=null;
+				break;
+			}
+			laufnode=laufnode.sibling;
+		}
 
 		this.head=mergeHeap(this,new BinHeap<P,D>(e.node.child.entry));
 		//changePrio(e,e.node.child.prio()); Sollte Praktisch damit umgesetzt werden, keine Ahnung wie
