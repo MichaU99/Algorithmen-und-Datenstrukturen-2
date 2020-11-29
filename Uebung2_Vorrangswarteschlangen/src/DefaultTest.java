@@ -5,11 +5,18 @@ import java.util.Scanner;
 
 public class DefaultTest {
 
+    static int prio=0,data=0;
+
+    static void getNewRand(){
+        Random rand=new Random();
+        prio = rand.nextInt();
+        data = rand.nextInt();
+    }
+
     public static void main(String[] args) throws IOException {
-        int i,prio=0,data=0;
+        int i;
         BinHeap H =new BinHeap();
         int alarm=0;
-        Random rand=new Random();
         String filedata="";
 
         File file=new File("C:\\Users\\Michael Ulrich\\IdeaProjects\\Algorithmen-und-Datenstrukturen-2\\Uebung2_Vorrangswarteschlangen\\src\\Testfile");
@@ -20,13 +27,12 @@ public class DefaultTest {
 
 
         //Schreibt zufällige prio und data in Textdatei und insert'ed
-        for(int j=0;j<100;j++) { //male wie oft der Test durchgeführt wird
+        for(int j=0;j<1;j++) { //male wie oft der Test durchgeführt wird
             H=new BinHeap();
             assert(H.isEmpty()):"Heap sollte leer sein";
             if (!fileout.exists()) fileout.createNewFile();
             for (i = 0; i < 100; i++) {
-                prio = rand.nextInt();
-                data = rand.nextInt();
+                getNewRand();
                 write.write(prio + " " + data + " ");
                 H.insert(prio, data);
                 assert(!H.isEmpty()):"Heap sollte Elemente enthalten";
@@ -38,7 +44,6 @@ public class DefaultTest {
             while (scanFile.hasNext()) {
                 prio = scanFile.nextInt();
                 data = scanFile.nextInt();
-
                 if (!H.contains(H.test(prio, data))) {
                     H.dump();
                     //System.out.println("ALAAARM prio= " + prio + " data= " + data + " "+ alarm++);
@@ -47,21 +52,20 @@ public class DefaultTest {
                 //System.out.println("   |||   "+prio+" | "+data.toString()+"  |||  ");
             }
 
-            /*
-            //Vergleich mit
-            int ä=0;
-            int i=rand.nextInt();
-            int k=rand.nextInt();
-            BinHeap.Entry e=H.insert(i,k);
-            H.remove(e);
-            if(H.contains(e)) System.out.println("FEHLER Nr."+ä++);
+
+            //Testet remove mit zufälligen Werten
+            getNewRand();
+            for(int k=0;k<5;k++) {
+                BinHeap.Entry e = H.insert(prio, data);
+                H.remove(e);
+                assert (!H.contains(e)) : "Fehler in remove, Heap enthält entferntes Element noch";
+            }
 
 
-            H.dump();System.out.println(H.size+" "+alarm);
+
             fileout.delete();
-            */
-
         }
+
 
 
 
@@ -70,6 +74,7 @@ public class DefaultTest {
         }*/
         //System.out.println(H.Test);
         //System.out.println("Stimmt die Testfile mit dump() überein? "+filedata.equals(H.Debug));
+        System.out.println("Es wurden keine Fehler gefunden");
         write.close();
         fileout.delete();
 
