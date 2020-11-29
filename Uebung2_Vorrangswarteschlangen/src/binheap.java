@@ -133,13 +133,29 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			parent.sibling=e.node.parent.sibling;
 			parent.child=e.node.parent.child;
 			parent.parent=e.node.parent.parent;
+
+			e.node.parent=e.node;
+			e.node.parent.entry=parent.entry;
+
+			e.node=parent;
+			e.node.entry=e;
+
+			/*
 			e.node.parent.entry=e;
-			e.node.entry=parent.entry;
+			e.node.parent.entry.node=e.node;
+
+			e.node=parent;
+			e.node.entry=e;
+			//e.node.entry=parent.entry;
+			e.node.entry.node=e.node;
 			e.node.parent=e.node;
 			//e.node.parent.entry=parent.entry;
-			e.node=parent;
+
 			//e.node.entry=e;
+			 */
 		}
+
+		/*
 		Entry<P,D> min=e.node.child.entry;
 		Node<P,D> tmpHead=e.node.child;
 		do {
@@ -150,7 +166,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		min.node.child=e.node.child;
 
 		e=min;
-
+		 */
 
 		for(Node <P,D> laufnode=this.head.node;laufnode!=null;laufnode=laufnode.sibling) {
 			if(laufnode==e.node) {
@@ -164,6 +180,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				}
 			}
 		}
+		dump();
 		Node<P,D> laufnode=e.node.child;
 		if(laufnode==null){//Abbruch falls e degree 0 hat
 			size--;
