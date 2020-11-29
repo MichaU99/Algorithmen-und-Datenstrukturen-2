@@ -54,12 +54,14 @@ public class DefaultTest {
 
 
             //Testet remove mit zufälligen Werten
-            getNewRand();
+
             for(int k=0;k<5;k++) {
+                getNewRand();
                 BinHeap.Entry e = H.insert(prio, data);
                 H.remove(e);
                 assert (!H.contains(e)) : "Fehler in remove, Heap enthält entferntes Element noch";
             }
+
 
 
 
