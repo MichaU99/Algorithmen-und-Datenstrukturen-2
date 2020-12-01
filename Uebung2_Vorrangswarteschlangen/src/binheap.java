@@ -70,11 +70,22 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		return min; // wird nur die Referenz übergeben, richtig so?
 	}
 
-	public Entry<P, D> extractMin (){
+	public Entry<P, D> extractMin (){ // was muss dern return werden?
 		Entry <P,D> E =minimum();
-		remove(minimum());
-		return E;
-	}
+		Entry <P,D> Vorgänger = head;
+
+        for( Node<P,D> laufnode=Vorgänger.node;laufnode.sibling!=null;laufnode=laufnode.sibling){ // sollte nach dem Voränger suchen
+            if(laufnode.sibling.prio().compareTo(E.prio) == 0) break;
+        }
+        Vorgänger.node.sibling = null;
+
+        if (E.node.sibling != null) {
+
+            this.head = mergeHeap(this, new BinHeap<>(E.node.child.sibling.entry));
+        }
+        return E;
+
+    }
 	public boolean contains (Entry<P, D> e){ //Iteriert über alle Wurzelknoten
 		if(this.head==null) return false;
 		for (Node <P,D> laufNode= head.node; laufNode!=null;laufNode=laufNode.sibling){
@@ -126,21 +137,41 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		// Entry<P, D> zulöschen=contains_with_element(e); //Schaut ob das Element existiert muss glaub nicht gemacht werden
 		int tmpsize=size;
 
+		if(true){
+			boolean b = changePrio(e, minimum().prio );
+			extractMin();
+			return true;
+		}
 
 
 		while(e.node.parent!=null){
 			Node<P,D> parent=new Node(e.node.parent.entry);
 			parent.sibling=e.node.parent.sibling;
 			parent.child=e.node.parent.child;
+			parent.child.child=e.node.child;
 			parent.parent=e.node.parent.parent;
 
+
+			//Mein Versuch:
+			e.node.parent.entry=e;
+			e.node.child.entry=parent.entry;
+
+			e.node.parent=parent.parent;
+			e.node.child.child=parent.child.child;
+
+
+
+
+
+
+			/* Michaels Versuch 2
 			e.node.parent=e.node;
 			e.node.parent.entry=parent.entry;
 
 			e.node=parent;
 			e.node.entry=e;
-
-			/*
+			*/
+			/* Michaels Versuch 1
 			e.node.parent.entry=e;
 			e.node.parent.entry.node=e.node;
 
@@ -153,6 +184,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 			//e.node.entry=e;
 			 */
+		return true;
 		}
 
 		/*
@@ -202,6 +234,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 		//Warum sollte ich hier den Aufwand betreiben die Prio zu ändern anstatt es so zu machen
 		size=tmpsize-1;
+
 		return true;
 	}
 
@@ -351,20 +384,43 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 
 	public boolean changePrio(Entry<P, D> entry, P s) { // muss noch boolena werden
+
+		/*
+		Entry<P,D> tam = new Entry<>(entry.prio(), entry.data());
+		tam.node=new Node(tam);
+		Node<P,D> parentNode= entry.node.parent;
+		while (parentNode != null && entry.prio.compareTo(parentNode.entry.prio) < 0){
+			tam = entry;
+			entry = parentNode.entry;
+			parentNode.entry = tam;
+			entry.node = parentNode;
+			parentNode = parentNode.parent;
+		}
+		return true;
+		*/
 		Entry<P,D> tam;
 		Node parentNode,childnode;
 
 		if( s.compareTo(entry.prio) <=0){
 			entry.prio = s;
-			while( entry.node.parent != null && entry.prio.compareTo(entry.node.parent.entry.prio)<0){
-				childnode = entry.node;
-				parentNode=entry.node.parent;
+			while( entry.node.parent != null && entry.prio.compareTo(entry.node.parent.entry.prio)<=0){
+				if(entry.prio.compareTo(entry.node.parent.entry.prio) == 0){
+					parentNode=entry.node.parent;
+					entry.node.parent.entry=entry;
+					entry.node.parent.entry.node=entry.node;
 
+					entry.node.child.entry = parentNode.entry;
+					entry.node.child=parentNode;
+					return true;
+				}
+				parentNode=entry.node.parent;
+				System.out.println("entry von entry: "+entry.prio());
 				entry.node.parent.entry=entry;
+				System.out.println("entry von entry: "+entry.prio());
 				entry.node.parent.entry.node=entry.node;
 
-				entry = parentNode.entry;
-				entry.node=parentNode;
+				entry.node.child.entry = parentNode.entry;
+				entry.node.child=parentNode;
 
 
 			}
@@ -385,6 +441,8 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			return true;
 		}
 		return false;
+
+
 	}
 
 

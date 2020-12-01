@@ -19,8 +19,8 @@ public class DefaultTest {
         int alarm=0;
         String filedata="";
 
-        File file=new File("C:\\Users\\Michael Ulrich\\IdeaProjects\\Algorithmen-und-Datenstrukturen-2\\Uebung2_Vorrangswarteschlangen\\src\\Testfile");
-        File fileout=new File("C:\\Users\\Michael Ulrich\\IdeaProjects\\Algorithmen-und-Datenstrukturen-2\\Uebung2_Vorrangswarteschlangen\\src\\DefaultTestFile");
+        File file=new File("C:\\Users\\Veronika\\Documents\\GitHub\\Algorithmen-und-Datenstrukturen-2\\Uebung2_Vorrangswarteschlangen\\src\\Testfile");
+        File fileout=new File("C:\\Users\\Veronika\\Documents\\GitHub\\Algorithmen-und-Datenstrukturen-2\\Uebung2_Vorrangswarteschlangen\\src\\DefaultTestFile");
         if (!fileout.exists()) fileout.createNewFile();
         Scanner scanFile=new Scanner(fileout);
         BufferedWriter write=new BufferedWriter(new FileWriter(fileout.getAbsoluteFile()));
