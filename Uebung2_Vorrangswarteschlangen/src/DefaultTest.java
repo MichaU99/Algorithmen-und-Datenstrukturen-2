@@ -17,6 +17,7 @@ public class DefaultTest {
         BinHeap H =new BinHeap();
         int alarm=0;
         String filedata="";
+        int tmp = 0;
 
         File file=new File("Uebung2_Vorrangswarteschlangen/Testfile");
         File fileout=new File("DefaultTestFile");
@@ -63,26 +64,26 @@ public class DefaultTest {
 
 
             //Testet minimum - Einen Eintrag mit minimaler Priorität liefern.
-            for (int l=0;l<5;l++) {
-                getNewRand();
-                BinHeap.Entry e = H.insert(prio, data);
-                H.minimum();
-                //System.out.println(H.minimum());
-                //assert () : "Text";
-                // Das stimmt noch nicht.
+            while (scanFile.hasNext()) {
+                prio = scanFile.nextInt();
+                scanFile.nextInt();
+                if (tmp < prio) {
+                    tmp = prio;
+                }
             }
+            assert ((int) H.minimum().prio() == tmp) : "minimum ist gleich";
 
 
             // Test extractMin - Einen Eintrag mit minimaler Priorität liefern und aus der Halde entfernen.
-            for (int l=0;l<5;l++) {
-                getNewRand();
-                BinHeap.Entry e = H.insert(prio, data);
-                H.extractMin();
-                assert (H.contains(e)) : "Text";
-                // Das stimmt auch noch nicht.
-            }
+            BinHeap.Entry e = H.minimum();
+            H.extractMin();
+            assert (!H.contains(e)) : "Ist nicht gleich.";
+
 
             // Test changePrio
+            // (Dabei darf auf keinen Fall ein neuer Eintrag entstehen, selbst wenn
+            // die Operation intern als Entfernen und Neu−Einfügen implementiert wird!)
+
 
 
             fileout.delete();

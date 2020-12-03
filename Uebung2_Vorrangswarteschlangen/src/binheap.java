@@ -48,6 +48,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		a.node=new Node(a);
 
 		System.out.println("davor a: "+a.prio);
+
  		changePrio(a, (P) e.prio());
 		System.out.println("a: "+a.prio);
 		*/
