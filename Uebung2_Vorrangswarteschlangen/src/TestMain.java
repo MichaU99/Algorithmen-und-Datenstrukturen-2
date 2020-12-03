@@ -1,6 +1,5 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Map;
 import java.util.Scanner;
 
 public class TestMain {
@@ -8,7 +7,7 @@ public class TestMain {
         BinHeap H =new BinHeap();
         String filedata="";
 
-        File file=new File("Testfile");
+        File file=new File("Uebung2_Vorrangswarteschlangen/Testfile");
         Scanner scanFile=new Scanner(file);
         //Scanner scanDebug=new Scanner()
         /*H.insert("a",0);

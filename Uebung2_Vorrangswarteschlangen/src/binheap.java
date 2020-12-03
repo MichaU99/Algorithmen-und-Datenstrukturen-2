@@ -139,6 +139,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 		if(true){
 			boolean b = changePrio(e, minimum().prio );
+			dump();
 			extractMin();
 			return true;
 		}

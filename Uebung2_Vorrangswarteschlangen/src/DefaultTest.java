@@ -1,5 +1,4 @@
 import java.io.*;
-import java.nio.IntBuffer;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -19,7 +18,7 @@ public class DefaultTest {
         int alarm=0;
         String filedata="";
 
-        File file=new File("Testfile");
+        File file=new File("Uebung2_Vorrangswarteschlangen/Testfile");
         File fileout=new File("DefaultTestFile");
         if (!fileout.exists()) fileout.createNewFile();
         Scanner scanFile=new Scanner(fileout);
