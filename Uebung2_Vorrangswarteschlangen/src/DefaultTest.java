@@ -63,6 +63,27 @@ public class DefaultTest {
             }
 
 
+            //Testet minimum - Einen Eintrag mit minimaler Priorität liefern.
+            for (int l=0;l<5;l++) {
+                getNewRand();
+                BinHeap.Entry e = H.insert(prio, data);
+                H.minimum();
+                //System.out.println(H.minimum());
+                //assert () : "Text";
+                // Das stimmt noch nicht.
+            }
+
+
+            // Test extractMin - Einen Eintrag mit minimaler Priorität liefern und aus der Halde entfernen.
+            for (int l=0;l<5;l++) {
+                getNewRand();
+                BinHeap.Entry e = H.insert(prio, data);
+                H.extractMin();
+                assert (H.contains(e)) : "Text";
+                // Das stimmt auch noch nicht.
+            }
+
+            // Test changePrio
 
 
             fileout.delete();
