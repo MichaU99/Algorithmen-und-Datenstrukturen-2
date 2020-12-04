@@ -19,7 +19,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	static int Test; //Kann später entfert werden soll nur zum Test der Aufrufzahl von Methoden dienen
 	String Debug="";
 	public int size=0;
-	private Entry <P,D>head; //Das Element mit der niedrifsten Priorität das den Baum "startet"
+	private Entry<P,D> head; //Das Element mit der niedrifsten Priorität das den Baum "startet"
 
 	public BinHeap(){head=null;} //Standartkonstruktor
 	private BinHeap(Entry <P,D> e){ //Konstruktur für Baum mit einem Element
@@ -29,8 +29,8 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	//Testmethode
 	public Entry<P,D> test(P p, D d){
-		Entry e=new Entry<>(p,d);
-		Node n= new Node(e);
+		Entry<P,D> e=new Entry<>(p,d);
+		Node<P,D> n= new Node<>(e);
 		return e;
 	} //Kann entfert werden, dient nur zum testen fehlerhafter Entries
 
@@ -38,8 +38,8 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	public Entry<P,D> insert(P p, D d) {
 		//Nullinsert abfrage?
-		Entry<P,D> e= new Entry(p,d);
-		e.node=new Node(e);
+		Entry<P,D> e= new Entry<>(p,d);
+		e.node=new Node<>(e);
  		this.head=mergeHeap(this,new BinHeap<>(e));
  		size++;
 
@@ -58,7 +58,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	public boolean isEmpty(){
 		//assert ((head==null && size!=0) || head!=null && size==0);
 		if (head==null) return true;
-		return false;
+		else return false;
 	}
 
 	public Entry<P, D> minimum(){
@@ -73,14 +73,14 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	public Entry<P, D> extractMin (){
 		Entry <P,D> E =minimum();
-		Entry <P,D> Vorgänger = head;
+		Entry <P,D> Vorgaenger = head;
 
 		if (head==null || !remove(E)) return null; //Falls es kein Element im Heap gibt
 
 		return E;
     }
 
-    public boolean contains (Entry e){
+    public boolean contains (Entry<P,D> e){
 		Node<P,D> hochlaufnode=e.node,wurzellaufnode=head.node;
 		if(e==null) return false; //Fängt fehlerhafte Eingabe ab
 
@@ -94,7 +94,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 		return false;
 	}
-
+	//Sollten vermutlich am Ende entfernt werden
     public boolean priocontains (Entry<P, D> e){ //Iteriert über alle Wurzelknoten
 		if(this.head==null) return false;
 		for (Node <P,D> laufNode= head.node; laufNode!=null;laufNode=laufNode.sibling){
@@ -189,7 +189,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			laufnode=laufnode.sibling;
 		}
 
-		this.head=mergeHeap(this,new BinHeap<P,D>(e.node.child.entry));
+		this.head=mergeHeap(this,new BinHeap<>(e.node.child.entry));
 		//changePrio(e,e.node.child.prio()); Sollte Praktisch damit umgesetzt werden, keine Ahnung wie
 		//extractMin();
 
@@ -206,13 +206,13 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	public void dump(){ //Läuft durch die Wurzelknoten
 		if(this.head==null) return;
-		for (Node laufNode= head.node; laufNode!=null;laufNode=laufNode.sibling) dump(laufNode,0);
+		for (Node<P,D> laufNode= head.node; laufNode!=null;laufNode=laufNode.sibling) dump(laufNode,0);
 	}
 
-	private void dump(Node n,int Tiefe){ //Ruft Rekursiv die Children des übergebenen Wurzelknotens auf
+	private void dump(Node<P,D> n,int Tiefe){ //Ruft Rekursiv die Children des übergebenen Wurzelknotens auf
 		String platzhalterVorlage="  "; //Funktioniert das????
 		String platzhalter;
-		Node tmpHead=n;
+		Node<P,D> tmpHead=n;
 		int i=-1;
 		if(tmpHead.parent!=null) { //Umständlich implementiert wegen unterschiedlichen ausgaben für Wurzeln und children
 			while (n != tmpHead || i == -1) {
@@ -242,13 +242,13 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 	}
 
-	public Entry mergeHeap(BinHeap<P,D> H1,BinHeap<P,D> H2){
+	public Entry<P,D> mergeHeap(BinHeap<P,D> H1,BinHeap<P,D> H2){
 		int i,k=0;
 		int pos1=0,pos2=0;
 		int filling_zwischensp=0; //Beschreibt wie viele Elemente in zwischensp enthalten sind
-		Entry tmp;
-		BinHeap buildH=new BinHeap();
-		BinHeap[] zwischensp=new BinHeap[3]; //Zwischenspeicher für bis zu drei Bäume
+		Entry<P,D> tmp;
+		BinHeap<P,D> buildH=new BinHeap<>();
+		BinHeap<P,D>[] zwischensp=new BinHeap[3]; //Zwischenspeicher für bis zu drei Bäume
 
 		while((H1.head!=null)||(H2.head!=null)||(filling_zwischensp!=0)){
 			if(H1.head!=null && H1.head.node.degree==k) { //Codedopplung mit dem nächsten if-Statement, vielleicht Hilfsmethode?
@@ -259,7 +259,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 						if(H1.head.node.sibling==null) H1.head=null;
 						else H1.head = H1.head.node.sibling.entry; //Reicht das damit der Knoten von der Garbage Collection aufgesammelt wird?
 						tmp.node.sibling=null;
-						zwischensp[i] = new BinHeap(tmp);
+						zwischensp[i] = new BinHeap<>(tmp);
 						filling_zwischensp++;
 						break;
 					}
@@ -273,7 +273,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 						if(H2.head.node.sibling==null) H2.head=null;
 						else H2.head =H2.head.node.sibling.entry; //Reicht das damit der Knoten von der Garbage Collection aufgesammelt wird?
 						tmp.node.sibling=null;
-						zwischensp[i] = new BinHeap(tmp);
+						zwischensp[i] = new BinHeap<>(tmp);
 						filling_zwischensp++;
 						break;
 					}
@@ -320,7 +320,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		return buildH.head;
 	}
 
-		public BinHeap mergeEqTree(Entry<P,D> H1, Entry<P,D> H2){ //Hilfsoperation zur Vereinigung zweier Bäume des gleichen Grads
+		public BinHeap<P,D> mergeEqTree(Entry<P,D> H1, Entry<P,D> H2){ //Hilfsoperation zur Vereinigung zweier Bäume des gleichen Grads
 
 			int degree=H1.node.degree;
 			Entry<P,D> dom,sub;
@@ -342,7 +342,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				sub.node.sibling=dom.node.child.sibling;
 				dom.node.child=dom.node.child.sibling=sub.node;
 			}
-			return new BinHeap<P,D>(dom);
+			return new BinHeap<>(dom);
 		}
 
 	public boolean changePrio(Entry<P, D> entry, P s) { // muss noch boolena werden
@@ -360,8 +360,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 		return true;
 		*/
-		Entry<P,D> tam;
-		Node parentNode,childnode;
+		Node<P,D> parentNode,childnode;
 
 		if( s.compareTo(entry.prio) <=0){
 			entry.prio = s;
@@ -394,9 +393,9 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				return true;
 			}
 			else{
-				Entry test = entry;
+				Entry<P,D> test = entry;
 				remove(entry);
-				D b = (D) test.data;
+				D b = test.data;
 				insert(s,b);
 				size--;
 			}
