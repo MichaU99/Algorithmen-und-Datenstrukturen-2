@@ -65,6 +65,9 @@ public class DefaultTest {
 
 
             //Testet minimum - Einen Eintrag mit minimaler Priorität liefern.
+            if(!scanFile.hasNext()){
+                scanFile=new Scanner(fileout);
+            }
             while (scanFile.hasNext()) {
                 prio = scanFile.nextInt();
                 scanFile.nextInt();
