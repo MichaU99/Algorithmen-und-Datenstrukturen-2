@@ -63,17 +63,15 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	public Entry<P, D> minimum(){
 		Entry <P,D > min=head;
-
+		if(head==null) return null;
 		for( Node<P,D> laufnode=min.node;laufnode.sibling!=null;laufnode=laufnode.sibling){
-			if(laufnode.entry.prio.compareTo(min.prio)< 0) min= laufnode.entry; //(Irgendwas stimmt mit Prios noch nicht) habe gefixt // Doppelklammer benötigz?
+			if(laufnode.entry.prio.compareTo(min.prio)< 0) min= laufnode.entry; //(Irgendwas stimmt mit Prios noch nicht) habe gefixt // Doppelklammer benötig?
 		}
-
 		return min; // wird nur die Referenz übergeben, richtig so?
 	}
 
 	public Entry<P, D> extractMin (){
 		Entry <P,D> E =minimum();
-		Entry <P,D> Vorgaenger = head;
 
 		if (head==null || !remove(E)) return null; //Falls es kein Element im Heap gibt
 
