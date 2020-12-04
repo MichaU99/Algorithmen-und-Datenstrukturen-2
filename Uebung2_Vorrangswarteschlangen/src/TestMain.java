@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class TestMain {
     public static void main(String[] args) throws FileNotFoundException {
+        int prio=0,data=0;
         BinHeap H =new BinHeap();
         String filedata="";
 
@@ -23,27 +24,25 @@ public class TestMain {
         H.insert("k",10);
         */
         //for (int i=0;i<=100;i++) H.insert(i,100);
-        BinHeap.Entry e=null;
+        BinHeap.Entry<Integer,Integer> e=null;
         while (scanFile.hasNextLine()){
 
-            int prio=scanFile.nextInt();
-            int data=scanFile.nextInt();
+            prio=scanFile.nextInt();
+            data=scanFile.nextInt();
             //filedata=filedata+ scanFile.nextLine()+"\n";
-            if(prio==-633449019){
-                e=H.insert(prio,data);
-            }
-            else H.insert(prio,data);
+            System.out.println(H.contains(H.insert(prio,data)));
         }
 
         H.dump();
         Scanner scan2nd=new Scanner(file);
         System.out.println(H.remove(e));
-        if(H.contains(H.test(-633449019,-330117133))){
+        System.out.println(H.remove(H.insert(prio,data)));
+        if(H.priocontains(H.test(-633449019,-330117133))){
             System.out.println("Fehler");
             while(scan2nd.hasNext()) {
-                int prio = scan2nd.nextInt();
-                int data = scan2nd.nextInt();
-                if (!H.contains(H.test(prio, data))) {
+                prio = scan2nd.nextInt();
+                data = scan2nd.nextInt();
+                if (!H.priocontains(H.test(prio, data))) {
                     System.out.println("Fehler Prio: " + prio + " Data: " + data);
                 }
             }

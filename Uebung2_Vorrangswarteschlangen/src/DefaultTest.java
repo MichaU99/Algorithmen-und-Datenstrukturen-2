@@ -45,11 +45,11 @@ public class DefaultTest {
             while (scanFile.hasNext()) {
                 prio = scanFile.nextInt();
                 data = scanFile.nextInt();
-                if (!H.contains(H.test(prio, data))) {
+                if (!H.priocontains(H.test(prio, data))) {
                     H.dump();
                     //System.out.println("ALAAARM prio= " + prio + " data= " + data + " "+ alarm++);
                 }
-                assert (H.contains(H.test(prio, data))) : "Elemente p:" + prio + " & d:" + data + " fehlen im Heap";
+                assert (H.priocontains(H.test(prio, data))) : "Elemente p:" + prio + " & d:" + data + " fehlen im Heap";
                 //System.out.println("   |||   "+prio+" | "+data.toString()+"  |||  ");
             }
 

@@ -71,23 +71,31 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		return min; // wird nur die Referenz übergeben, richtig so?
 	}
 
-	public Entry<P, D> extractMin (){ // was muss dern return werden?
+	public Entry<P, D> extractMin (){
 		Entry <P,D> E =minimum();
 		Entry <P,D> Vorgänger = head;
 
-        for( Node<P,D> laufnode=Vorgänger.node;laufnode.sibling!=null;laufnode=laufnode.sibling){ // sollte nach dem Voränger suchen
-            if(laufnode.sibling.prio().compareTo(E.prio) == 0) break;
-        }
-        Vorgänger.node.sibling = null;
+		if (head==null || !remove(E)) return null; //Falls es kein Element im Heap gibt
 
-        if (E.node.sibling != null) {
-
-            this.head = mergeHeap(this, new BinHeap<>(E.node.child.sibling.entry));
-        }
-        return E;
-
+		return E;
     }
-	public boolean contains (Entry<P, D> e){ //Iteriert über alle Wurzelknoten
+
+    public boolean contains (Entry e){
+		Node<P,D> hochlaufnode=e.node,wurzellaufnode=head.node;
+		if(e==null) return false; //Fängt fehlerhafte Eingabe ab
+
+		while(hochlaufnode.parent!=null){
+			hochlaufnode=hochlaufnode.parent;
+		}
+		do{
+			if(wurzellaufnode.equals(hochlaufnode)) return true;
+			wurzellaufnode=wurzellaufnode.sibling;
+		}while (wurzellaufnode.sibling!=null);
+
+		return false;
+	}
+
+    public boolean priocontains (Entry<P, D> e){ //Iteriert über alle Wurzelknoten
 		if(this.head==null) return false;
 		for (Node <P,D> laufNode= head.node; laufNode!=null;laufNode=laufNode.sibling){
 			Test++;
@@ -134,68 +142,39 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	public boolean remove (Entry<P, D> e){
 
-		if (e==null || e.node==null) return false;
-		// Entry<P, D> zulöschen=contains_with_element(e); //Schaut ob das Element existiert muss glaub nicht gemacht werden
+		if (e==null || e.node==null || !contains(e)) return false;
+
 		int tmpsize=size;
 
 
-		while(e.node.parent!=null && e.node.parent.entry!= null){
-			Entry<P,D> child= e;
-			Entry<P,D> parent=e.node.parent.entry;
-			Node<P,D> childNode=e.node;
-			Node<P,D> parentNode=e.node.parent;
+		while(e.node.parent!=null && e.node.parent.entry!= null) {
+			Entry<P, D> child = e;
+			Entry<P, D> parent = e.node.parent.entry;
+			Node<P, D> childNode = e.node;
+			Node<P, D> parentNode = e.node.parent;
 
 
-			e.node.entry=e.node.parent.entry;
-			child.node=parentNode;
-			parent.node=childNode;
+			e.node.entry = e.node.parent.entry;
+			child.node = parentNode;
+			parent.node = childNode;
 
-			childNode.entry=parent;
-			parentNode.entry=child;
-
-
-
-			/*
-			e.node.parent.entry=e;
-			e.node.parent.entry.node=e.node;
-
-			e.node=parent;
-			e.node.entry=e;
-			//e.node.entry=parent.entry;
-			e.node.entry.node=e.node;
-			e.node.parent=e.node;
-			//e.node.parent.entry=parent.entry;
-
-			//e.node.entry=e;
-			 */
+			childNode.entry = parent;
+			parentNode.entry = child;
 		}
 
-		/*
-		Entry<P,D> min=e.node.child.entry;
-		Node<P,D> tmpHead=e.node.child;
-		do {
-			if(min.prio.compareTo(tmpHead.entry.prio)>0) min=tmpHead.entry;
-			tmpHead = tmpHead.sibling;
-		} while (e.node.child != tmpHead );
-
-		min.node.child=e.node.child;
-
-		e=min;
-		 */
-
-		for(Node <P,D> laufnode=this.head.node;laufnode!=null;laufnode=laufnode.sibling) {
-			if(laufnode==e.node) {
-				this.head = e.node.sibling.entry;
+		for(Node <P,D> laufnode=this.head.node;laufnode!=null;laufnode=laufnode.sibling) { //Sucht den Vorgänger des zu entfernden Elements
+			if(laufnode==e.node) { //Falls das zu entfernende Element =head ist
+				if(laufnode.sibling==null) head=null; //Falls das zu entfernende Element das einzige im Heap ist
+				else this.head = e.node.sibling.entry;
 				break;
 			}
 			else{
-				if(laufnode.sibling==e.node) {
-					laufnode.sibling = e.node.sibling;
+				if(laufnode.sibling==e.node) { //Falls der Vorgänger gefunden wurde
+					laufnode.sibling = e.node.sibling; //Überspringt den Wurzelknoten des zu löschenden Elements damit er im Nachhinein wieder eingefügt werden kann
 					break;
 				}
 			}
 		}
-		dump();
 		Node<P,D> laufnode=e.node.child;
 		if(laufnode==null){//Abbruch falls e degree 0 hat
 			size--;
@@ -488,7 +467,100 @@ class BinHeap <P extends Comparable<? super P>, D> {
     }
 
 }
+//ERWEITERTES TESTPROGRAMM
+//Befehle	Insert 				+ a
+//			Remove				- 1
+// 			Minimum				?
+//			Extract Minimum		!
+//			Change Prio			= 1 a
+//			Is Emtpy			#
+//			Contains			& 1
 
+// a Steht für beliebige Prio in diesem Fall Buchstaben
+// 1 Steht für beliebigen Eintrag, in diesem Fall Zahlen (ArrayIndizes)
+
+// Interaktives Testprogramm für die Klasse BinHeap.
+class BinHeapTest {
+	public static void main (String [] args) throws java.io.IOException {
+		// Leere Halde mit Prioritäten des Typs String und zugehörigen
+		// Daten des Typs Integer erzeugen.
+		// (Die Implementierung muss aber natürlich auch mit anderen
+		// Typen funktionieren.)
+		BinHeap<String, Integer> heap = new BinHeap<String, Integer>();
+
+		// Feld mit allen eingefügten Einträgen, damit sie später
+		// für remove und changePrio verwendet werden können.
+		// Achtung: Obwohl die Klasse BinHeap ebenfalls Typparameter
+		// besitzt, schreibt man "BinHeap.Entry<String, Integer>" und
+		// nicht "BinHeap<String, Integer>.Entry<String, Integer>".
+		// Achtung: "new BinHeap.Entry [100]" führt zu einem Hinweis
+		// über "unchecked or unsafe operations"; die eigentlich "korrekte"
+		// Formulierung "new BinHeap.Entry<String, Integer> [100]"
+		// führt jedoch zu einem Übersetzungsfehler!
+		BinHeap.Entry<String, Integer> [] entrys = new BinHeap.Entry [100];
+
+		// Anzahl der bis jetzt eingefügten Einträge.
+		int n = 0;
+
+		// Standardeingabestrom System.in als InputStreamReader
+		// und diesen wiederum als BufferedReader "verpacken",
+		// damit man bequem zeilenweise lesen kann.
+		java.io.BufferedReader r = new java.io.BufferedReader(
+				new java.io.InputStreamReader(System.in));
+
+		// Endlosschleife.
+		while (true) {
+			// Inhalt und Größe der Halde ausgeben.
+			heap.dump();
+			System.out.println(heap.size() + " entry(s)");
+
+			// Eingabezeile vom Benutzer lesen, ggf. ausgeben (wenn das
+			// Programm nicht interaktiv verwendet wird) und in einzelne
+			// Wörter zerlegen.
+			// Abbruch bei Ende der Eingabe oder leerer Eingabezeile.
+			System.out.print(">>> ");
+			String line = r.readLine();
+			if (line == null || line.equals("")) return;
+			if (System.console() == null) System.out.println(line);
+			String [] cmd = line.split(" ");
+
+			// Fallunterscheidung anhand des ersten Worts.
+			switch (cmd[0]) {
+				case "+": // insert prio
+					// Die laufende Nummer n wird als zusätzliche Daten
+					// verwendet.
+					entrys[n] = heap.insert(cmd[1], n);
+					n++;
+					break;
+				case "-": // remove entry
+					System.out.println(heap.remove(entrys[Integer.parseInt(cmd[1])]));
+					break;
+				case "?": // minimum
+					BinHeap.Entry<String, Integer> e = heap.minimum();
+					//System.out.println("--> " + e.prio() + " " + e.data());
+					System.out.println(e);
+					break;
+				case "!": // extractMin
+					e = heap.extractMin();
+					//System.out.println("--> " + e.prio() + " " + e.data());
+					System.out.println(e);
+					break;
+				case "=": // changePrio entry prio
+					System.out.println(heap.changePrio(entrys[Integer.parseInt(cmd[1])], cmd[2]));
+					break;
+				case "#":
+					System.out.println(heap.isEmpty());
+					break;
+				case "&":
+					System.out.println(heap.contains(entrys[Integer.parseInt(cmd[1])]));
+					break;
+
+			}
+		}
+	}
+}
+
+/*
 // Interaktives Testprogramm für die Klasse BinHeap.
 class BinHeapTest {
     public static void main (String [] args) throws java.io.IOException {
@@ -560,3 +632,5 @@ class BinHeapTest {
 	}
     }
 }
+
+ */
