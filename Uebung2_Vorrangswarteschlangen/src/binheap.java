@@ -138,42 +138,24 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		// Entry<P, D> zulöschen=contains_with_element(e); //Schaut ob das Element existiert muss glaub nicht gemacht werden
 		int tmpsize=size;
 
-		if(true){
-			boolean b = changePrio(e, minimum().prio );
-			dump();
-			extractMin();
-			return true;
-		}
+
+		while(e.node.parent!=null && e.node.parent.entry!= null){
+			Entry<P,D> child= e;
+			Entry<P,D> parent=e.node.parent.entry;
+			Node<P,D> childNode=e.node;
+			Node<P,D> parentNode=e.node.parent;
 
 
-		while(e.node.parent!=null){
-			Node<P,D> parent=new Node(e.node.parent.entry);
-			parent.sibling=e.node.parent.sibling;
-			parent.child=e.node.parent.child;
-			parent.child.child=e.node.child;
-			parent.parent=e.node.parent.parent;
+			e.node.entry=e.node.parent.entry;
+			child.node=parentNode;
+			parent.node=childNode;
 
-
-			//Mein Versuch:
-			e.node.parent.entry=e;
-			e.node.child.entry=parent.entry;
-
-			e.node.parent=parent.parent;
-			e.node.child.child=parent.child.child;
+			childNode.entry=parent;
+			parentNode.entry=child;
 
 
 
-
-
-
-			/* Michaels Versuch 2
-			e.node.parent=e.node;
-			e.node.parent.entry=parent.entry;
-
-			e.node=parent;
-			e.node.entry=e;
-			*/
-			/* Michaels Versuch 1
+			/*
 			e.node.parent.entry=e;
 			e.node.parent.entry.node=e.node;
 
@@ -186,7 +168,6 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 			//e.node.entry=e;
 			 */
-		return true;
 		}
 
 		/*
@@ -282,7 +263,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 	}
 
-	public Entry mergeHeap(BinHeap H1,BinHeap H2){
+	public Entry mergeHeap(BinHeap<P,D> H1,BinHeap<P,D> H2){
 		int i,k=0;
 		int pos1=0,pos2=0;
 		int filling_zwischensp=0; //Beschreibt wie viele Elemente in zwischensp enthalten sind
