@@ -38,6 +38,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	public Entry<P,D> insert(P p, D d) {
 		//Nullinsert abfrage?
+		if(p==null || d== null) return null;
 		Entry<P,D> e= new Entry<>(p,d);
 		e.node=new Node<>(e);
  		this.head=mergeHeap(this,new BinHeap<>(e));
