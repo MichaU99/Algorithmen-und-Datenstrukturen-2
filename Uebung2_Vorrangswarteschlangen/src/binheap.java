@@ -386,17 +386,16 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 			 */
 
-		if ( s.compareTo(entry.prio) > 1){
+		if ( s.compareTo(entry.prio) >= 1){
 			if(entry.node.child == null) {
 				entry.prio=s;
 				return true;
 			}
 			else{
 				Entry<P,D> test = entry;
-				remove(entry);
 				D b = test.data;
+				remove(entry);
 				insert(s,b);
-				size--;
 			}
 			return true;
 		}

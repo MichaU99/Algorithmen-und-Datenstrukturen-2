@@ -32,7 +32,7 @@ public class DefaultTest {
             H = new BinHeap();
             assert (H.isEmpty()) : "Heap sollte leer sein";
             if (!fileout.exists()) fileout.createNewFile();
-            for (i = 0; i < 10000; i++) {
+            for (i = 0; i < 100; i++) {
                 getNewRand();
                 write.write(prio + " " + data + " ");
                 assert (H.contains(H.insert(prio, data)));
@@ -82,7 +82,7 @@ public class DefaultTest {
             assert (!H.contains(e)) : "Ist nicht gleich.";
 
 
-            /*
+
             // Test changePrio
             for (int k = 0; k < 5; k++) {
                 getNewRand();
@@ -91,7 +91,7 @@ public class DefaultTest {
                 H.changePrio(e,prio);
                 assert((int)e.prio()==prio):"changePrio ist fehlerhaft";
             }
-             */
+
 
                 fileout.delete();
             }
