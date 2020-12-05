@@ -28,7 +28,7 @@ public class DefaultTest {
 
 
         //Schreibt zufällige prio und data in Textdatei und insert'ed
-        for (int j = 0; j < 1; j++) { //male wie oft der Test durchgeführt wird
+        for (int j = 0; j < 1000; j++) { //male wie oft der Test durchgeführt wird
             H = new BinHeap();
             assert (H.isEmpty()) : "Heap sollte leer sein";
             if (!fileout.exists()) fileout.createNewFile();

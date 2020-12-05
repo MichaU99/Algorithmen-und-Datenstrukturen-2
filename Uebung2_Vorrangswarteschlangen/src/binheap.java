@@ -153,6 +153,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				}
 			}
 		}
+
 		Node<P,D> laufnode=e.node.child;
 		if(laufnode==null){//Abbruch falls e degree 0 hat
 			size--;
@@ -166,9 +167,9 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			}
 			laufnode=laufnode.sibling;
 		}
-		System.out.println("Anfang");
+		//System.out.println("Anfang");
 		this.head=mergeHeap(this,new BinHeap<>(laufnode.entry));
-		System.out.println("Ende");
+		//System.out.println("Ende");
 		//changePrio(e,e.node.child.prio()); Sollte Praktisch damit umgesetzt werden, keine Ahnung wie
 		//extractMin();
 
@@ -325,22 +326,6 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 
 	public boolean changePrio(Entry<P, D> entry, P s) { // muss noch boolena werden
-
-		/*
-		Entry<P,D> tam = new Entry<>(entry.prio(), entry.data());
-		tam.node=new Node(tam);
-		Node<P,D> parentNode= entry.node.parent;
-		while (parentNode != null && entry.prio.compareTo(parentNode.entry.prio) < 0){
-			tam = entry;
-			entry = parentNode.entry;
-			parentNode.entry = tam;
-			entry.node = parentNode;
-			parentNode = parentNode.parent;
-		}
-		return true;
-		*/
-
-
 		if( s.compareTo(entry.prio) <=0) {
 			entry.prio = s;
 			while (entry.node.parent != null && entry.node.parent.entry != null) {
@@ -360,32 +345,6 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			return true;
 		}
 
-			/* war frühere whileschleife
-			while( entry.node.parent != null && entry.prio.compareTo(entry.node.parent.entry.prio)<=0){
-				if(entry.prio.compareTo(entry.node.parent.entry.prio) == 0){
-					parentNode=entry.node.parent;
-					entry.node.parent.entry=entry;
-					entry.node.parent.entry.node=entry.node;
-
-					entry.node.child.entry = parentNode.entry;
-					entry.node.child=parentNode;
-					return true;
-				}
-				parentNode=entry.node.parent;
-				System.out.println("entry von entry: "+entry.prio());
-				entry.node.parent.entry=entry;
-				System.out.println("entry von entry: "+entry.prio());
-				entry.node.parent.entry.node=entry.node;
-
-				entry.node.child.entry = parentNode.entry;
-				entry.node.child=parentNode;
-
-
-			}
-			return true;
-
-			 */
-
 		if ( s.compareTo(entry.prio) >= 1){
 			if(entry.node.child == null) {
 				entry.prio=s;
@@ -393,9 +352,10 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			}
 			else{
 				Entry<P,D> test = entry;
-				D b = test.data;
 				remove(entry);
+				D b = test.data;
 				insert(s,b);
+				size--;
 			}
 			return true;
 		}
