@@ -339,10 +339,28 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 		return true;
 		*/
-		Node<P,D> parentNode,childnode;
 
-		if( s.compareTo(entry.prio) <=0){
+
+		if( s.compareTo(entry.prio) <=0) {
 			entry.prio = s;
+			while (entry.node.parent != null && entry.node.parent.entry != null) {
+				Entry<P, D> child = entry;
+				Entry<P, D> parent = entry.node.parent.entry;
+				Node<P, D> child_Node = entry.node;
+				Node<P, D> parent_Node = entry.node.parent;
+
+
+				entry.node.entry = entry.node.parent.entry;
+				child.node = parent_Node;
+				parent.node = child_Node;
+
+				child_Node.entry = parent;
+				parent_Node.entry = child;
+			}
+			return true;
+		}
+
+			/* war frühere whileschleife
 			while( entry.node.parent != null && entry.prio.compareTo(entry.node.parent.entry.prio)<=0){
 				if(entry.prio.compareTo(entry.node.parent.entry.prio) == 0){
 					parentNode=entry.node.parent;
@@ -365,7 +383,9 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 			}
 			return true;
-		}
+
+			 */
+
 		if ( s.compareTo(entry.prio) > 1){
 			if(entry.node.child == null) {
 				entry.prio=s;
@@ -381,8 +401,6 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			return true;
 		}
 		return false;
-
-
 	}
 
 
