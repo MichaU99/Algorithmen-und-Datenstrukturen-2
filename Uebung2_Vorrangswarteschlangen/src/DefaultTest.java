@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class DefaultTest {
 
-    static int prio = 0, data = 0;
+    static Integer prio = 0, data = 0;
 
     static void getNewRand() {
         Random rand = new Random();
@@ -18,7 +18,7 @@ public class DefaultTest {
         BinHeap<Integer,Integer> H = new BinHeap();
         int alarm = 0;
         String filedata = "";
-        int tmp = 0;
+        Integer tmp = 0;
 
         File file = new File("Uebung2_Vorrangswarteschlangen/Testfile");
         File fileout = new File("DefaultTestFile");
@@ -61,8 +61,9 @@ public class DefaultTest {
                 assert (!H.contains(e)) : "Fehler in remove, Heap enthält entferntes Element noch";
             }
 
-            /* Tut nicht weil compareTo kein numerischer Vergleich ist
+            // Tut nicht weil compareTo kein numerischer Vergleich ist
             //Testet minimum - Einen Eintrag mit minimaler Priorität liefern.
+            /*
             if(!scanFile.hasNext()){
                 scanFile=new Scanner(fileout);
             }
@@ -73,7 +74,10 @@ public class DefaultTest {
                     tmp = prio;
                 }
             }
-            assert ((int) H.minimum().prio() == tmp) : "minimum ist gleich";
+            H.dump();
+            assert ((Integer) H.minimum().prio() == tmp) : "minimum ist gleich "+tmp+" ,prio liefert "+H.minimum().prio();
+
+
              */
 
             // Test extractMin - Einen Eintrag mit minimaler Priorität liefern und aus der Halde entfernen.

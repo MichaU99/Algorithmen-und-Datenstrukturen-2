@@ -113,7 +113,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		do{
 			if(wurzellaufnode.equals(hochlaufnode)) return true;
 			wurzellaufnode=wurzellaufnode.sibling;
-		}while (wurzellaufnode.sibling!=null);
+		}while (wurzellaufnode!=null && wurzellaufnode.sibling!=null);
 
 		return false;
 	}
@@ -149,6 +149,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			else{
 				if(laufnode.sibling==e.node) { //Falls der Vorgänger gefunden wurde
 					laufnode.sibling = e.node.sibling; //Überspringt den Wurzelknoten des zu löschenden Elements damit er im Nachhinein wieder eingefügt werden kann
+					e.node.sibling=null;
 					break;
 				}
 			}
@@ -159,6 +160,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			size--;
 			return true;
 		}
+		Node <P,D> neueHaldeStart=e.node.child.sibling;
 		while(true) { //unsicher ob diese Schleife notwendig ist oder ob insert das erfüllt
 			laufnode.parent=null;
 			if(laufnode.sibling==e.node.child){
@@ -168,7 +170,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			laufnode=laufnode.sibling;
 		}
 		//System.out.println("Anfang");
-		this.head=mergeHeap(this,new BinHeap<>(laufnode.entry));
+		this.head=mergeHeap(this,new BinHeap<>(neueHaldeStart.entry));
 		//System.out.println("Ende");
 		//changePrio(e,e.node.child.prio()); Sollte Praktisch damit umgesetzt werden, keine Ahnung wie
 		//extractMin();
