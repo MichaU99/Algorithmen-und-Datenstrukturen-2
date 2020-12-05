@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.Random;
 import java.util.Scanner;
+import java.nio.file.*;
 
 public class DefaultTest {
 
@@ -18,21 +19,23 @@ public class DefaultTest {
         BinHeap<Integer,Integer> H = new BinHeap();
         int alarm = 0;
         String filedata = "";
-        Integer tmp = 0;
+
 
         File file = new File("Uebung2_Vorrangswarteschlangen/Testfile");
         File fileout = new File("DefaultTestFile");
         if (!fileout.exists()) fileout.createNewFile();
         Scanner scanFile = new Scanner(fileout);
+        Path fileoutPath= Paths.get(fileout.getAbsolutePath());
         BufferedWriter write = new BufferedWriter(new FileWriter(fileout.getAbsoluteFile()));
 
 
         //Schreibt zufällige prio und data in Textdatei und insert'ed
-        for (int j = 0; j < 1000; j++) { //male wie oft der Test durchgeführt wird
+        for (int j = 0; j < 10; j++) { //male wie oft der Test durchgeführt wird
             H = new BinHeap();
+            Integer tmp;
             assert (H.isEmpty()) : "Heap sollte leer sein";
             if (!fileout.exists()) fileout.createNewFile();
-            for (i = 0; i < 100; i++) {
+            for (i = 0; i < 10; i++) {
                 getNewRand();
                 write.write(prio + " " + data + " ");
                 assert (H.contains(H.insert(prio, data)));
@@ -63,22 +66,25 @@ public class DefaultTest {
 
             // Tut nicht weil compareTo kein numerischer Vergleich ist
             //Testet minimum - Einen Eintrag mit minimaler Priorität liefern.
-            /*
+
+
             if(!scanFile.hasNext()){
                 scanFile=new Scanner(fileout);
             }
+            tmp = scanFile.nextInt();
+            scanFile.nextInt();
             while (scanFile.hasNext()) {
                 prio = scanFile.nextInt();
                 scanFile.nextInt();
-                if (tmp < prio) {
+                if (tmp.compareTo(prio)>0) {
                     tmp = prio;
                 }
             }
             H.dump();
-            assert ((Integer) H.minimum().prio() == tmp) : "minimum ist gleich "+tmp+" ,prio liefert "+H.minimum().prio();
+            System.out.println("Ende");
+            assert ((Integer) H.minimum().prio().compareTo(tmp)==0 ): "minimum ist gleich "+tmp+" ,prio liefert "+H.minimum().prio();
 
 
-             */
 
             // Test extractMin - Einen Eintrag mit minimaler Priorität liefern und aus der Halde entfernen.
             e = H.minimum();
@@ -86,7 +92,7 @@ public class DefaultTest {
             assert (!H.contains(e)) : "Ist nicht gleich.";
 
 
-
+/*
             // Test changePrio
             for (int k = 0; k < 5; k++) {
                 getNewRand();
@@ -96,8 +102,10 @@ public class DefaultTest {
                 assert((int)e.prio()==prio):"changePrio ist fehlerhaft";
             }
 
+ */
 
-                fileout.delete();
+
+            System.out.println(fileout.delete());
             }
 
 
@@ -110,9 +118,7 @@ public class DefaultTest {
             //System.out.println("Stimmt die Testfile mit dump() überein? "+filedata.equals(H.Debug));
             System.out.println("Es wurden keine Fehler gefunden");
             write.close();
-            fileout.delete();
-
-
-
+            scanFile.close();
+        Files.delete(fileoutPath);
     }
 }

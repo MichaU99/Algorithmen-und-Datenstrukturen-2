@@ -95,7 +95,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 		Entry <P,D > min=head;
 
-		for( Node<P,D> laufnode=min.node;laufnode.sibling!=null;laufnode=laufnode.sibling){
+		for( Node<P,D> laufnode= head.node;laufnode!=null;laufnode=laufnode.sibling){
 			if(laufnode.entry.prio.compareTo(min.prio)< 0) min= laufnode.entry;
 		}
 		return min;
@@ -113,13 +113,13 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		if(e==null || head==null) return false; //Fängt fehlerhafte Eingabe ab
 		Node<P,D> hochlaufnode=e.node,wurzellaufnode=this.head.node;
 
-
 		while(hochlaufnode.parent!=null){
 			hochlaufnode=hochlaufnode.parent;
 		}
 		do{
 			if(wurzellaufnode.equals(hochlaufnode)) return true;
 			wurzellaufnode=wurzellaufnode.sibling;
+			if(wurzellaufnode.equals(hochlaufnode)) return true;
 		}while (wurzellaufnode!=null && wurzellaufnode.sibling!=null);
 
 		return false;
@@ -246,6 +246,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 						if(H1.head.node.sibling==null) H1.head=null;
 						else H1.head = H1.head.node.sibling.entry; //Reicht das damit der Knoten von der Garbage Collection aufgesammelt wird?
 						tmp.node.sibling=null;
+						tmp.node.parent=null;
 						zwischensp[i] = new BinHeap<>(tmp);
 						filling_zwischensp++;
 						break;
@@ -257,9 +258,10 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				for (i = 0; i <= 2; i++) {
 					if (zwischensp[i] == null){
 						tmp=H2.head;
-						if(H2.head.node.sibling==null) H2.head=null;
+						if(H2.head.node.sibling==null ) H2.head=null;
 						else H2.head =H2.head.node.sibling.entry; //Reicht das damit der Knoten von der Garbage Collection aufgesammelt wird?
 						tmp.node.sibling=null;
+						tmp.node.parent=null;
 						zwischensp[i] = new BinHeap<>(tmp);
 						filling_zwischensp++;
 						break;
@@ -290,7 +292,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 					pos1=1;
 					pos2=2;
 				}
-				if(zwischensp[1]==null){
+				else if(zwischensp[1]==null){
 					pos1=0;
 					pos2=2;
 				}
