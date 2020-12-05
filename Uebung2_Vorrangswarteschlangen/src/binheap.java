@@ -343,7 +343,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 		if( s.compareTo(entry.prio) <=0) {
 			entry.prio = s;
-			while (entry.node.parent != null && entry.node.parent.entry != null) {
+			while (entry.node.parent != null && entry.node.parent.entry != null && entry.prio.compareTo(entry.node.parent.entry.prio)<0) {
 				Entry<P, D> child = entry;
 				Entry<P, D> parent = entry.node.parent.entry;
 				Node<P, D> child_Node = entry.node;
