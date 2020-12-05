@@ -103,8 +103,9 @@ class BinHeap <P extends Comparable<? super P>, D> {
     }
 
     public boolean contains (Entry<P,D> e){
-		Node<P,D> hochlaufnode=e.node,wurzellaufnode=this.head.node;
 		if(e==null || head==null) return false; //Fängt fehlerhafte Eingabe ab
+		Node<P,D> hochlaufnode=e.node,wurzellaufnode=this.head.node;
+
 
 		while(hochlaufnode.parent!=null){
 			hochlaufnode=hochlaufnode.parent;
@@ -160,13 +161,14 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		while(true) { //unsicher ob diese Schleife notwendig ist oder ob insert das erfüllt
 			laufnode.parent=null;
 			if(laufnode.sibling==e.node.child){
-				laufnode.sibling=null;
+				e.node.child.sibling=null;
 				break;
 			}
 			laufnode=laufnode.sibling;
 		}
-
-		this.head=mergeHeap(this,new BinHeap<>(e.node.child.entry));
+		System.out.println("Anfang");
+		this.head=mergeHeap(this,new BinHeap<>(laufnode.entry));
+		System.out.println("Ende");
 		//changePrio(e,e.node.child.prio()); Sollte Praktisch damit umgesetzt werden, keine Ahnung wie
 		//extractMin();
 
