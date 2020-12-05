@@ -4,7 +4,7 @@ import java.util.Comparator;
 // mit Prioritäten eines beliebigen Typs P (der die Schnittstelle
 // Comparable<P> oder Comparable<P'> für einen Obertyp P' von P
 // implementieren muss) und zusätzlichen Daten eines beliebigen Typs D.
-class P implements Comparable<P> {
+class P implements Comparable<P> { // wegmachen?
 	private P test;
 
 	public P ( P prio){
@@ -78,6 +78,13 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		return e;
 	}
 
+	public Entry<P,D> insertEntry(Entry<P,D> e) {
+
+		e.node=new Node<>(e);
+		this.head=mergeHeap(this,new BinHeap<>(e));
+		size++;
+		return e;
+	}
 	public boolean isEmpty(){
 		if (head==null) return true;
 		else return false;
@@ -131,8 +138,6 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			Node<P, D> childNode = e.node;
 			Node<P, D> parentNode = e.node.parent;
 
-
-			e.node.entry = e.node.parent.entry;
 			child.node = parentNode;
 			parent.node = childNode;
 
@@ -326,16 +331,15 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 
 	public boolean changePrio(Entry<P, D> entry, P s) { // muss noch boolena werden
+		if( head == null || entry == null|| s == null || !this.contains(entry)) return false;
 		if( s.compareTo(entry.prio) <=0) {
 			entry.prio = s;
-			while (entry.node.parent != null && entry.node.parent.entry != null && entry.prio.compareTo(entry.node.parent.entry.prio)<0) {
+			while (entry.node.parent != null && entry.node.parent.entry != null && entry.prio.compareTo(entry.node.parent.prio())<0) {
 				Entry<P, D> child = entry;
 				Entry<P, D> parent = entry.node.parent.entry;
 				Node<P, D> child_Node = entry.node;
 				Node<P, D> parent_Node = entry.node.parent;
 
-
-				entry.node.entry = entry.node.parent.entry;
 				child.node = parent_Node;
 				parent.node = child_Node;
 
@@ -345,21 +349,19 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			return true;
 		}
 
-		if ( s.compareTo(entry.prio) >= 1){
+
 			if(entry.node.child == null) {
 				entry.prio=s;
 				return true;
 			}
 			else{
 				Entry<P,D> test = entry;
+				entry.prio = s;
 				remove(entry);
-				D b = test.data;
-				insert(s,b);
-				size--;
+				insertEntry(test);
+				return true;
 			}
-			return true;
-		}
-		return false;
+
 	}
 
 
