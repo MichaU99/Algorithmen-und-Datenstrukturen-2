@@ -14,87 +14,32 @@ class P implements Comparable<P> {
 	public int compareTo(P that) {
 		return test.compareTo(that.test);
 	}
-}
+	}
+
 class BinHeap <P extends Comparable<? super P>, D> {
-	static int Test; //Kann später entfert werden soll nur zum Test der Aufrufzahl von Methoden dienen
+	//Kann später entfert werden soll nur zum Test der Aufrufzahl von Methoden dienen
+	static int Test;
 	String Debug="";
-	public int size=0;
-	private Entry<P,D> head; //Das Element mit der niedrifsten Priorität das den Baum "startet"
+	//
+
+	private int size=0;
+	private Entry<P,D> head; //Das Element mit dem niedrigsten Grad das den Baum "startet"
 
 	public BinHeap(){head=null;} //Standartkonstruktor
+
 	private BinHeap(Entry <P,D> e){ //Konstruktur für Baum mit einem Element
 		head=e;
 		size=1;
 	}
 
-	//Testmethode
+	//Testmethoden können gelöscht werden sobald abgabe ansteht
 	public Entry<P,D> test(P p, D d){
 		Entry<P,D> e=new Entry<>(p,d);
 		Node<P,D> n= new Node<>(e);
 		return e;
-	} //Kann entfert werden, dient nur zum testen fehlerhafter Entries
-
-
-
-	public Entry<P,D> insert(P p, D d) {
-		//Nullinsert abfrage?
-		if(p==null || d== null) return null;
-		Entry<P,D> e= new Entry<>(p,d);
-		e.node=new Node<>(e);
- 		this.head=mergeHeap(this,new BinHeap<>(e));
- 		size++;
-
- 		/*
-		Entry a= new Entry(55555,5);
-		a.node=new Node(a);
-
-		System.out.println("davor a: "+a.prio);
-
- 		changePrio(a, (P) e.prio());
-		System.out.println("a: "+a.prio);
-		*/
-		return e;
 	}
 
-	public boolean isEmpty(){
-		//assert ((head==null && size!=0) || head!=null && size==0);
-		if (head==null) return true;
-		else return false;
-	}
-
-	public Entry<P, D> minimum(){
-		Entry <P,D > min=head;
-		if(head==null) return null;
-		for( Node<P,D> laufnode=min.node;laufnode.sibling!=null;laufnode=laufnode.sibling){
-			if(laufnode.entry.prio.compareTo(min.prio)< 0) min= laufnode.entry; //(Irgendwas stimmt mit Prios noch nicht) habe gefixt // Doppelklammer benötig?
-		}
-		return min; // wird nur die Referenz übergeben, richtig so?
-	}
-
-	public Entry<P, D> extractMin (){
-		Entry <P,D> E =minimum();
-
-		if (head==null || !remove(E)) return null; //Falls es kein Element im Heap gibt
-
-		return E;
-    }
-
-    public boolean contains (Entry<P,D> e){
-		Node<P,D> hochlaufnode=e.node,wurzellaufnode=head.node;
-		if(e==null) return false; //Fängt fehlerhafte Eingabe ab
-
-		while(hochlaufnode.parent!=null){
-			hochlaufnode=hochlaufnode.parent;
-		}
-		do{
-			if(wurzellaufnode.equals(hochlaufnode)) return true;
-			wurzellaufnode=wurzellaufnode.sibling;
-		}while (wurzellaufnode.sibling!=null);
-
-		return false;
-	}
-	//Sollten vermutlich am Ende entfernt werden
-    public boolean priocontains (Entry<P, D> e){ //Iteriert über alle Wurzelknoten
+	public boolean priocontains (Entry<P, D> e){ //Iteriert über alle Wurzelknoten
 		if(this.head==null) return false;
 		for (Node <P,D> laufNode= head.node; laufNode!=null;laufNode=laufNode.sibling){
 			Test++;
@@ -104,7 +49,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			}
 		}
 		return false;
-	} //Wie in guter Laufzeit lösen??????
+	}
 
 	private Entry<P,D> contains_rekursive(Node<P,D> n,Entry<P,D> zusuchen){
 		Node<P,D> tmpHead=n;
@@ -120,24 +65,57 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		} while (n != tmpHead && n.parent != null);//Sibling kann hier eigentlich nicht null sein!
 		return null;
 	}
+	//Kann entfert werden, dient nur zum testen fehlerhafter Entries
 
-	/* Unbekannt ob benötigt, würde testen und gleich element bei existenz liefern
-	private Entry<P, D> contains_with_element (Entry<P, D> e){ //Theoretisch gleich zu
-		Entry rueckgabe=null,contains=null;
-		Test++;
-		if(this.head==null) return null;
-		for (Node laufNode2= head.node; laufNode2!=null;laufNode2=laufNode2.sibling){
-			if(laufNode2.prio().toString().compareTo(e.prio.toString())>0) continue;
-			else { //Durchsucht den Baum des Wurzelknotens rekursiv
-				rueckgabe=contains_rekursive(laufNode2,e);
-				if(rueckgabe!=null) contains=rueckgabe;
-				if (rueckgabe!=null) return rueckgabe;
-			}
-		}
-		return null;
+
+
+	public Entry<P,D> insert(P p, D d) {
+		if(p==null || d== null) return null; //Fängt Nullinserts ab
+		Entry<P,D> e= new Entry<>(p,d);
+		e.node=new Node<>(e);
+ 		this.head=mergeHeap(this,new BinHeap<>(e));
+ 		size++;
+		return e;
 	}
-	 */
 
+	public boolean isEmpty(){
+		if (head==null) return true;
+		else return false;
+	}
+
+	public Entry<P, D> minimum(){
+		if(head==null) return null; //Fehlerabfang falls leerer BinHeap
+
+		Entry <P,D > min=head;
+
+		for( Node<P,D> laufnode=min.node;laufnode.sibling!=null;laufnode=laufnode.sibling){
+			if(laufnode.entry.prio.compareTo(min.prio)< 0) min= laufnode.entry;
+		}
+		return min;
+	}
+
+	public Entry<P, D> extractMin (){
+		Entry <P,D> E =minimum();
+
+		if (head==null || !remove(E)) return null; //Falls es kein Element im Heap gibt
+
+		return E;
+    }
+
+    public boolean contains (Entry<P,D> e){
+		Node<P,D> hochlaufnode=e.node,wurzellaufnode=this.head.node;
+		if(e==null || head==null) return false; //Fängt fehlerhafte Eingabe ab
+
+		while(hochlaufnode.parent!=null){
+			hochlaufnode=hochlaufnode.parent;
+		}
+		do{
+			if(wurzellaufnode.equals(hochlaufnode)) return true;
+			wurzellaufnode=wurzellaufnode.sibling;
+		}while (wurzellaufnode.sibling!=null);
+
+		return false;
+	}
 
 	public boolean remove (Entry<P, D> e){
 

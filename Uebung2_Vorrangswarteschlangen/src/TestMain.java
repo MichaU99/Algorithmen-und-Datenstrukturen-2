@@ -11,9 +11,11 @@ public class TestMain {
         File file=new File("Uebung2_Vorrangswarteschlangen/Testfile");
         Scanner scanFile=new Scanner(file);
         //Scanner scanDebug=new Scanner()
-        /*H.insert("a",0);
-        H.insert("b",1);
-        H.insert("c",2);
+        System.out.println(H.contains(H.insert("a",0)));
+        System.out.println(H.contains(H.insert("b",1)));
+        System.out.println(H.contains(H.insert("c",2)));
+        /*
+
         H.insert("d",3);
         H.insert("e",4);
         H.insert("f",5);
@@ -24,6 +26,8 @@ public class TestMain {
         H.insert("k",10);
         */
         //for (int i=0;i<=100;i++) H.insert(i,100);
+
+        /*
         BinHeap.Entry<Integer,Integer> e=null;
         while (scanFile.hasNextLine()){
 
@@ -56,6 +60,6 @@ public class TestMain {
        // System.out.println("Stimmt die Testfile mit dump() überein? "+filedata.equals(H.Debug));
 
         //System.out.println(H.minimum().prio());
-
+*/
     }
 }

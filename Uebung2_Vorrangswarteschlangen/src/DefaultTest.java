@@ -32,13 +32,13 @@ public class DefaultTest {
             H = new BinHeap();
             assert (H.isEmpty()) : "Heap sollte leer sein";
             if (!fileout.exists()) fileout.createNewFile();
-            for (i = 0; i < 100; i++) {
+            for (i = 0; i < 10000; i++) {
                 getNewRand();
                 write.write(prio + " " + data + " ");
-                H.insert(prio, data);
+                assert (H.contains(H.insert(prio, data)));
                 assert (!H.isEmpty()) : "Heap sollte Elemente enthalten";
             }
-            assert (i == H.size) : "size stimmt nicht mit Anzahl Elemente im Baum ueberein| size=" + H.size + " anzahl" + i;
+            assert (i == H.size()) : "size stimmt nicht mit Anzahl Elemente im Baum ueberein| size=" + H.size() + " anzahl" + i;
 
             write.flush();
             //Checkt mithilfe der Textfile ob alle inserts auch im Baum wiedergefunden werden können
@@ -47,10 +47,8 @@ public class DefaultTest {
                 data = scanFile.nextInt();
                 if (!H.priocontains(H.test(prio, data))) {
                     H.dump();
-                    //System.out.println("ALAAARM prio= " + prio + " data= " + data + " "+ alarm++);
                 }
                 assert (H.priocontains(H.test(prio, data))) : "Elemente p:" + prio + " & d:" + data + " fehlen im Heap";
-                //System.out.println("   |||   "+prio+" | "+data.toString()+"  |||  ");
             }
 
 
