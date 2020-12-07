@@ -4,17 +4,7 @@ import java.util.Comparator;
 // mit Prioritäten eines beliebigen Typs P (der die Schnittstelle
 // Comparable<P> oder Comparable<P'> für einen Obertyp P' von P
 // implementieren muss) und zusätzlichen Daten eines beliebigen Typs D.
-class P implements Comparable<P> { // wegmachen?
-	private P test;
 
-	public P ( P prio){
-		test = prio;
-	}
-	@Override
-	public int compareTo(P that) {
-		return test.compareTo(that.test);
-	}
-	}
 
 class BinHeap <P extends Comparable<? super P>, D> {
 	//Kann später entfert werden soll nur zum Test der Aufrufzahl von Methoden dienen
