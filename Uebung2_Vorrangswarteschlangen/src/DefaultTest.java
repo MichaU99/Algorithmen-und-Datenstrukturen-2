@@ -30,6 +30,14 @@ public class DefaultTest {
 
 
         //Schreibt zufällige prio und data in Textdatei und insert'ed
+        try{
+            assert(false);
+            return ;
+        }
+        catch(AssertionError f){
+            System.out.println("Test beginnt");
+        }
+
         for (int j = 0; j < 10; j++) { //male wie oft der Test durchgeführt wird
             H = new BinHeap();
             Integer tmp;
@@ -64,7 +72,7 @@ public class DefaultTest {
                 assert (!H.contains(e)) : "Fehler in remove, Heap enthält entferntes Element noch";
             }
 
-            // Tut nicht weil compareTo kein numerischer Vergleich ist
+            // Tut nicht weil die Datei nicht gelöscht werden kann
             //Testet minimum - Einen Eintrag mit minimaler Priorität liefern.
 
 
@@ -105,7 +113,6 @@ public class DefaultTest {
  */
 
 
-            System.out.println(fileout.delete());
             }
 
 
@@ -119,6 +126,6 @@ public class DefaultTest {
             System.out.println("Es wurden keine Fehler gefunden");
             write.close();
             scanFile.close();
-        Files.delete(fileoutPath);
+        //Files.delete(fileoutPath);
     }
 }
