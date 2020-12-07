@@ -1,5 +1,3 @@
-import java.util.Comparator;
-
 // Als Binomial-Halde implementierte Minimum-Vorrangwarteschlange
 // mit Prioritäten eines beliebigen Typs P (der die Schnittstelle
 // Comparable<P> oder Comparable<P'> für einen Obertyp P' von P
@@ -7,9 +5,6 @@ import java.util.Comparator;
 
 
 class BinHeap <P extends Comparable<? super P>, D> {
-	//Kann später entfert werden soll nur zum Test der Aufrufzahl von Methoden dienen
-	static int Test;
-	String Debug="";
 	//
 
 	private int size=0;
@@ -23,24 +18,6 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	}
 
 	//Testmethoden können gelöscht werden sobald abgabe ansteht
-	public Entry<P,D> test(P p, D d){
-		Entry<P,D> e=new Entry<>(p,d);
-		Node<P,D> n= new Node<>(e);
-		return e;
-	}
-
-	public boolean priocontains (Entry<P, D> e){ //Iteriert über alle Wurzelknoten
-		if(this.head==null) return false;
-		for (Node <P,D> laufNode= head.node; laufNode!=null;laufNode=laufNode.sibling){
-			Test++;
-			if(laufNode.entry.prio.compareTo(e.prio) > 0) continue;
-			else { //Durchsucht den Baum des Wurzelknotens rekursiv
-				if (contains_rekursive(laufNode,e)!=null) return true;
-			}
-		}
-		return false;
-	}
-
 	private Entry<P,D> contains_rekursive(Node<P,D> n,Entry<P,D> zusuchen){
 		Node<P,D> tmpHead=n;
 		Test++;
@@ -75,6 +52,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		size++;
 		return e;
 	}
+
 	public boolean isEmpty(){
 		if (head==null) return true;
 		else return false;
@@ -109,7 +87,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		do{
 			if(wurzellaufnode.equals(hochlaufnode)) return true;
 			wurzellaufnode=wurzellaufnode.sibling;
-			if(wurzellaufnode.equals(hochlaufnode)) return true;
+			if(wurzellaufnode!=null && wurzellaufnode.equals(hochlaufnode)) return true;
 		}while (wurzellaufnode!=null && wurzellaufnode.sibling!=null);
 
 		return false;
@@ -199,7 +177,6 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				for (i = 0; i < Tiefe; i++)
 					platzhalter = platzhalter + platzhalterVorlage; //Setzt die Leerzeichen für die Ausgabe auf die richtige Länge
 				System.out.println(platzhalter + tmpHead.entry.prio + " " + tmpHead.entry.data);
-				Debug=Debug+platzhalter + tmpHead.entry.prio + " " + tmpHead.entry.data+"\n"; //Extra Debug String für Vergleiche
 				//if(tmpHead.parent!=null && tmpHead.degree<tmpHead.sibling.degree) System.out.println("ALAAARM ");
 				if (tmpHead.child != null) dump(tmpHead.child, Tiefe + 1);
 
@@ -211,7 +188,6 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				for (i = 0; i < Tiefe; i++)
 					platzhalter = platzhalter + platzhalterVorlage; //Setzt die Leerzeichen für die Ausgabe auf die richtige Länge
 				System.out.println(platzhalter + tmpHead.entry.prio + " " + tmpHead.entry.data);
-				Debug=Debug+platzhalter + tmpHead.entry.prio + " " + tmpHead.entry.data+"\n"; //Extra Debug String für Vergleiche
 				//if(tmpHead.parent!=null && tmpHead.degree<tmpHead.sibling.degree) System.out.println("ALAAARM ");
 				if (tmpHead.child != null) dump(tmpHead.child, Tiefe + 1);
 				tmpHead = tmpHead.sibling;
