@@ -32,6 +32,7 @@ public class DefaultTest {
         //Schreibt zufällige prio und data in Textdatei und insert'ed
         try{
             assert(false);
+            System.out.println("Fehler: Asserts nicht aktiv");
             return ;
         }
         catch(AssertionError f){
