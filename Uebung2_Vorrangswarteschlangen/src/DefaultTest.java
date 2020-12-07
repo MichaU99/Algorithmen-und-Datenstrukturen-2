@@ -67,7 +67,7 @@ public class DefaultTest {
             // Tut nicht weil compareTo kein numerischer Vergleich ist
             //Testet minimum - Einen Eintrag mit minimaler Priorität liefern.
 
-
+            /*
             if(!scanFile.hasNext()){
                 scanFile=new Scanner(fileout);
             }
@@ -83,7 +83,7 @@ public class DefaultTest {
             H.dump();
             System.out.println("Ende");
             assert ((Integer) H.minimum().prio().compareTo(tmp)==0 ): "minimum ist gleich "+tmp+" ,prio liefert "+H.minimum().prio();
-
+            */
 
 
             // Test extractMin - Einen Eintrag mit minimaler Priorität liefern und aus der Halde entfernen.
@@ -105,7 +105,7 @@ public class DefaultTest {
  */
 
 
-            System.out.println(fileout.delete());
+            //System.out.println(fileout.delete());
             }
 
 
