@@ -143,11 +143,11 @@ public class DefaultTest {
                 case 1://Testet isEmpty()
                     scanFile = new Scanner(fileout2);
                     //Testet
-                    if(scanFile.hasNext() && !H.isEmpty()){
+                    if(scanFile.hasNext() && H.isEmpty()){
                         H.dump();
-                        assert(!H.isEmpty()) : "IsEmpty gibt true zurück obwohl Elemente im Baum sind";
+                        assert(false) : "IsEmpty gibt true zurück obwohl Elemente im Baum sind";
                     }
-                    else{
+                    else if(!scanFile.hasNext() && !H.isEmpty()){
                         H.dump();
                         assert (H.isEmpty()) : "IsEmpty gibt false zurück obwohl der Baum leer sein sollte";
                     }
@@ -162,10 +162,10 @@ public class DefaultTest {
                         assert (false):"Ein hinzugefügtes Element mit prio:"+prio+" data:"+data+",wird nicht im Baum gefunden";
                     }
                     System.out.println("2");
+                    write.flush();
                     break;
 
                 case 3://Testet size()
-                    write.flush();
                     scanFile=new Scanner(fileout2);
                     i=0;
                     while (scanFile.hasNext()){
@@ -220,9 +220,11 @@ public class DefaultTest {
                             tmp = prio;
                         }
                     }
-                    if(tmp==null && H.minimum()!=null){
-                        H.dump();
-                        assert(false): "Minimum liefert einen Entry("+H.minimum()+"), obwohl sich kein Element im Baum befindet";
+                    if(tmp==null){
+                        if(H.minimum()!=null){
+                            H.dump();
+                            assert (false) : "Minimum liefert einen Entry(" + H.minimum() + "), obwohl sich kein Element im Baum befindet";
+                        }
                     }
                     else if(H.minimum().prio().compareTo(tmp)!=0) {
                         H.dump();
