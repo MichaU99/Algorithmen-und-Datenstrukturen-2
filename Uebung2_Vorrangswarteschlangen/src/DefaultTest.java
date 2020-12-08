@@ -141,6 +141,7 @@ public class DefaultTest {
         for(int o=0;o<completeRandTestDurchfuehrungen;o++) {
             switch (rand.nextInt((methodenanzahl - 1) + 1) + 1) {
                 case 1://Testet isEmpty()
+                    System.out.println("1 start");
                     scanFile = new Scanner(fileout2);
                     //Testet
                     if(scanFile.hasNext() && H.isEmpty()){
@@ -151,21 +152,25 @@ public class DefaultTest {
                         H.dump();
                         assert (H.isEmpty()) : "IsEmpty gibt false zurück obwohl der Baum leer sein sollte";
                     }
-                    System.out.println("1");
+                    System.out.println("1 end");
+                    System.out.println();
                     break;
 
                 case 2://Testet insert und fügt richtige neue Elemente hinzu
+                    System.out.println("2 start");
                     getNewRand();
                     write.write(prio + " " + data + " ");
                     if(!H.contains(H.insert(prio, data))) {
                         H.dump();
                         assert (false):"Ein hinzugefügtes Element mit prio:"+prio+" data:"+data+",wird nicht im Baum gefunden";
                     }
-                    System.out.println("2");
                     write.flush();
+                    System.out.println("2 end");
+                    System.out.println();
                     break;
 
                 case 3://Testet size()
+                    System.out.println("3 start");
                     scanFile=new Scanner(fileout2);
                     i=0;
                     while (scanFile.hasNext()){
@@ -177,10 +182,12 @@ public class DefaultTest {
                         H.dump();
                         assert (false) : "size stimmt nicht mit Anzahl Elemente im Baum überein! size=" + H.size() + " wirkliche anzahl" + i;
                     }
-                    System.out.println("3");
+                    System.out.println("3 end");
+                    System.out.println();
                     break;
 
                 case 4://Testet fehlerhafte inserts
+                    System.out.println("4 start");
                     e=null;
                     if(H.contains(e)) {
                         H.dump();
@@ -192,10 +199,12 @@ public class DefaultTest {
                         H.dump();
                         assert(false): "Der Binheap enthealt einen fehlerhaften Entry mit prio:"+prio+" data:"+data;
                     }
-                    System.out.println("4");
+                    System.out.println("4 end");
+                    System.out.println();
                     break;
 
                 case 5://Testet remove()
+                    System.out.println("5 start");
                     getNewRand();
                     e = H.insert(prio, data);
                     H.remove(e);
@@ -203,10 +212,12 @@ public class DefaultTest {
                         H.dump();
                         assert (false) : "Fehler in remove, Heap enthält entferntes Element noch";
                     }
-                    System.out.println("5");
+                    System.out.println("5 end");
+                    System.out.println();
                     break;
 
                 case 6://Testet minimum
+                    System.out.println("6 start");
                     scanFile=new Scanner(fileout2);
                     if(scanFile.hasNext()) {
                         tmp = scanFile.nextInt();
@@ -230,7 +241,8 @@ public class DefaultTest {
                         H.dump();
                         assert (false) : "minimum ist gleich " + tmp + " ,prio liefert " + H.minimum().prio();
                     }
-                    System.out.println("6");
+                    System.out.println("6 end");
+                    System.out.println();
                     break;
             }
         }
