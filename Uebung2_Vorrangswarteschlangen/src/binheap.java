@@ -218,8 +218,10 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				if(filling_zwischensp==3) pos1=0;
 				else{
 					for(i=0;i<=2;i++){
-						if(zwischensp[i]!=null) pos1=i;
-						break;
+						if(zwischensp[i]!=null){
+							pos1=i;
+							break;
+						}
 					}
 				}
 				if(buildH.head==null) buildH.head=zwischensp[pos1].head;
