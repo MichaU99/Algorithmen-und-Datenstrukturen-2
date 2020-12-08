@@ -14,7 +14,7 @@ public class DefaultTest {
     }
 
     public static void main(String[] args) throws IOException {
-        int testdurchfuehrungen=2;
+        int testdurchfuehrungen=1;
         int i;
         Integer tmp=null;
         BinHeap.Entry<Integer,Integer> e = null;
@@ -22,7 +22,7 @@ public class DefaultTest {
         BinHeap<Integer,Integer> K = new BinHeap();
         String filedata = "";
 
-        File fileout = new File("DefaultTestFile");
+        File fileout = new File("C:\\Users\\Veronika\\Documents\\GitHub\\Algorithmen-und-Datenstrukturen-2\\Uebung2_Vorrangswarteschlangen\\DefaultTest");
         if (!fileout.exists()) fileout.createNewFile();
         Scanner scanFile = new Scanner(fileout);
         BufferedWriter write = new BufferedWriter(new FileWriter(fileout.getAbsoluteFile()));
@@ -47,9 +47,11 @@ public class DefaultTest {
             assert (H.isEmpty()) : "Heap sollte leer sein";
             if (!fileout.exists()) fileout.createNewFile();
 
-            for (i = 0; i < 100; i++) {
+            for (i = 0; i < 5; i++) {
                 getNewRand();
+                System.out.println(prio + " " + data + " ");
                 write.write(prio + " " + data + " ");
+                System.out.println("Eingefügt wird "+prio + " " + data + " ");
                 assert (H.contains(H.insert(prio, data)));
                 assert (!H.isEmpty()) : "Heap sollte Elemente enthalten";
             }
@@ -75,43 +77,10 @@ public class DefaultTest {
             assert (!H.contains(e)): "Der Binheap enthealt einen null-Entry";
 
 
-            //Testet remove mit zufälligen Werten
-            for (int k = 0; k < 5; k++) {
-                getNewRand();
-                e = H.insert(prio, data);
-                H.remove(e);
-                assert (!H.contains(e)) : "Fehler in remove, Heap enthält entferntes Element noch";
-            }
 
-            // Tut nicht weil die Datei nicht gelöscht werden kann
-            //Testet minimum - Einen Eintrag mit minimaler Priorität liefern.
-/*
-            if(!scanFile.hasNext()){
-                scanFile=new Scanner(fileout);
-            }
-            tmp = scanFile.nextInt();
-            scanFile.nextInt();
-
-            while (scanFile.hasNext()) {
-                prio = scanFile.nextInt();
-                scanFile.nextInt();
-                if (tmp.compareTo(prio)>0) {
-                    tmp = prio;
-                }
-            }
-            assert ((Integer) H.minimum().prio().compareTo(tmp)==0 ): "minimum ist gleich "+tmp+" ,prio liefert "+H.minimum().prio();
-*/
-
-
-            // Test extractMin - Einen Eintrag mit minimaler Priorität liefern und aus der Halde entfernen.
-            e = H.minimum();
-            H.extractMin();
-            assert (!H.contains(e)) : "ExtractMin enthealt";
-
-
-
+            H.dump();
             // Test changePrio
-            for (int k = 0; k < 5; k++) {
+            for (int k = 0; k < 10; k++) {
                 getNewRand();
                 System.out.println("Change Prio beginnt, Initialinsert: prio:"+prio+" data:"+data);
                 e = H.insert(prio, data);

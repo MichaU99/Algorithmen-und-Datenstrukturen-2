@@ -4,6 +4,8 @@
 // implementieren muss) und zusätzlichen Daten eines beliebigen Typs D.
 
 
+import java.sql.SQLOutput;
+
 class BinHeap <P extends Comparable<? super P>, D> {
 
 	private int size=0;
@@ -17,18 +19,22 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	}
 
 	public Entry<P,D> insert(P p, D d) {
+		System.out.println("--------------------Insertbeginn "+p);
 		if(p==null || d== null) return null; //Fängt Nullinserts ab
 		Entry<P,D> e= new Entry<>(p,d);
 		e.node=new Node<>(e);
  		this.head=mergeHeap(this,new BinHeap<>(e));
  		size++;
+		System.out.println("--------------------Insertende");
 		return e;
 	}
 
 	public Entry<P,D> insertEntry(Entry<P,D> e) {
+		System.out.println("--------------------Insert_changePrio_beginn");
 		e.node=new Node<>(e);
 		this.head=mergeHeap(this,new BinHeap<>(e));
 		size++;
+		System.out.println("--------------------Insert_changePrio_ende");
 		return e;
 	}
 
@@ -73,13 +79,14 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	}
 
 	public boolean remove (Entry<P, D> e){
-
+		System.out.println("-----anfang Remove");
 		if (e==null || e.node==null || !contains(e)) return false;
 
 		int tmpsize=size;
 
 
 		while(e.node.parent!=null && e.node.parent.entry!= null) {
+			System.out.println("-----Remove: Hochschieben der Wurzel");
 			Entry<P, D> child = e;
 			Entry<P, D> parent = e.node.parent.entry;
 			Node<P, D> childNode = e.node;
@@ -93,7 +100,9 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 
 		for(Node <P,D> laufnode=this.head.node;laufnode!=null;laufnode=laufnode.sibling) { //Sucht den Vorgänger des zu entfernden Elements
+			System.out.println("-----Remove: Sucht Vorgänger");
 			if(laufnode==e.node) { //Falls das zu entfernende Element =head ist
+				System.out.println("-----Remove: sucht Vorgänger: Falls das zu entfernende Element =head ist");
 				if(laufnode.sibling==null) head=null; //Falls das zu entfernende Element das einzige im Heap ist
 				else this.head = e.node.sibling.entry;
 				break;
@@ -102,6 +111,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				if(laufnode.sibling==e.node) { //Falls der Vorgänger gefunden wurde
 					laufnode.sibling = e.node.sibling; //Überspringt den Wurzelknoten des zu löschenden Elements damit er im Nachhinein wieder eingefügt werden kann
 					e.node.sibling=null;
+					System.out.println("-----Remove: gefunden Vorgänger");
 					break;
 				}
 			}
@@ -109,14 +119,17 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 		Node<P,D> laufnode=e.node.child;
 		if(laufnode==null){//Abbruch falls e degree 0 hat
+			System.out.println("-----Remove: nur von einem blattknoten");
 			size--;
 			return true;
 		}
 		Node <P,D> neueHaldeStart=e.node.child.sibling;
+		System.out.println("-----Remove: anfang von unterbrechung der siblingkliste");
 		while(true) { //unsicher ob diese Schleife notwendig ist oder ob insert das erfüllt
 			laufnode.parent=null;
 			if(laufnode.sibling==e.node.child){
 				e.node.child.sibling=null;
+				System.out.println("-----Remove: unterbrechung der siblingkliste erfolgt");
 				break;
 			}
 			laufnode=laufnode.sibling;
@@ -130,7 +143,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 		//Warum sollte ich hier den Aufwand betreiben die Prio zu ändern anstatt es so zu machen
 		size=tmpsize-1;
-
+		System.out.println("-----ende Remove");
 		return true;
 	}
 
@@ -181,6 +194,8 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		Entry<P,D> tmp;
 		BinHeap<P,D> buildH=new BinHeap<>();
 		BinHeap<P,D>[] zwischensp=new BinHeap[3]; //Zwischenspeicher für bis zu drei Bäume
+
+		System.out.println("---------------beginn_mergeHeap mit Head");
 
 		while((H1.head!=null)||(H2.head!=null)||(filling_zwischensp!=0)){
 			if(H1.head!=null && H1.head.node.degree==k) { //Codedopplung mit dem nächsten if-Statement, vielleicht Hilfsmethode?
@@ -248,16 +263,21 @@ class BinHeap <P extends Comparable<? super P>, D> {
 					pos2=1;
 				}
 				zwischensp[pos1]=mergeEqTree(zwischensp[pos1].head,zwischensp[pos2].head); //Ist das eine gute Idee? Kann man den entstehenden Tree besser übergeben?
+				System.out.println("---------------MergeHeap: Equalstree rausgehen");
 				zwischensp[pos2]=null;
 				filling_zwischensp--;
 			}
+
 			k++;
+			System.out.println("---------------MergeHeap: k wird erhöht auf"+k);
 		}
+		System.out.println("---------------ende_mergeHeap mit Head");
 		return buildH.head;
+
 	}
 
 		public BinHeap<P,D> mergeEqTree(Entry<P,D> H1, Entry<P,D> H2){ //Hilfsoperation zur Vereinigung zweier Bäume des gleichen Grads
-
+			System.out.println("----------Anfang mergeEqTree");
 			int degree=H1.node.degree;
 			Entry<P,D> dom,sub;
 			if(degree!=H2.node.degree) return null;
@@ -278,12 +298,15 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				sub.node.sibling=dom.node.child.sibling;
 				dom.node.child=dom.node.child.sibling=sub.node;
 			}
+			System.out.println("----------Ende mergeEqTree");
 			return new BinHeap<>(dom);
 		}
 
 	public boolean changePrio(Entry<P, D> entry, P s) { // muss noch boolena werden
 		if( head == null || entry == null|| s == null || !this.contains(entry)) return false;
+		System.out.println("changePrio:reingekommen");
 		if( s.compareTo(entry.prio) <=0) {
+			System.out.println("changePrio: kleinergleich neue Prio");
 			entry.prio = s;
 			while (entry.node.parent != null && entry.node.parent.entry != null && entry.prio.compareTo(entry.node.parent.prio())<0) {
 				Entry<P, D> child = entry;
@@ -302,12 +325,14 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 			if(entry.node.child == null) {
 				entry.prio=s;
+				System.out.println("changePrio: Blattknoten");
 				return true;
 			}
 			else{
+				System.out.println("changePrio: muss removt werden");
 				Entry<P,D> test = entry;
-				entry.prio = s;
 				remove(entry);
+				test.prio = s;
 				insertEntry(test);
 				return true;
 			}
