@@ -14,22 +14,21 @@ public class DefaultTest {
     }
 
     public static void main(String[] args) throws IOException {
+        int testdurchfuehrungen=2;
         int i;
+        Integer tmp=null;
         BinHeap.Entry<Integer,Integer> e = null;
         BinHeap<Integer,Integer> H = new BinHeap();
-        int alarm = 0;
+        BinHeap<Integer,Integer> K = new BinHeap();
         String filedata = "";
 
-
-        File file = new File("Uebung2_Vorrangswarteschlangen/Testfile");
         File fileout = new File("DefaultTestFile");
         if (!fileout.exists()) fileout.createNewFile();
         Scanner scanFile = new Scanner(fileout);
-        Path fileoutPath= Paths.get(fileout.getAbsolutePath());
         BufferedWriter write = new BufferedWriter(new FileWriter(fileout.getAbsoluteFile()));
 
 
-        //Schreibt zufällige prio und data in Textdatei und insert'ed
+        //Testet ob Inserts aktiv sind
         try{
             assert(false);
             System.out.println("Fehler: Asserts nicht aktiv");
@@ -39,12 +38,16 @@ public class DefaultTest {
             System.out.println("Test beginnt");
         }
 
-        for (int j = 0; j < 10; j++) { //male wie oft der Test durchgeführt wird
+        //Schreibt zufällige prio und data in Textdatei und insert'ed
+        for (int j = 0; j < testdurchfuehrungen; j++) { //male wie oft der Test durchgeführt wird
             H = new BinHeap();
-            Integer tmp;
+            scanFile = new Scanner(fileout);
+            write = new BufferedWriter(new FileWriter(fileout.getAbsoluteFile()));
+
             assert (H.isEmpty()) : "Heap sollte leer sein";
             if (!fileout.exists()) fileout.createNewFile();
-            for (i = 0; i < 10; i++) {
+
+            for (i = 0; i < 100; i++) {
                 getNewRand();
                 write.write(prio + " " + data + " ");
                 assert (H.contains(H.insert(prio, data)));
@@ -53,19 +56,26 @@ public class DefaultTest {
             assert (i == H.size()) : "size stimmt nicht mit Anzahl Elemente im Baum ueberein| size=" + H.size() + " anzahl" + i;
 
             write.flush();
+
             //Checkt mithilfe der Textfile ob alle inserts auch im Baum wiedergefunden werden können
             while (scanFile.hasNext()) {
                 prio = scanFile.nextInt();
                 data = scanFile.nextInt();
-                if (!H.priocontains(H.test(prio, data))) {
+                e= H.insert(prio,data);
+                if (!H.contains(e)) {
                     H.dump();
                 }
-                assert (H.priocontains(H.test(prio, data))) : "Elemente p:" + prio + " & d:" + data + " fehlen im Heap";
+                getNewRand();
+
+                assert (H.contains(e)) : "Elemente p:" + prio + " & d:" + data + " fehlen im Heap";
+                assert(!H.contains(K.insert(prio,data))) : "H enthealt einen entry den es nicht im Heap gibt";
             }
+
+            e=null;
+            assert (!H.contains(e)): "Der Binheap enthealt einen null-Entry";
 
 
             //Testet remove mit zufälligen Werten
-
             for (int k = 0; k < 5; k++) {
                 getNewRand();
                 e = H.insert(prio, data);
@@ -75,13 +85,13 @@ public class DefaultTest {
 
             // Tut nicht weil die Datei nicht gelöscht werden kann
             //Testet minimum - Einen Eintrag mit minimaler Priorität liefern.
-
-            /*
+/*
             if(!scanFile.hasNext()){
                 scanFile=new Scanner(fileout);
             }
             tmp = scanFile.nextInt();
             scanFile.nextInt();
+
             while (scanFile.hasNext()) {
                 prio = scanFile.nextInt();
                 scanFile.nextInt();
@@ -89,45 +99,34 @@ public class DefaultTest {
                     tmp = prio;
                 }
             }
-            H.dump();
-            System.out.println("Ende");
             assert ((Integer) H.minimum().prio().compareTo(tmp)==0 ): "minimum ist gleich "+tmp+" ,prio liefert "+H.minimum().prio();
-            */
+*/
 
 
             // Test extractMin - Einen Eintrag mit minimaler Priorität liefern und aus der Halde entfernen.
             e = H.minimum();
             H.extractMin();
-            assert (!H.contains(e)) : "Ist nicht gleich.";
+            assert (!H.contains(e)) : "ExtractMin enthealt";
 
 
 /*
             // Test changePrio
             for (int k = 0; k < 5; k++) {
+                System.out.println("Change Prio beginnt");
                 getNewRand();
                 e = H.insert(prio, data);
                 getNewRand();
                 H.changePrio(e,prio);
                 assert((int)e.prio()==prio):"changePrio ist fehlerhaft";
+                System.out.println("Change Prio endet");
             }
-
- */
-
-
-            //System.out.println(fileout.delete());
-            }
+*/
 
 
-
-
-        /*while (scanFile.hasNextLine()){
-            filedata=filedata+ scanFile.nextLine()+"\n";
-        }*/
-            //System.out.println(H.Test);
-            //System.out.println("Stimmt die Testfile mit dump() überein? "+filedata.equals(H.Debug));
-            System.out.println("Es wurden keine Fehler gefunden");
             write.close();
             scanFile.close();
-        //Files.delete(fileoutPath);
+            //System.out.println(fileout.delete());
+            }
+            System.out.println("Es wurden keine Fehler gefunden");
     }
 }
