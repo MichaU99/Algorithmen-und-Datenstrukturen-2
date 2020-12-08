@@ -18,9 +18,11 @@ public class DefaultTest {
         while(scan.hasNext()){
             string=string+scan.next();
         }
+        scan.close();
         return string;
     }
     static void deleteStringFromFile(String todelete,String fileasstring,File todeletefrom) throws IOException {
+
         fileasstring.replaceAll("\\b"+todelete+"\\b","");
         Writer write=new BufferedWriter(new FileWriter(todeletefrom.getAbsoluteFile()));
         write.write(fileasstring);
@@ -184,7 +186,6 @@ public class DefaultTest {
                         H.dump();
                         assert (false):"Ein hinzugefügtes Element mit prio:"+prio+" data:"+data+",wird nicht im Baum gefunden";
                     }
-                    write.flush();
                     System.out.println("2 end");
                     System.out.println();
                     break;
