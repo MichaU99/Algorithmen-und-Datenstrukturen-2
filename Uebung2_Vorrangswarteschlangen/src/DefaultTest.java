@@ -12,9 +12,22 @@ public class DefaultTest {
         prio = rand.nextInt();
         data = rand.nextInt();
     }
+    static String fileToString(File file) throws FileNotFoundException {
+        String string="";
+        Scanner scan = new Scanner(file);
+        while(scan.hasNext()){
+            string=string+scan.next();
+        }
+        return string;
+    }
+    static void deleteStringFromFile(String todelete,String fileasstring,File todeletefrom) throws IOException {
+        fileasstring.replaceAll("\\b"+todelete+"\\b","");
+        Writer write=new BufferedWriter(new FileWriter(todeletefrom.getAbsoluteFile()));
+        write.write(fileasstring);
+    }
 
     public static void main(String[] args) throws IOException {
-        int testdurchfuehrungen=1;
+        int testdurchfuehrungen=5;
         int completeRandTestDurchfuehrungen=20;
         int initialbaumgroeße=10;
         int methodenanzahl=6;
@@ -128,15 +141,21 @@ public class DefaultTest {
                 assert((int)e.prio()==prio):"changePrio ist fehlerhaft";
                 System.out.println("Change Prio endet\n");
             }
+ */
             write.close();
             scanFile.close();
-            }
-*/
+            write=new BufferedWriter(new FileWriter(fileout));
+            write.write("");
+        }
+
         //Vorbereitung für komplettes Randomtesting
         scanFile = new Scanner(fileout2);
         write = new BufferedWriter(new FileWriter(fileout2.getAbsoluteFile()));
+        write.write("");
         H = new BinHeap();
-        if (!fileout2.exists()) fileout2.createNewFile();
+        e=null;
+        fileout2.createNewFile();
+
         //
         for(int o=0;o<completeRandTestDurchfuehrungen;o++) {
             switch (rand.nextInt((methodenanzahl - 1) + 1) + 1) {
@@ -160,7 +179,8 @@ public class DefaultTest {
                     System.out.println("2 start");
                     getNewRand();
                     write.write(prio + " " + data + " ");
-                    if(!H.contains(H.insert(prio, data))) {
+                    e=H.insert(prio,data);
+                    if(!H.contains(e)) {
                         H.dump();
                         assert (false):"Ein hinzugefügtes Element mit prio:"+prio+" data:"+data+",wird nicht im Baum gefunden";
                     }
@@ -180,7 +200,7 @@ public class DefaultTest {
                     }
                     if(i != H.size()){
                         H.dump();
-                        assert (false) : "size stimmt nicht mit Anzahl Elemente im Baum überein! size=" + H.size() + " wirkliche anzahl" + i;
+                        assert (false) : "size stimmt nicht mit Anzahl Elemente im Baum überein! size=" + H.size() + " wirkliche anzahl " + i;
                     }
                     System.out.println("3 end");
                     System.out.println();
@@ -205,8 +225,10 @@ public class DefaultTest {
 
                 case 5://Testet remove()
                     System.out.println("5 start");
-                    getNewRand();
-                    e = H.insert(prio, data);
+
+                    String entryasstring=prio+" "+data;
+
+                    deleteStringFromFile(entryasstring,fileToString(fileout2),fileout2);
                     H.remove(e);
                     if(H.contains(e)) {
                         H.dump();
@@ -231,12 +253,14 @@ public class DefaultTest {
                             tmp = prio;
                         }
                     }
+                    H.dump();
                     if(tmp==null){
                         if(H.minimum()!=null){
                             H.dump();
                             assert (false) : "Minimum liefert einen Entry(" + H.minimum() + "), obwohl sich kein Element im Baum befindet";
                         }
                     }
+
                     else if(H.minimum().prio().compareTo(tmp)!=0) {
                         H.dump();
                         assert (false) : "minimum ist gleich " + tmp + " ,prio liefert " + H.minimum().prio();
@@ -246,7 +270,12 @@ public class DefaultTest {
                     break;
             }
         }
-            System.out.println("Es wurden keine Fehler gefunden");
+        System.out.println("Es wurden keine Fehler gefunden");
+
+        write.close();
+        scanFile.close();
+        System.out.println(fileout.delete());
+        System.out.println(fileout2.delete());
+
     }
-}
 }
