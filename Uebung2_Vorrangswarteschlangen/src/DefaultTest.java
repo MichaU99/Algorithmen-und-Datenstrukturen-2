@@ -109,18 +109,19 @@ public class DefaultTest {
             assert (!H.contains(e)) : "ExtractMin enthealt";
 
 
-/*
+
             // Test changePrio
             for (int k = 0; k < 5; k++) {
-                System.out.println("Change Prio beginnt");
                 getNewRand();
+                System.out.println("Change Prio beginnt, Initialinsert: prio:"+prio+" data:"+data);
                 e = H.insert(prio, data);
                 getNewRand();
+                System.out.println("Changed to prio:"+prio);
                 H.changePrio(e,prio);
                 assert((int)e.prio()==prio):"changePrio ist fehlerhaft";
-                System.out.println("Change Prio endet");
+                System.out.println("Change Prio endet\n");
             }
-*/
+
 
 
             write.close();
