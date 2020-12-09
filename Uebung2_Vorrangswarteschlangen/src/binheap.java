@@ -69,7 +69,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		while(hochlaufnode.parent!=null){
 			hochlaufnode=hochlaufnode.parent;
 		}
-		do{
+		do{ //Verbesserungswürdig
 			if(wurzellaufnode.equals(hochlaufnode)) return true;
 			wurzellaufnode=wurzellaufnode.sibling;
 			if(wurzellaufnode!=null && wurzellaufnode.equals(hochlaufnode)) return true;
@@ -84,7 +84,6 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 		int tmpsize=size;
 
-
 		while(e.node.parent!=null && e.node.parent.entry!= null) {
 			System.out.println("-----Remove: Hochschieben der Wurzel");
 			Entry<P, D> child = e;
@@ -98,6 +97,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			childNode.entry = parent;
 			parentNode.entry = child;
 		}
+		if(e.node.child.entry==head) head=e;
 
 		for(Node <P,D> laufnode=this.head.node;laufnode!=null;laufnode=laufnode.sibling) { //Sucht den Vorgänger des zu entfernden Elements
 			System.out.println("-----Remove: Sucht Vorgänger");
