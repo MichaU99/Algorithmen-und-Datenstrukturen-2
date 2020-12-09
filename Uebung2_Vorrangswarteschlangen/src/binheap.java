@@ -108,7 +108,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			System.out.println("-----Remove: Sucht Vorgänger");
 			if(laufnode==e.node) { //Falls das zu entfernende Element =head ist
 				System.out.println("-----Remove: sucht Vorgänger: Falls das zu entfernende Element =head ist");
-				head.entry.node=head.sibling;
+				head=head.sibling;
 				break;
 			}
 			else{
@@ -142,7 +142,8 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 		 */
 		//System.out.println("Anfang");
-		this.head=mergeHeap(new BinHeap<>(head),new BinHeap<>(neueHaldeStart));
+		e.node.child.sibling=null;
+		this.head=mergeHeap(this,new BinHeap<>(neueHaldeStart));
 		//System.out.println("Ende");
 		//changePrio(e,e.node.child.prio()); Sollte Praktisch damit umgesetzt werden, keine Ahnung wie
 		//extractMin();
@@ -415,17 +416,27 @@ class BinHeap <P extends Comparable<? super P>, D> {
     }
 
 }
+//ERWEITERTES TESTPROGRAMM
+//Befehle	Insert 				+ a
+//			Remove				- 1
+// 			Minimum				?
+//			Extract Minimum		!
+//			Change Prio			= 1 a
+//			Is Emtpy			#
+//			Contains			& 1
 
-//Erweitertes Testprogramm, welches 3 verschiedene Halden erzeugt
+// a Steht für beliebige Prio in diesem Fall Buchstaben
+// 1 Steht für beliebigen Eintrag, in diesem Fall Zahlen (ArrayIndizes)
+
+// Interaktives Testprogramm für die Klasse BinHeap.
 class BinHeapTest {
 	public static void main (String [] args) throws java.io.IOException {
 		// Leere Halde mit Prioritäten des Typs String und zugehörigen
 		// Daten des Typs Integer erzeugen.
 		// (Die Implementierung muss aber natürlich auch mit anderen
 		// Typen funktionieren.)
-		BinHeap<String, Integer> heap1 = new BinHeap<String, Integer>();
-		BinHeap<String, Integer> heap2 = new BinHeap<String, Integer>();
-		BinHeap<String, Integer> heap3 = new BinHeap<String, Integer>();
+		BinHeap<String, Integer> heap = new BinHeap<String, Integer>();
+
 		// Feld mit allen eingefügten Einträgen, damit sie später
 		// für remove und changePrio verwendet werden können.
 		// Achtung: Obwohl die Klasse BinHeap ebenfalls Typparameter
@@ -448,16 +459,9 @@ class BinHeapTest {
 
 		// Endlosschleife.
 		while (true) {
-
 			// Inhalt und Größe der Halde ausgeben.
-			heap1.dump();
-			System.out.println(heap1.size() + " entry(s)");
-
-			heap2.dump();
-			System.out.println(heap2.size() + " entry(s)");
-
-			heap3.dump();
-			System.out.println(heap3.size() + " entry(s)");
+			heap.dump();
+			System.out.println(heap.size() + " entry(s)");
 
 			// Eingabezeile vom Benutzer lesen, ggf. ausgeben (wenn das
 			// Programm nicht interaktiv verwendet wird) und in einzelne
@@ -471,92 +475,36 @@ class BinHeapTest {
 
 			// Fallunterscheidung anhand des ersten Worts.
 			switch (cmd[0]) {
-				//-------------------------------------------------Heap 1 --------------------------------------------------
-				case "+1": // insert prio
+				case "+": // insert prio
 					// Die laufende Nummer n wird als zusätzliche Daten
 					// verwendet.
-					entrys[n] = heap1.insert(cmd[1], n);
+					entrys[n] = heap.insert(cmd[1], n);
 					n++;
 					break;
-				case "-1": // remove entry
-					heap1.remove(entrys[Integer.parseInt(cmd[1])]);
+				case "-": // remove entry
+					System.out.println(heap.remove(entrys[Integer.parseInt(cmd[1])]));
 					break;
-				case "?1": // minimum
-					BinHeap.Entry<String, Integer> e1 = heap1.minimum();
-					if (e1 != null) System.out.println("--> " + e1.prio() + " " + e1.data());
-					break;
-				case "!1": // extractMin
-					e1 = heap1.extractMin();
+				case "?": // minimum
+					BinHeap.Entry<String, Integer> e = heap.minimum();
 					//System.out.println("--> " + e.prio() + " " + e.data());
+					System.out.println(e);
 					break;
-				case "=1": // changePrio entry prio
-					heap1.changePrio(entrys[Integer.parseInt(cmd[1])], cmd[2]);
+				case "!": // extractMin
+					e = heap.extractMin();
+					//System.out.println("--> " + e.prio() + " " + e.data());
+					System.out.println(e);
 					break;
-				case "#1": //is empty
-					System.out.println(heap1.isEmpty());
+				case "=": // changePrio entry prio
+					System.out.println(heap.changePrio(entrys[Integer.parseInt(cmd[1])], cmd[2]));
 					break;
-				case "&1": // contains
-					System.out.println(heap1.contains(entrys[Integer.parseInt(cmd[1])]));
+				case "#":
+					System.out.println(heap.isEmpty());
 					break;
-				//------------------------------------------------Heap 2---------------------------------------
-				case "+2": // insert prio
-					// Die laufende Nummer n wird als zusätzliche Daten
-					// verwendet.
-					entrys[n] = heap2.insert(cmd[1], n);
-					n++;
-					break;
-				case "-2": // remove entry
-					heap2.remove(entrys[Integer.parseInt(cmd[1])]);
-					break;
-				case "?2": // minimum
-					BinHeap.Entry<String, Integer> e2 = heap2.minimum();
-					System.out.println("--> " + e2.prio() + " " + e2.data());
-					break;
-				case "!2": // extractMin
-					e2 = heap1.extractMin();
-					System.out.println("--> " + e2.prio() + " " + e2.data());
-					break;
-				case "=2": // changePrio entry prio
-					heap2.changePrio(entrys[Integer.parseInt(cmd[1])], cmd[2]);
-					break;
-				case "#2": //is empty
-					System.out.println(heap2.isEmpty());
-					break;
-				case "&2": // contains
-					System.out.println(heap2.contains(entrys[Integer.parseInt(cmd[1])]));
-					break;
-				//-------------------------------------------------Heap 3 ------------------------------------------------
-				case "+3": // insert prio
-					// Die laufende Nummer n wird als zusätzliche Daten
-					// verwendet.
-					entrys[n] = heap3.insert(cmd[1], n);
-					n++;
-					break;
-				case "-3": // remove entry
-					heap3.remove(entrys[Integer.parseInt(cmd[1])]);
-					break;
-				case "?3": // minimum
-					BinHeap.Entry<String, Integer> e3 = heap3.minimum();
-					System.out.println("--> " + e3.prio() + " " + e3.data());
-					break;
-				case "!3": // extractMin
-					e3 = heap1.extractMin();
-					if(e3 != null) System.out.println("--> " + e3.prio() + " " + e3.data());
-					break;
-				case "=3": // changePrio entry prio
-					heap3.changePrio(entrys[Integer.parseInt(cmd[1])], cmd[2]);
-					break;
-				case "#3": //is empty
-					System.out.println(heap3.isEmpty());
-					break;
-				case "&3": // contains
-					System.out.println(heap3.contains(entrys[Integer.parseInt(cmd[1])]));
+				case "&":
+					System.out.println(heap.contains(entrys[Integer.parseInt(cmd[1])]));
 					break;
 
 			}
 		}
 	}
 }
-
-
-
