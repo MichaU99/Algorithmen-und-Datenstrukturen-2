@@ -10,7 +10,7 @@ public class TestMain {
         BinHeap H =new BinHeap();
         String filedata="";
 
-        File file=new File("C:\\Users\\Veronika\\Documents\\GitHub\\Algorithmen-und-Datenstrukturen-2\\Uebung2_Vorrangswarteschlangen\\Testfile");
+        File file=new File("Uebung2_Vorrangswarteschlangen\\Testfile");
         Scanner scanFile=new Scanner(file);
         if(!file.exists()) file.createNewFile();
         //Scanner scanDebug=new Scanner()
@@ -40,12 +40,12 @@ public class TestMain {
             prio=scanFile.nextInt();
             data=scanFile.nextInt();
             //filedata=filedata+ scanFile.nextLine()+"\n";
-            f=H.insert(prio,data);
+            H.insert(prio,data);
 
         }
-        e = H.insert(616805175 ,-286782772);
+        e = H.insert(-1680255441,296689623);
         H.dump();
-        H.changePrio(e,1314289278);
+        H.changePrio(e,1007015141);
 
         System.out.println("hier das dump: ");
         H.dump();

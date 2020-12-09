@@ -22,7 +22,7 @@ public class DefaultTest {
         BinHeap<Integer,Integer> K = new BinHeap();
         String filedata = "";
 
-        File fileout = new File("C:\\Users\\Veronika\\Documents\\GitHub\\Algorithmen-und-Datenstrukturen-2\\Uebung2_Vorrangswarteschlangen\\DefaultTest");
+        File fileout = new File("DefaultTestFile");
         if (!fileout.exists()) fileout.createNewFile();
         Scanner scanFile = new Scanner(fileout);
         BufferedWriter write = new BufferedWriter(new FileWriter(fileout.getAbsoluteFile()));
@@ -80,7 +80,7 @@ public class DefaultTest {
 
             H.dump();
             // Test changePrio
-            for (int k = 0; k < 10; k++) {
+            for (int k = 0; k < 100; k++) {
                 getNewRand();
                 System.out.println("Change Prio beginnt, Initialinsert: prio:"+prio+" data:"+data);
                 e = H.insert(prio, data);
