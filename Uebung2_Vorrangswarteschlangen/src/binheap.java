@@ -19,22 +19,22 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	}
 
 	public Entry<P,D> insert(P p, D d) {
-		System.out.println("--------------------Insertbeginn "+p);
+
 		if(p==null || d== null) return null; //Fängt Nullinserts ab
 		Entry<P,D> e= new Entry<>(p,d);
 		e.node=new Node<>(e);
  		this.head=mergeHeap(this,new BinHeap<>(e.node));
  		size++;
-		System.out.println("--------------------Insertende");
+
 		return e;
 	}
 
 	public Entry<P,D> insertEntry(Entry<P,D> e) {
-		System.out.println("--------------------Insert_changePrio_beginn");
+
 		e.node=new Node<>(e);
 		this.head=mergeHeap(this,new BinHeap<>(e.node));
 		size++;
-		System.out.println("--------------------Insert_changePrio_ende");
+
 		return e;
 	}
 
@@ -64,18 +64,18 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
     public boolean contains (Entry<P,D> e){
 		int j=0; //Debug
-		System.out.println("Anfang Contains");
+
 		if(e==null || e.node==null || head==null ||head.entry==null) return false; //Fängt fehlerhafte Eingabe ab
 		Node<P,D> hochlaufnode=e.node,wurzellaufnode=this.head;
 
 		while(hochlaufnode.parent!=null){
 			hochlaufnode=hochlaufnode.parent;
-			System.out.println("Contains hochlaufnode läuft");
+
 			j++;
 			assert(j<100);
 		}
 		do{ //Verbesserungswürdig
-			System.out.println("Contains wurzellaufnode läuft");
+
 			if(wurzellaufnode.equals(hochlaufnode)) return true;
 			wurzellaufnode=wurzellaufnode.sibling;
 			if(wurzellaufnode!=null && wurzellaufnode.equals(hochlaufnode)) return true;
@@ -85,13 +85,13 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	}
 
 	public boolean remove (Entry<P, D> e){
-		System.out.println("-----anfang Remove");
+
 		if (head==null||head.entry==null||e==null || e.node==null || !contains(e)) return false;
 
 		int tmpsize=size;
 
 		while(e.node.parent!=null && e.node.parent.entry!= null) {
-			System.out.println("-----Remove: Hochschieben der Wurzel");
+
 			Entry<P, D> child = e;
 			Entry<P, D> parent = e.node.parent.entry;
 			Node<P, D> childNode = e.node;
@@ -105,16 +105,16 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 
 		for(Node <P,D> laufnode=head;laufnode!=null;laufnode=laufnode.sibling) { //Sucht den Vorgänger des zu entfernden Elements
-			System.out.println("-----Remove: Sucht Vorgänger");
+
 			if(laufnode==e.node) { //Falls das zu entfernende Element =head ist
-				System.out.println("-----Remove: sucht Vorgänger: Falls das zu entfernende Element =head ist");
+
 				head=head.sibling;
 				break;
 			}
 			else{
 				if(laufnode.sibling==e.node) { //Falls der Vorgänger gefunden wurde
 					laufnode.sibling = e.node.sibling; //Überspringt den Wurzelknoten des zu löschenden Elements damit er im Nachhinein wieder eingefügt werden kann
-					System.out.println("-----Remove: gefunden Vorgänger");
+
 					break;
 				}
 			}
@@ -122,14 +122,14 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 		Node<P,D> laufnode=e.node.child;
 		if(laufnode==null){//Abbruch falls e degree 0 hat
-			System.out.println("-----Remove: nur von einem blattknoten");
+
 			size--;
 			e.node.entry=null;
 			e.node=null;
 			return true;
 		}
 		Node <P,D> neueHaldeStart=e.node.child.sibling;
-		System.out.println("-----Remove: anfang von unterbrechung der siblingkliste");
+
 		/*
 		while(true) { //unsicher ob diese Schleife notwendig ist oder ob insert das erfüllt
 			laufnode.parent=null;
@@ -150,7 +150,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 
 		size=tmpsize-1;
-		System.out.println("-----ende Remove");
+
 		e.node.entry=null;
 		e.node=null;
 		return true;
@@ -205,7 +205,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		BinHeap<P,D> buildH=new BinHeap<>();
 		BinHeap<P,D>[] zwischensp=new BinHeap[3]; //Zwischenspeicher für bis zu drei Bäume
 
-		System.out.println("---------------beginn_mergeHeap mit Head");
+
 
 		while((H1.head!=null)||(H2.head!=null)||(filling_zwischensp!=0)){
 			assert(k<1000):" filling="+filling_zwischensp+" H1.head="+H1.head+" H2.head="+H2.head+" H1.head.sibling+"+H1.head.sibling;
@@ -278,25 +278,25 @@ class BinHeap <P extends Comparable<? super P>, D> {
 					pos2=1;
 				}
 				zwischensp[pos1]=mergeEqTree(zwischensp[pos1].head,zwischensp[pos2].head); //Ist das eine gute Idee? Kann man den entstehenden Tree besser übergeben?
-				System.out.println("---------------MergeHeap: Equalstree rausgehen");
+
 				zwischensp[pos2]=null;
 				filling_zwischensp--;
 			}
 
 			k++;
-			System.out.println("---------------MergeHeap: k wird erhöht auf"+k);
+
 		}
-		System.out.println("---------------ende_mergeHeap mit Head");
+
 		return buildH.head;
 
 	}
 
 		public BinHeap<P,D> mergeEqTree(Node<P,D> H1, Node<P,D> H2){ //Hilfsoperation zur Vereinigung zweier Bäume des gleichen Grads
-			System.out.println("----------Anfang mergeEqTree");
+
 			int degree=H1.degree;
 			Node<P,D> dom,sub;
-			if(degree!=H2.degree) assert(false):"Fehler in den Nodes";
-			assert(H1.entry!=null && H2.entry!=null): "H1.entry:"+H1.entry+" H2.entry:"+H2.entry;
+
+
 			if(H1.entry.prio.compareTo(H2.entry.prio)<0) { //compareTo muss im Typ P implementiert werden?
 				dom = H1;
 				sub = H2;
@@ -314,15 +314,15 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				sub.sibling=dom.child.sibling;
 				dom.child=dom.child.sibling=sub;
 			}
-			System.out.println("----------Ende mergeEqTree");
+
 			return new BinHeap<>(dom);
 		}
 
 	public boolean changePrio(Entry<P, D> entry, P s) {
 		if( head == null || entry == null|| s == null || !this.contains(entry)) return false;
-		System.out.println("changePrio:reingekommen");
+
 		if( s.compareTo(entry.prio) <=0) {
-			System.out.println("changePrio: kleinergleich neue Prio");
+
 			entry.prio = s;
 			while (entry.node.parent != null && entry.node.parent.entry != null && entry.prio.compareTo(entry.node.parent.prio())<0) {
 				Entry<P, D> child = entry;
@@ -343,11 +343,11 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 			if(entry.node.child == null) {
 				entry.prio=s;
-				System.out.println("changePrio: Blattknoten");
+
 
 			}
 			else{
-				System.out.println("changePrio: muss removt werden");
+
 				remove(entry);
 				entry.prio = s;
 

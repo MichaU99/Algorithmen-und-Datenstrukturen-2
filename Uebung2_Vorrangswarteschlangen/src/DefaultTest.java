@@ -78,7 +78,7 @@ public class DefaultTest {
 
 
 
-            H.dump();
+
             // Test changePrio
             for (int k = 0; k < 100; k++) {
                 getNewRand();
@@ -90,7 +90,6 @@ public class DefaultTest {
                 assert((int)e.prio()==prio):"changePrio ist fehlerhaft";
                 System.out.println("Change Prio endet\n");
             }
-
 
 
             write.close();
