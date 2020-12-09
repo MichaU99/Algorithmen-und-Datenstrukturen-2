@@ -337,6 +337,10 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				Entry<P,D> test = entry;
 				remove(entry);
 				test.prio = s;
+
+				test.node.sibling=null;
+				test.node.child=null;
+
 				insertEntry(test);
 				return true;
 			}
