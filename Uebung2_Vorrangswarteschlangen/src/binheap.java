@@ -79,6 +79,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	}
 
 	public boolean remove (Entry<P, D> e){
+		int i=0;
 		System.out.println("-----anfang Remove");
 		if (e==null || e.node==null || !contains(e)) return false;
 
@@ -100,6 +101,8 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		if(e.node.child.entry==head) head=e;
 
 		for(Node <P,D> laufnode=this.head.node;laufnode!=null;laufnode=laufnode.sibling) { //Sucht den Vorgänger des zu entfernden Elements
+			i++;
+			assert(i<100);
 			System.out.println("-----Remove: Sucht Vorgänger");
 			if(laufnode==e.node) { //Falls das zu entfernende Element =head ist
 				System.out.println("-----Remove: sucht Vorgänger: Falls das zu entfernende Element =head ist");
@@ -198,6 +201,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		System.out.println("---------------beginn_mergeHeap mit Head");
 
 		while((H1.head!=null)||(H2.head!=null)||(filling_zwischensp!=0)){
+			assert(k<100);
 			if(H1.head!=null && H1.head.node.degree==k) { //Codedopplung mit dem nächsten if-Statement, vielleicht Hilfsmethode?
 				for (i = 0; i <= 2; i++) { //ISt es möglich das das Array volläuft??
 
