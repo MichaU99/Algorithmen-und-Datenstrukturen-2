@@ -9,12 +9,12 @@ import java.sql.SQLOutput;
 class BinHeap <P extends Comparable<? super P>, D> {
 
 	private int size=0;
-	private Entry<P,D> head; //Das Element mit dem niedrigsten Grad das den Baum "startet"
+	private Node<P,D> head; //Das Element mit dem niedrigsten Grad das den Baum "startet"
 
 	public BinHeap(){head=null;} //Standartkonstruktor
 
-	private BinHeap(Entry <P,D> e){ //Konstruktur für Baum mit einem Element
-		head=e;
+	private BinHeap(Node <P,D> n){ //Konstruktur für Baum mit einem Element
+		head=n;
 		size=1;
 	}
 
@@ -23,7 +23,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		if(p==null || d== null) return null; //Fängt Nullinserts ab
 		Entry<P,D> e= new Entry<>(p,d);
 		e.node=new Node<>(e);
- 		this.head=mergeHeap(this,new BinHeap<>(e));
+ 		this.head=mergeHeap(this,new BinHeap<>(e.node));
  		size++;
 		System.out.println("--------------------Insertende");
 		return e;
@@ -32,7 +32,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	public Entry<P,D> insertEntry(Entry<P,D> e) {
 		System.out.println("--------------------Insert_changePrio_beginn");
 		e.node=new Node<>(e);
-		this.head=mergeHeap(this,new BinHeap<>(e));
+		this.head=mergeHeap(this,new BinHeap<>(e.node));
 		size++;
 		System.out.println("--------------------Insert_changePrio_ende");
 		return e;
@@ -46,9 +46,9 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	public Entry<P, D> minimum(){
 		if(head==null) return null; //Fehlerabfang falls leerer BinHeap
 
-		Entry <P,D > min=head;
+		Entry <P,D > min=head.entry;
 
-		for( Node<P,D> laufnode= head.node;laufnode!=null;laufnode=laufnode.sibling){
+		for( Node<P,D> laufnode= head;laufnode!=null;laufnode=laufnode.sibling){
 			if(laufnode.entry.prio.compareTo(min.prio)< 0) min= laufnode.entry;
 		}
 		return min;
@@ -63,10 +63,10 @@ class BinHeap <P extends Comparable<? super P>, D> {
     }
 
     public boolean contains (Entry<P,D> e){
-		int j=0,k=0; //Debug
+		int j=0; //Debug
 		System.out.println("Anfang Contains");
-		if(e==null || e.node==null || head==null) return false; //Fängt fehlerhafte Eingabe ab
-		Node<P,D> hochlaufnode=e.node,wurzellaufnode=this.head.node;
+		if(e==null || e.node==null || head==null ||head.entry==null) return false; //Fängt fehlerhafte Eingabe ab
+		Node<P,D> hochlaufnode=e.node,wurzellaufnode=this.head;
 
 		while(hochlaufnode.parent!=null){
 			hochlaufnode=hochlaufnode.parent;
@@ -85,9 +85,8 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	}
 
 	public boolean remove (Entry<P, D> e){
-		Node<P,D> headtmp=head.node;
 		System.out.println("-----anfang Remove");
-		if (head==null||head.node==null||e==null || e.node==null || !contains(e)) return false;
+		if (head==null||head.entry==null||e==null || e.node==null || !contains(e)) return false;
 
 		int tmpsize=size;
 
@@ -105,11 +104,11 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			parentNode.entry = child;
 		}
 
-		for(Node <P,D> laufnode=headtmp;laufnode!=null;laufnode=laufnode.sibling) { //Sucht den Vorgänger des zu entfernden Elements
+		for(Node <P,D> laufnode=head;laufnode!=null;laufnode=laufnode.sibling) { //Sucht den Vorgänger des zu entfernden Elements
 			System.out.println("-----Remove: Sucht Vorgänger");
 			if(laufnode==e.node) { //Falls das zu entfernende Element =head ist
 				System.out.println("-----Remove: sucht Vorgänger: Falls das zu entfernende Element =head ist");
-				headtmp.entry.node=headtmp.sibling;
+				head.entry.node=head.sibling;
 				break;
 			}
 			else{
@@ -131,6 +130,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 		Node <P,D> neueHaldeStart=e.node.child.sibling;
 		System.out.println("-----Remove: anfang von unterbrechung der siblingkliste");
+		/*
 		while(true) { //unsicher ob diese Schleife notwendig ist oder ob insert das erfüllt
 			laufnode.parent=null;
 			if(laufnode.sibling==e.node.child){
@@ -140,10 +140,9 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			}
 			laufnode=laufnode.sibling;
 		}
+		 */
 		//System.out.println("Anfang");
-		this.head.node=headtmp;
-		assert(head!=e):"Head ist fehlerhaft";
-		this.head=mergeHeap(this,new BinHeap<>(neueHaldeStart.entry));
+		this.head=mergeHeap(new BinHeap<>(head),new BinHeap<>(neueHaldeStart));
 		//System.out.println("Ende");
 		//changePrio(e,e.node.child.prio()); Sollte Praktisch damit umgesetzt werden, keine Ahnung wie
 		//extractMin();
@@ -162,7 +161,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	public void dump(){ //Läuft durch die Wurzelknoten
 		if(this.head==null) return;
-		for (Node<P,D> laufNode= head.node; laufNode!=null;laufNode=laufNode.sibling) dump(laufNode,0);
+		for (Node<P,D> laufNode= head; laufNode!=null;laufNode=laufNode.sibling) dump(laufNode,0);
 	}
 
 	private void dump(Node<P,D> n,int Tiefe){ //Ruft Rekursiv die Children des übergebenen Wurzelknotens auf
@@ -196,30 +195,30 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 	}
 
-	public Entry<P,D> mergeHeap(BinHeap<P,D> H1,BinHeap<P,D> H2){
+	public Node<P,D> mergeHeap(BinHeap<P,D> H1,BinHeap<P,D> H2){
 		int i,k=0;
 		int p=0;
 		int pos1=0,pos2=0;
 		int filling_zwischensp=0; //Beschreibt wie viele Elemente in zwischensp enthalten sind
-		Entry<P,D> tmp;
+		Node<P,D> tmp;
 		BinHeap<P,D> buildH=new BinHeap<>();
 		BinHeap<P,D>[] zwischensp=new BinHeap[3]; //Zwischenspeicher für bis zu drei Bäume
 
 		System.out.println("---------------beginn_mergeHeap mit Head");
 
 		while((H1.head!=null)||(H2.head!=null)||(filling_zwischensp!=0)){
-			assert(k<1000):" filling="+filling_zwischensp+" H1.head="+H1.head+" H2.head="+H2.head+" H1.head.sibling+"+H1.head.node.sibling;
-			assert(H1.head==null|| H1.head.node.sibling==null||!(H1.head.node.degree==0 && H1.head.node.sibling.degree==0)):"H1.head.node.deg:"+H1.head.node.degree+" H1.head.node.sib.deg:"+H1.head.node.sibling.degree;
-			if(k>=900) System.out.println("H1.head deg:"+H1.head.node.degree+" H1.head.sibling:"+H1.head.node.sibling);
-			if(H1.head!=null && H1.head.node.degree==k) { //Codedopplung mit dem nächsten if-Statement, vielleicht Hilfsmethode?
+			assert(k<1000):" filling="+filling_zwischensp+" H1.head="+H1.head+" H2.head="+H2.head+" H1.head.sibling+"+H1.head.sibling;
+			assert(H1.head==null|| H1.head.sibling==null||!(H1.head.degree==0 && H1.head.sibling.degree==0)):"H1.head.node.deg:"+H1.head.degree+" H1.head.node.sib.deg:"+H1.head.sibling.degree;
+			if(k>=900) System.out.println("H1.head deg:"+H1.head.degree+" H1.head.sibling:"+H1.head.sibling);
+			if(H1.head!=null && H1.head.degree==k) { //Codedopplung mit dem nächsten if-Statement, vielleicht Hilfsmethode?
 				for (i = 0; i <= 2; i++) { //ISt es möglich das das Array volläuft??
 
 					if (zwischensp[i] == null){
 						tmp=H1.head;
-						if(H1.head.node.sibling==null) H1.head=null;
-						else H1.head = H1.head.node.sibling.entry; //Reicht das damit der Knoten von der Garbage Collection aufgesammelt wird?
-						tmp.node.sibling=null;
-						tmp.node.parent=null;
+						if(H1.head.sibling==null) H1.head=null;
+						else H1.head = H1.head.sibling; //Reicht das damit der Knoten von der Garbage Collection aufgesammelt wird?
+						tmp.sibling=null;
+						tmp.parent=null;
 						zwischensp[i] = new BinHeap<>(tmp);
 						filling_zwischensp++;
 
@@ -229,14 +228,14 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				}
 			}
 			// head rausnehmen aus H1 wenn es in den zwischenspeicher kommt
-			if(H2.head!=null && H2.head.node.degree==k) {
+			if(H2.head!=null && H2.head.degree==k) {
 				for (i = 0; i <= 2; i++) {
 					if (zwischensp[i] == null){
 						tmp=H2.head;
-						if(H2.head.node.sibling==null ) H2.head=null;
-						else H2.head =H2.head.node.sibling.entry; //Reicht das damit der Knoten von der Garbage Collection aufgesammelt wird?
-						tmp.node.sibling=null;
-						tmp.node.parent=null;
+						//if(H2.head.sibling==null ) H2.head=null;
+						 H2.head =H2.head.sibling; //Reicht das damit der Knoten von der Garbage Collection aufgesammelt wird?
+						tmp.sibling=null;
+						tmp.parent=null;
 						zwischensp[i] = new BinHeap<>(tmp);
 						filling_zwischensp++;
 						break;
@@ -257,9 +256,9 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				if(buildH.head==null) buildH.head=zwischensp[pos1].head;
 
 				else { //Sehr fragwürdige umsetzung, laufnode sollte eigentlich eine Kopie von buildH.head sein ist aber eine Referenz weshalb workaround gemacht wurden pls fix
-					Node<P,D> laufnode=buildH.head.node;
+					Node<P,D> laufnode=buildH.head;
 					while (laufnode.sibling != null) laufnode = laufnode.sibling; //Fehler
-					laufnode.sibling = zwischensp[pos1].head.node;
+					laufnode.sibling = zwischensp[pos1].head;
 					}
 				zwischensp[pos1]=null;
 				filling_zwischensp--;
@@ -291,12 +290,13 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	}
 
-		public BinHeap<P,D> mergeEqTree(Entry<P,D> H1, Entry<P,D> H2){ //Hilfsoperation zur Vereinigung zweier Bäume des gleichen Grads
+		public BinHeap<P,D> mergeEqTree(Node<P,D> H1, Node<P,D> H2){ //Hilfsoperation zur Vereinigung zweier Bäume des gleichen Grads
 			System.out.println("----------Anfang mergeEqTree");
-			int degree=H1.node.degree;
-			Entry<P,D> dom,sub;
-			if(degree!=H2.node.degree) assert(false):"Fehler in den Nodes";
-			if(H1.prio.compareTo(H2.prio)<0) { //compareTo muss im Typ P implementiert werden?
+			int degree=H1.degree;
+			Node<P,D> dom,sub;
+			if(degree!=H2.degree) assert(false):"Fehler in den Nodes";
+			assert(H1.entry!=null && H2.entry!=null): "H1.entry:"+H1.entry+" H2.entry:"+H2.entry;
+			if(H1.entry.prio.compareTo(H2.entry.prio)<0) { //compareTo muss im Typ P implementiert werden?
 				dom = H1;
 				sub = H2;
 			}
@@ -305,13 +305,13 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				dom = H2;
 				sub = H1;
 			}
-			dom.node.sibling=null;
-			dom.node.degree=dom.node.degree+1;
-			sub.node.parent=dom.node;
-			if (dom.node.child==null) dom.node.child=sub.node.sibling=sub.node; //Funktioniert das?
+			dom.sibling=null;
+			dom.degree=dom.degree+1;
+			sub.parent=dom;
+			if (dom.child==null) dom.child=sub.sibling=sub; //Funktioniert das?
 			else {
-				sub.node.sibling=dom.node.child.sibling;
-				dom.node.child=dom.node.child.sibling=sub.node;
+				sub.sibling=dom.child.sibling;
+				dom.child=dom.child.sibling=sub;
 			}
 			System.out.println("----------Ende mergeEqTree");
 			return new BinHeap<>(dom);
