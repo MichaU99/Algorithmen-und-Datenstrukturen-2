@@ -5,6 +5,7 @@
 -Generics im Programm, wann klammern, wann nicht
 -Muss remove prüfen ob das übergebene Element im baum existiert
 
+-Laufzeit remove
 -------------------------
 Mögliche Bugs:
 für:
