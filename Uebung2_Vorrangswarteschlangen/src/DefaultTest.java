@@ -30,12 +30,12 @@ public class DefaultTest {
 
 
         //Schreibt zufällige prio und data in Textdatei und insert'ed
-        for (int j = 0; j < 10; j++) { //male wie oft der Test durchgeführt wird
+        for (int j = 0; j < 1; j++) { //male wie oft der Test durchgeführt wird
             H = new BinHeap();
             Integer tmp;
             assert (H.isEmpty()) : "Heap sollte leer sein";
             if (!fileout.exists()) fileout.createNewFile();
-            for (i = 0; i < 10; i++) {
+            for (i = 0; i < 1000; i++) {
                 getNewRand();
                 write.write(prio + " " + data + " ");
                 assert (H.contains(H.insert(prio, data)));
@@ -80,8 +80,8 @@ public class DefaultTest {
                     tmp = prio;
                 }
             }
-            H.dump();
-            System.out.println("Ende");
+
+
             assert ((Integer) H.minimum().prio().compareTo(tmp)==0 ): "minimum ist gleich "+tmp+" ,prio liefert "+H.minimum().prio();
 
 
@@ -105,7 +105,7 @@ public class DefaultTest {
  */
 
 
-            System.out.println(fileout.delete());
+
             }
 
 
@@ -119,6 +119,7 @@ public class DefaultTest {
             System.out.println("Es wurden keine Fehler gefunden");
             write.close();
             scanFile.close();
-        Files.delete(fileoutPath);
+            fileout.delete();
+       // Files.delete(fileoutPath);
     }
 }
