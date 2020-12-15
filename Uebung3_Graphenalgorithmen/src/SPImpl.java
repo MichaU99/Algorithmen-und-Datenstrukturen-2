@@ -1,4 +1,4 @@
-public class ShortestPoints implements SP{
+public class SPImpl implements SP{
     @Override
     public boolean bellmanFord(WeightedGraph g, int s) {
         return false;

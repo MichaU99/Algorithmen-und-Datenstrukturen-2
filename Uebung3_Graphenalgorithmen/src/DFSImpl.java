@@ -1,4 +1,4 @@
-public class Tiefensuche implements DFS{
+public class DFSImpl implements DFS{
     @Override
     public void search(Graph g) {
 

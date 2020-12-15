@@ -1,4 +1,4 @@
-public class Starke_Zusammenhangskomponente implements SCC{
+public class SCCImpl implements SCC{
     @Override
     public void compute(Graph g) {
 

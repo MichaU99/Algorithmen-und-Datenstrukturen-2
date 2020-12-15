@@ -1,4 +1,4 @@
-public class Minimalgerueste implements MSF{
+public class MSFImpl implements MSF{
     @Override
     public void compute(WeightedGraph g, int s) {
 
