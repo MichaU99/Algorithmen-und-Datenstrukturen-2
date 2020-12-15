@@ -7,13 +7,13 @@ public class GraphImpl implements Graph{
     @Override
     public int size() {
         if(Graph==null) return 0;
-        return Graph.length-1; //Unsicher ob -1 nötig oder nicht
+        return Graph.length;
     }
 
     @Override
     public int deg(int v) {
         if(Graph==null || v<0|| v>size()) return 0;
-        return Graph[1].length;
+        return Graph[v].length;
     }
 
     @Override
