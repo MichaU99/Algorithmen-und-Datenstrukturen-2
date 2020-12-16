@@ -71,8 +71,6 @@ public class GraphImpl implements Graph{
 
     @Override
     public Graph transpose() {
-        int[][] intarr=new int [size()][];
-
-        return new GraphImpl(intarr);
+        return new GraphImpl(transGraph());
     }
 }
