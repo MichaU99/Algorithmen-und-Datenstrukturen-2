@@ -2,6 +2,7 @@ public class GraphImpl implements Graph{
     private int[][] Graph;
     private boolean[][] Adjazenzmatrix;
     private int size;
+    public int [][] tranTemp;
     public GraphImpl(int[][] ints) {
         this.Graph=ints;
         size=size();
@@ -26,6 +27,28 @@ public class GraphImpl implements Graph{
             }
             System.out.println();
         }
+    }
+
+    public int[][] transGraph(){ // retunrstatment??
+    tranTemp = new int[size()][size()];
+    for(int Ho=0;Ho<size();Ho++){
+        for (int Ve=0; Ve<size();Ve++){
+            tranTemp[Ho][Ve]=-1;
+        }
+    }
+    for(int listHo=0;listHo < size();listHo++){
+        for(int listVe=0;listVe < deg(listHo);listVe++){
+            Integer a = Graph[listHo][listVe];
+            for(int tranVe=0;tranVe < size();tranVe++){
+                Integer b=tranTemp[a][tranVe];
+                if( b == -1){
+                    tranTemp[a][tranVe]=listHo;
+                    break;
+                }
+            }
+        }
+    }
+    return tranTemp;
     }
 
     @Override
