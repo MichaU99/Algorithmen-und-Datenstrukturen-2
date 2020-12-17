@@ -1,23 +1,35 @@
 public class FIFOList {
-    static FIFOList first=null;
-    static FIFOList last=null;
+    header head;
     FIFOList next=null;
     Integer element;
     public FIFOList(Integer ele){ //Zweiten Konstruktor für reset hinzufügen
-        if(first==null){
-            first=this;
+        head=new header(this);
+        element=ele;
+    }
+
+    private FIFOList(Integer ele,header head){ //Zweiten Konstruktor für reset hinzufügen
+        this.head=head;
+        if(head.first==null){
+            head.first=this;
         }
-        last=this;
+        head.last=this;
         element=ele;
     }
     public void add(Integer ele){
-        last.next=new FIFOList(ele);
+        head.last.next=new FIFOList(ele,head);
     }
     public Integer extractFirst(){
-        if(first==null) return null;
+        if(head.first==null) return null;
 
-        Integer tmp=first.element;
-        first=first.next;
+        Integer tmp=head.first.element;
+        head.first=head.first.next;
         return tmp;
+    }
+    public class header{
+        FIFOList first;
+        FIFOList last;
+        private header(FIFOList obj){
+            first=last=obj;
+        }
     }
 }
