@@ -19,7 +19,7 @@ public class GraphImpl implements Graph{
             }
         }
     }
-
+    //Testfunktion
     public void printAdjazenzMatrix(){
         for(int i=0;i<size;i++){
             for(int j=0;j<size;j++){
@@ -65,7 +65,7 @@ public class GraphImpl implements Graph{
 
     @Override
     public int succ(int v, int i) {
-        if(Graph==null || v<0|| v>size() || i<0 || i>deg(v)) return -1;
+        if(Graph==null || v<0|| v>size() || i<0 || i>deg(v)) return -1; //Frage
         return Graph[v][i];
     }
 
