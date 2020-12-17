@@ -2,21 +2,21 @@ public class FIFOList {
     static FIFOList first=null;
     static FIFOList last=null;
     FIFOList next=null;
-    Object element;
-    public FIFOList(Object ele){
+    Integer element;
+    public FIFOList(Integer ele){ //Zweiten Konstruktor für reset hinzufügen
         if(first==null){
             first=this;
         }
         last=this;
         element=ele;
     }
-    public void add(Object ele){
+    public void add(Integer ele){
         last.next=new FIFOList(ele);
     }
-    public Object extractFirst(){
+    public Integer extractFirst(){
         if(first==null) return null;
 
-        Object tmp=first.element;
+        Integer tmp=first.element;
         first=first.next;
         return tmp;
     }

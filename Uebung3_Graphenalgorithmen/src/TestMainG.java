@@ -6,14 +6,23 @@ public class TestMainG {
                 {2}    // Knoten 2 hat als Nachfolger sich selbst.
         });
         graph.printAdjazenzMatrix();
-        graph=graph.transpose();
+        //graph=graph.transpose();
         System.out.println();
         graph.printAdjazenzMatrix();
+        /*
         FIFOList fifo=new FIFOList(5);
         fifo.add(6);
         fifo.add(7);
-        for(Object i=fifo.extractFirst();i!=null;i= fifo.extractFirst()){
-            System.out.println(i);
+*/
+
+        BFSImpl bsf=new BFSImpl();
+        bsf.search(graph,0);
+        for(int i=0;i<graph.size();i++) {
+            System.out.println(bsf.dist(i));
+        }
+        System.out.println();
+        for(int i=0;i<graph.size();i++) {
+            System.out.println(bsf.pred(i));
         }
     }
 
