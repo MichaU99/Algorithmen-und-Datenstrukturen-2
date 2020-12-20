@@ -10,6 +10,30 @@ public class DefaultTestG {
             System.out.println("Test beginnt");
         }
 
+        for (int j = 0; j < 1; j++) { //Wie oft der Test ausgeführt wird.
+            Graph graph=new GraphImpl(new int [] [] {
+                    { 1, 2 },	// Knoten 0 hat als Nachfolger Knoten 1 und 2.
+                    { },	// Knoten 1 hat keine Nachfolger.
+                    { 2 }	// Knoten 2 hat als Nachfolger sich selbst.
+            });
+            assert (!graph.isEmpty()) : "Graph sollte nicht leer sein";
+            assert (graph.size()==3): "Die size des Graphen stimmt nicht. Wirkliche Größe ist 3 vs."+graph.size();
+
+            if (graph.size()=3) {
+                // Breitensuche
+                graph
+            }
+
+            // Tiefensuche einschließlich topologischer Sortierung
+            // Bestimmung starker Zusammenhangskomponenten
+            // Bestimmung minimaler Gerüste nach Prim
+            // Bestimmung kürzester Wege nach Bellman-Ford und Dijkstra
+
+
+
+
+
+        /*
 
         Graph graph=new GraphImpl(new int [] [] {
                 { 1, 2 },	// Knoten 0 hat als Nachfolger Knoten 1 und 2.
@@ -26,7 +50,7 @@ public class DefaultTestG {
         //assert (graph.succ(1,5)==0):"Fehler in succ, sollte 0 sein, ist aber "+graph.succ(1,0);
        // assert (graph.succ(2,0)==2):"Fehler in succ, sollte 2 sein, ist aber "+graph.succ(2,0);
         System.out.println("Alle Tests wurden bestanden");
-
+         */
 
     }
 }
