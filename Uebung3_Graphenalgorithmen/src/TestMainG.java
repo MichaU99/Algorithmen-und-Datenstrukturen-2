@@ -6,7 +6,7 @@ public class TestMainG {
                 {2}    // Knoten 2 hat als Nachfolger sich selbst.
         });
         graph.printAdjazenzMatrix();
-        //graph=graph.transpose();
+        //graph.transpose();
         System.out.println();
 
         graph.printAdjazenzMatrix();
