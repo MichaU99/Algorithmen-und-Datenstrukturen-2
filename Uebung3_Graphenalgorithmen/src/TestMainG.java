@@ -8,13 +8,19 @@ public class TestMainG {
         graph.printAdjazenzMatrix();
         //graph=graph.transpose();
         System.out.println();
+
         graph.printAdjazenzMatrix();
 
-        FIFOList fifo=new FIFOList(5);
+        FIFOList fifo = new FIFOList(5);
         fifo.add(6);
         fifo.add(7);
 
-
+        DFSImpl dfs = new DFSImpl();
+        dfs.search(graph);
+        dfs.druckDFS(graph);
+    }
+}
+/*
         BFSImpl bsf=new BFSImpl();
         bsf.search(graph,0);
 
@@ -40,3 +46,4 @@ public class TestMainG {
     }
 
 }
+*/
