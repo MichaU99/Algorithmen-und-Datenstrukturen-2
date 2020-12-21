@@ -58,13 +58,13 @@ public class GraphImpl implements Graph{
     }
 
     @Override
-    public int deg(int v) {
+    public int deg(int v) { //Returned den die Anzahl der Nachfolger jedes Knotens
         if(Graph==null || v<0|| v>size()) return 0;
         return Graph[v].length;
     }
 
     @Override
-    public int succ(int v, int i) {
+    public int succ(int v, int i) {//v=Knoten i=nr des Nachfolgers (0->erster,1->zweiter,usw)
         if(Graph==null || v<0|| v>size() || i<0 || i>deg(v)) return -1; //Frage
         return Graph[v][i];
     }
