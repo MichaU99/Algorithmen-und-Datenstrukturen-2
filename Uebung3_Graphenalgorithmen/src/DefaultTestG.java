@@ -9,7 +9,7 @@ public class DefaultTestG {
         catch(AssertionError f){
             System.out.println("Test beginnt");
         }
-
+/*
         for (int j = 0; j < 1; j++) { //Wie oft der Test ausgeführt wird.
             Graph graph=new GraphImpl(new int [] [] {
                     { 1, 2 },	// Knoten 0 hat als Nachfolger Knoten 1 und 2.
@@ -23,7 +23,7 @@ public class DefaultTestG {
                 // Breitensuche
                 graph
             }
-
+*/
             // Tiefensuche einschließlich topologischer Sortierung
             // Bestimmung starker Zusammenhangskomponenten
             // Bestimmung minimaler Gerüste nach Prim

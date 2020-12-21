@@ -18,9 +18,9 @@ public class TestMainG {
         DFSImpl dfs = new DFSImpl();
         dfs.search(graph);
         dfs.druckDFS(graph);
-    }
-}
-/*
+
+
+
         BFSImpl bsf=new BFSImpl();
         bsf.search(graph,0);
 
@@ -43,7 +43,9 @@ public class TestMainG {
         for(int i=0;i<graph.size();i++) {
             System.out.println(bsf.pred(i));
         }
+        DFSImpl dfs2 = new DFSImpl();
+        dfs2.search(graph);
+        dfs2.druckDFS(graph);
     }
 
 }
-*/

@@ -2,15 +2,16 @@ public class DFSImpl implements DFS{
     Integer [] entdeckungszeit = null;
     int entdeckungszeitzahl =1;
     Integer [] abschlusszeit = null;
-    int abschlusszeitzahl=1;
     Integer[] vorgaenger = null;
     String [] Farbe = null;
     Integer size;
-    Integer Knoten;
-    Graph graph;
+    int Knoten;
+    Graph g;
     @Override
     public void search(Graph g) {
-        graph=g;
+        entdeckungszeit= new Integer[g.size()];
+        abschlusszeit= new Integer[g.size()];
+        this.g=g;
         size = g.size();
         Farbe= new String [size];
         for( Knoten=0;Knoten<size;Knoten++){
@@ -22,29 +23,28 @@ public class DFSImpl implements DFS{
             if(Farbe[Knoten]== "white") {
                vorgaenger[Knoten]=null;
 
-                durchsuche(graph, 0);
+                durchsuche(Knoten);
             }
         }
 
     }
-        private void durchsuche(Graph g,Integer knoten) {
-            entdeckungszeit[knoten] = entdeckungszeitzahl;
-            if (entdeckungszeitzahl < size) entdeckungszeitzahl++;
+        private void durchsuche(int knoten) {
+            entdeckungszeit[knoten] = entdeckungszeitzahl++;
             Farbe[knoten] = "grey";
             for (int Nachfolger = 0; Nachfolger < g.deg(knoten); Nachfolger++) {
                 int succ = g.succ(knoten, Nachfolger);
                 if (Farbe[succ] == "white") {
                     vorgaenger[succ] = knoten;
-                    durchsuche(g,succ);
+                    durchsuche(succ);
                 }
             }
-            abschlusszeit[knoten] = abschlusszeitzahl;
-            if (abschlusszeitzahl < size) abschlusszeitzahl++;
+            abschlusszeit[knoten] = entdeckungszeitzahl++;
+
         }
 
         public void druckDFS(Graph g) {
             for (int l = 0; l < g.size(); l++) {
-                System.out.print(l + " " + entdeckungszeit[l] + " " + abschlusszeit);
+                System.out.println("DFS "+l + " " + entdeckungszeit[l] + " " + abschlusszeit[l]);
             }
         }
 
