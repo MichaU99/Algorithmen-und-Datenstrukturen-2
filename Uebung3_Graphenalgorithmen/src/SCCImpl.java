@@ -48,6 +48,9 @@ public class SCCImpl implements SCC{
 
     @Override
     public int component(int v) {
-        return 0;
+        for(int i=0;i<woodOfTrees.size();i++){
+            if(woodOfTrees.get(i).contains(v)) return i;
+        }
+        return -1; //Wäre eine Fehlerausgabe
     }
 }
