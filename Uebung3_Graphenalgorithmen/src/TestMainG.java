@@ -18,6 +18,7 @@ public class TestMainG {
         DFSImpl dfs = new DFSImpl();
         dfs.search(graph);
         dfs.druckDFS(graph);
+        System.out.println("Kann Tropologisch sortiert werden: "+dfs.sort(graph));
 
 
 
@@ -46,6 +47,8 @@ public class TestMainG {
         DFSImpl dfs2 = new DFSImpl();
         dfs2.search(graph);
         dfs2.druckDFS(graph);
+        System.out.println("Kann Tropologisch sortiert werden: "+dfs2.sort(graph));
+
     }
 
 }

@@ -118,6 +118,7 @@ interface DFS {
     // des Graphen g sortiert nach aufsteigenden Abschlusszeiten.
     // Das heißt: sequ(0) ist der Knoten mit der kleinsten
     // Abschlusszeit, sequ(g.size() - 1) der mit der größten.
+    // Eingabe ist abschlusszeit, und zurück kommt der Knoten damit
     int sequ (int i);
 }
 

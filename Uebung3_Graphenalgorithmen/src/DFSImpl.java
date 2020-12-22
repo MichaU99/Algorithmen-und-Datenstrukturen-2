@@ -6,7 +6,9 @@ public class DFSImpl implements DFS{
     String [] Farbe = null;
     Integer size;
     int Knoten;
+    int knot;
     Graph g;
+    boolean trop=true;
     @Override
     public void search(Graph g) {
         entdeckungszeit= new Integer[g.size()];
@@ -19,7 +21,7 @@ public class DFSImpl implements DFS{
             }
         vorgaenger = new Integer[size];
 
-        for( Knoten=0;Knoten < size;Knoten++){
+        for( Knoten=0;Knoten < size;Knoten++){ // wird schleife gebraucht überhaupt?
             if(Farbe[Knoten]== "white") {
                vorgaenger[Knoten]=null;
 
@@ -37,9 +39,12 @@ public class DFSImpl implements DFS{
                     vorgaenger[succ] = knoten;
                     durchsuche(succ);
                 }
+                else if (Farbe[succ] == "grey"){
+                    trop=false;
+                }
             }
             abschlusszeit[knoten] = entdeckungszeitzahl++;
-
+            Farbe[knoten] = "black";
         }
 
         public void druckDFS(Graph g) {
@@ -49,13 +54,25 @@ public class DFSImpl implements DFS{
         }
 
     @Override
-    public void search(Graph g, DFS d) {
+    public void search(Graph g, DFS d) { // erstmal keine neuen Entdeckungs und abschlussArrays gemacht
+        for( knot=0;knot<size;knot++){
+            Farbe[knot]="white";
+        }
+        vorgaenger = new Integer[size];
 
+        for( int abstAbschl=(g.size()-1);abstAbschl > -1 ;abstAbschl--){ // wird schleife gebraucht überhaupt?
+            knot=d.sequ(abstAbschl);
+            if(Farbe[knot]== "white") {
+                vorgaenger[knot]=null;
+
+                durchsuche(knot);
+            }
+        }
     }
 
     @Override
     public boolean sort(Graph g) {
-        return false;
+        return trop;
     }
 
     @Override
