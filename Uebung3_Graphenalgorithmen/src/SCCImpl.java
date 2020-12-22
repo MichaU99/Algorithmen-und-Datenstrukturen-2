@@ -36,7 +36,7 @@ public class SCCImpl implements SCC{
     private int getEndofTree(int i,DFS searched){//give one element of the tree, and get the beginning of that tree back
         while(true) {
             for (int k = 0; k < g.deg(i); k++) {
-                if (searched.det(g.succ(i, k)) < searched.det(i)) {
+                if (searched.det(g.succ(i, k)) == searched.det(i)-1) {
                     i = g.succ(i, k);
                     break;
                 }
@@ -48,6 +48,9 @@ public class SCCImpl implements SCC{
 
     @Override
     public int component(int v) {
-        return 0;
+        for(int i=0;i<woodOfTrees.size();i++){
+            if(woodOfTrees.get(i).contains(v)) return i;
+        }
+        return -1; //Wäre eine Fehlerausgabe
     }
 }

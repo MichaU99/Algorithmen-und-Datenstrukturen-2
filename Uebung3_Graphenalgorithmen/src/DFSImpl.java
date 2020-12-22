@@ -1,4 +1,5 @@
 public class DFSImpl implements DFS{
+    int[] seq=null;
     Integer [] entdeckungszeit = null;
     int entdeckungszeitzahl =1;
     Integer [] abschlusszeit = null;
@@ -77,18 +78,40 @@ public class DFSImpl implements DFS{
 
     @Override
     public int det(int v) {
-        return 0;
+        if(v<0 || v>=entdeckungszeit.length) return -1;
+        return entdeckungszeit[v];
     }
 
     @Override
     public int fin(int v) {
-        return 0;
+        if(v<0 || v>=entdeckungszeit.length) return -1;
+        return abschlusszeit[v];
     }
 
     @Override
     public int sequ(int i) {
-        return 0;
+        if(i<0||i>=g.size()) return -1;
+        return seq[i];
     }
+    private void calculateSort(){
+        Integer q,q_place;
+        Integer[] nochEinzufügen=abschlusszeit;
+        int[] seq=new int[abschlusszeit.length];
+
+        for(int k=0;k<seq.length;k++){
+            q_place=q=null;
+            for(int lauf=0;lauf<nochEinzufügen.length;lauf++){
+                if((nochEinzufügen[lauf]!=null && q==null) || (nochEinzufügen[lauf]!=null && q>nochEinzufügen[lauf])){
+                    q=nochEinzufügen[lauf];
+                    q_place=lauf;
+                }
+            }
+            if(q==null || q_place==null) break;
+            nochEinzufügen[q_place]=null;
+            seq[k]=q_place;
+        }
+    }
+
 }
 
 
