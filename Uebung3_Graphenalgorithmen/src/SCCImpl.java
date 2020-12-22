@@ -36,7 +36,7 @@ public class SCCImpl implements SCC{
     private int getEndofTree(int i,DFS searched){//give one element of the tree, and get the beginning of that tree back
         while(true) {
             for (int k = 0; k < g.deg(i); k++) {
-                if (searched.det(g.succ(i, k)) < searched.det(i)) {
+                if (searched.det(g.succ(i, k)) == searched.det(i)-1) {
                     i = g.succ(i, k);
                     break;
                 }
