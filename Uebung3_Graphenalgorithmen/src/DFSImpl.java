@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class DFSImpl implements DFS{
     int[] seq=null;
     Integer [] entdeckungszeit = null;
@@ -10,8 +12,11 @@ public class DFSImpl implements DFS{
     int knot;
     Graph g;
     boolean trop=true;
+    public ArrayList<Integer> roots;
+    // TODO: 23.12.2020
     @Override
     public void search(Graph g) {
+
         entdeckungszeit= new Integer[g.size()];
         abschlusszeit= new Integer[g.size()];
         this.g=g;
@@ -24,6 +29,7 @@ public class DFSImpl implements DFS{
 
         for( Knoten=0;Knoten < size;Knoten++){ // wird schleife gebraucht überhaupt?
             if(Farbe[Knoten]== "white") {
+
                vorgaenger[Knoten]=null;
 
                 durchsuche(Knoten);
@@ -56,6 +62,7 @@ public class DFSImpl implements DFS{
 
     @Override
     public void search(Graph g, DFS d) { // erstmal keine neuen Entdeckungs und abschlussArrays gemacht
+        roots = new ArrayList<>();
         entdeckungszeitzahl =1;
         for( knot=0;knot<size;knot++){
             Farbe[knot]="white";
@@ -66,6 +73,7 @@ public class DFSImpl implements DFS{
         for( int abstAbschl=(g.size()-1);abstAbschl > -1 ;abstAbschl--){ // wird schleife gebraucht überhaupt?
             knot=d.sequ(abstAbschl);
             if(Farbe[knot]== "white") {
+                roots.add(Knoten);
                 vorgaenger[knot]=null;
 
                 durchsuche(knot);
