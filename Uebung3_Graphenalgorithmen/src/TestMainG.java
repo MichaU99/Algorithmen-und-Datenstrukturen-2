@@ -1,9 +1,9 @@
 public class TestMainG {
     public static void main(String[] args) {
         GraphImpl graph = new GraphImpl(new int[][]{
-                {1, 2},    // Knoten 0 hat als Nachfolger Knoten 1 und 2.
-                {},    // Knoten 1 hat keine Nachfolger.
-                {2}    // Knoten 2 hat als Nachfolger sich selbst.
+                {1},    // Knoten 0 hat als Nachfolger Knoten 1 und 2.
+                {0}    // Knoten 1 hat keine Nachfolger.
+                 // Knoten 2 hat als Nachfolger sich selbst.
         });
         graph.printAdjazenzMatrix();
         //graph.transpose();
@@ -17,9 +17,22 @@ public class TestMainG {
 
         DFSImpl dfs = new DFSImpl();
         dfs.search(graph);
+        for (int i = 0; i < graph.size(); i++) {
+            System.out.print(dfs.sequ(i)+" ");
+        }
+        System.out.println();
         dfs.druckDFS(graph);
         System.out.println("Kann Tropologisch sortiert werden: "+dfs.sort(graph));
 
+        dfs.search(graph.transpose(),dfs);
+        dfs.druckDFS(graph);
+
+        SCCImpl scc = new SCCImpl();
+        scc.compute(graph);
+        for(int i=0;i<graph.size();i++){
+            System.out.print("scc "+scc.component(i)+" ");
+        }
+        System.out.println();
 
 
         BFSImpl bsf=new BFSImpl();

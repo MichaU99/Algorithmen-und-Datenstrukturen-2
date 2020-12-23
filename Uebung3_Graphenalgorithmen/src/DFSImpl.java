@@ -29,7 +29,7 @@ public class DFSImpl implements DFS{
                 durchsuche(Knoten);
             }
         }
-
+    calculateSort();
     }
         private void durchsuche(int knoten) {
             entdeckungszeit[knoten] = entdeckungszeitzahl++;
@@ -40,7 +40,7 @@ public class DFSImpl implements DFS{
                     vorgaenger[succ] = knoten;
                     durchsuche(succ);
                 }
-                else if (Farbe[succ] == "grey"){
+                else if (Farbe[succ] == "grey"){ //für topolpgische sortierung
                     trop=false;
                 }
             }
@@ -56,9 +56,11 @@ public class DFSImpl implements DFS{
 
     @Override
     public void search(Graph g, DFS d) { // erstmal keine neuen Entdeckungs und abschlussArrays gemacht
+        entdeckungszeitzahl =1;
         for( knot=0;knot<size;knot++){
             Farbe[knot]="white";
         }
+
         vorgaenger = new Integer[size];
 
         for( int abstAbschl=(g.size()-1);abstAbschl > -1 ;abstAbschl--){ // wird schleife gebraucht überhaupt?
@@ -95,8 +97,9 @@ public class DFSImpl implements DFS{
     }
     private void calculateSort(){
         Integer q,q_place;
-        Integer[] nochEinzufügen=abschlusszeit;
-        int[] seq=new int[abschlusszeit.length];
+        Integer[] nochEinzufügen=new Integer[abschlusszeit.length];
+        for(int i=0;i<abschlusszeit.length;i++) nochEinzufügen[i]=abschlusszeit[i];
+        seq=new int[abschlusszeit.length];
 
         for(int k=0;k<seq.length;k++){
             q_place=q=null;
