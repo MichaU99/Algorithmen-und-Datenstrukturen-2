@@ -73,7 +73,7 @@ public class DFSImpl implements DFS{
         for( int abstAbschl=(g.size()-1);abstAbschl > -1 ;abstAbschl--){ // wird schleife gebraucht überhaupt?
             knot=d.sequ(abstAbschl);
             if(Farbe[knot]== "white") {
-                roots.add(Knoten);
+                roots.add(knot);
                 vorgaenger[knot]=null;
 
                 durchsuche(knot);

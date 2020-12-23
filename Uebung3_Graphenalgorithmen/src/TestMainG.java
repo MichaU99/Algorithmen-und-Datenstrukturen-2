@@ -13,6 +13,7 @@ public class TestMainG {
         DFSImpl dfs = new DFSImpl();
         dfs.search(graph);
         String vergleich = null;
+        dfs.search(graph,dfs);
 
         for (int i = 0; i < graph.size(); i++) {
             vergleich = ((Integer) dfs.sequ(i)).toString() + " ";
