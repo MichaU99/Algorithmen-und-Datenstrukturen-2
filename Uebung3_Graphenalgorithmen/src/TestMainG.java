@@ -1,40 +1,33 @@
 public class TestMainG {
     public static void main(String[] args) {
         GraphImpl graph = new GraphImpl(new int[][]{
-                {1},    // Knoten 0 hat als Nachfolger Knoten 1 und 2.
-                {0}    // Knoten 1 hat keine Nachfolger.
-                 // Knoten 2 hat als Nachfolger sich selbst.
+                {1, 3, 5},    // Knoten 0 hat als Nachfolger Knoten 1 und 2.
+                {},    // Knoten 1 hat keine Nachfolger.
+                {3, 6},
+                {4, 5},
+                {5, 0},
+                {1},
+                {2, 6},// Knoten 2 hat als Nachfolger sich selbst.
         });
-        graph.printAdjazenzMatrix();
-        //graph.transpose();
-        System.out.println();
-
-        graph.printAdjazenzMatrix();
-
-        FIFOList fifo = new FIFOList(5);
-        fifo.add(6);
-        fifo.add(7);
 
         DFSImpl dfs = new DFSImpl();
         dfs.search(graph);
-        for (int i = 0; i < graph.size(); i++) {
-            System.out.print(dfs.sequ(i)+" ");
-        }
-        System.out.println();
-        dfs.druckDFS(graph);
-        System.out.println("Kann Tropologisch sortiert werden: "+dfs.sort(graph));
+        String vergleich = null;
 
-        dfs.search(graph.transpose(),dfs);
-        dfs.druckDFS(graph);
+        for (int i = 0; i < graph.size(); i++) {
+            vergleich = ((Integer) dfs.sequ(i)).toString() + " ";
+        }
+        assert (vergleich == "1 5 4 3 0 6 2 ");
 
         SCCImpl scc = new SCCImpl();
         scc.compute(graph);
-        for(int i=0;i<graph.size();i++){
-            System.out.print("scc "+scc.component(i)+" ");
+        System.out.print("SCC :");
+        for (int i = 0; i < graph.size(); i++) {
+            System.out.print(scc.component(i) + " ");
         }
         System.out.println();
 
-
+/*
         BFSImpl bsf=new BFSImpl();
         bsf.search(graph,0);
 
@@ -63,5 +56,6 @@ public class TestMainG {
         System.out.println("Kann Tropologisch sortiert werden: "+dfs2.sort(graph));
 
     }
-
+*/
+    }
 }
