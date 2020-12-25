@@ -1,40 +1,45 @@
 public class DefaultTestG {
     public static void main(String[] args) {
         //Testet ob Inserts aktiv sind
-        try{
-            assert(false);
+        try {
+            assert (false);
             System.out.println("Fehler: Asserts nicht aktiv");
-            return ;
-        }
-        catch(AssertionError f){
+            return;
+        } catch (AssertionError f) {
             System.out.println("Test beginnt");
         }
+
+        String testsToDo = "";
+        for (String list : testsToDo.split(" ")) {
+
+            switch (list) {
+
+                case "graphImpl":
+                        Graph graph = new GraphImpl(new int[][]{
+                                {1, 2},    // Knoten 0 hat als Nachfolger Knoten 1 und 2.
+                                {},    // Knoten 1 hat keine Nachfolger.
+                                {2}    // Knoten 2 hat als Nachfolger sich selbst.
+                        });
+                        assert (graph.size() == 3) : "Die size des Graphen stimmt nicht. Wirkliche Größe ist 3 vs." + graph.size();
+
+                        /*
+                        if (graph.size() = 3) {
+                            // Breitensuche
+                            graph
+                        }
+                         */
+                        break;
+                        // Tiefensuche einschließlich topologischer Sortierung
+                        // Bestimmung starker Zusammenhangskomponenten
+                        // Bestimmung minimaler Gerüste nach Prim
+                        // Bestimmung kürzester Wege nach Bellman-Ford und Dijkstra
+                case "test":
+                            System.out.println("Test");
+
+
+
+
 /*
-        for (int j = 0; j < 1; j++) { //Wie oft der Test ausgeführt wird.
-            Graph graph=new GraphImpl(new int [] [] {
-                    { 1, 2 },	// Knoten 0 hat als Nachfolger Knoten 1 und 2.
-                    { },	// Knoten 1 hat keine Nachfolger.
-                    { 2 }	// Knoten 2 hat als Nachfolger sich selbst.
-            });
-            assert (!graph.isEmpty()) : "Graph sollte nicht leer sein";
-            assert (graph.size()==3): "Die size des Graphen stimmt nicht. Wirkliche Größe ist 3 vs."+graph.size();
-
-            if (graph.size()=3) {
-                // Breitensuche
-                graph
-            }
-*/
-            // Tiefensuche einschließlich topologischer Sortierung
-            // Bestimmung starker Zusammenhangskomponenten
-            // Bestimmung minimaler Gerüste nach Prim
-            // Bestimmung kürzester Wege nach Bellman-Ford und Dijkstra
-
-
-
-
-
-        /*
-
         Graph graph=new GraphImpl(new int [] [] {
                 { 1, 2 },	// Knoten 0 hat als Nachfolger Knoten 1 und 2.
                 { },	// Knoten 1 hat keine Nachfolger.
@@ -52,5 +57,7 @@ public class DefaultTestG {
         System.out.println("Alle Tests wurden bestanden");
          */
 
+                    }
+        }
     }
 }
