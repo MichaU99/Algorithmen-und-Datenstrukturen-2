@@ -70,6 +70,6 @@ public class WeightedGraphImpl implements WeightedGraph{
 
     @Override
     public double weight(int v, int i) {
-        return 0;
+        return weight[v][i];
     }
 }
