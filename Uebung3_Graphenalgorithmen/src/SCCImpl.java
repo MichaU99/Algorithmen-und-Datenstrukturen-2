@@ -9,12 +9,12 @@ public class SCCImpl implements SCC{
     @Override
     public void compute(Graph g) {
         this.g=g;
-        int i,j; //laufvariabeln
+        int i,j,tmp=-1; //laufvariabeln
         woodOfTrees = new ArrayList<>();
         int[] seq = new int[g.size()];
-        DFS tiefensucheG = new DFSImpl();
+        DFSImpl tiefensucheG = new DFSImpl();
         DFS tiefensucheGtlive = new DFSImpl();
-        DFS search;
+        DFSImpl search;
 
         tiefensucheG.search(g);
         tiefensucheG.search(g.transpose(),tiefensucheG); //Wie muss hier das zweite search aufgerufen werden? Mit demselben DFS oder einem anderen?
@@ -24,28 +24,21 @@ public class SCCImpl implements SCC{
         for (i = 0; i < g.size(); i++) {
             seq[i] = search.sequ(i);
         }
-        for(int k=i=0;i<g.size();k++){ //k=anzahl der bäume,i ist lauf, j ist die begrenzung von i
+        for(int k=i=0;k<search.roots.size();k++){ //k=anzahl der bäume,i ist lauf, j ist die begrenzung von i
             woodOfTrees.add(new ArrayList<>());
-            for(j=getEndofTree(i,search);i<=j;i++){
+            for(int q=0;q<seq.length;q++){
+                if(search.roots.get(k)==seq[q]) tmp=q;
+            }
+            for(j=tmp;i<=j;i++){
                 woodOfTrees.get(k).add(seq[i]);
             }
             i=j+1;
             if(i>=g.size()) break;
         }
     }
-    private int getEndofTree(int i,DFS searched){//give one element of the tree, and get the beginning of that tree back
-        while(true) {
-            for (int k = 0; k < g.deg(i); k++) {
-                if (searched.det(g.succ(i, k)) == searched.det(i)-1) {
-                    i = g.succ(i, k);
-                    break;
-                }
-            }
-            return i;
-        }
-    }
+    //Diese Methode könnte durch eine Liste der Wurzelknoten ersetzt werden, die von DFS übergeben wird
 
-
+// TODO: 27.12.2020  wir haben immernoch keine Möglichkeit die components aus der Rückgaben der Tiefensuche zu berechnen
     @Override
     public int component(int v) {
         for(int i=0;i<woodOfTrees.size();i++){
