@@ -12,13 +12,13 @@ public class TestMainG {
 
         DFSImpl dfs = new DFSImpl();
         dfs.search(graph);
-        String vergleich = null;
+        String vergleich = "";
         dfs.search(graph,dfs);
 
         for (int i = 0; i < graph.size(); i++) {
-            vergleich = ((Integer) dfs.sequ(i)).toString() + " ";
+            vergleich =vergleich+ ((Integer) dfs.sequ(i)).toString() + " ";
         }
-        assert (vergleich == "1 5 4 3 0 6 2 ");
+        assert (vergleich.equals("1 5 4 3 0 6 2 ")):"Soll -1 5 4 3 0 6 2 - sein, ist aber -"+vergleich+"-";
 
         SCCImpl scc = new SCCImpl();
         scc.compute(graph);
