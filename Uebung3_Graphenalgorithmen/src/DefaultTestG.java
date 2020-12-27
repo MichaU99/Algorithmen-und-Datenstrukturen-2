@@ -9,7 +9,7 @@ public class DefaultTestG {
             System.out.println("Test beginnt");
         }
 
-        String testsToDo = "";
+        String testsToDo = "graphImpl test";//Put in the tests you want to perform (test1 test2 test3 usw)
         for (String list : testsToDo.split(" ")) {
 
             switch (list) {
