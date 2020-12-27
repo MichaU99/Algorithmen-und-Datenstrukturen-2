@@ -14,7 +14,7 @@ public class DefaultTestG {
 
             switch (list) {
 
-                case "graphImpl":
+                case "GraphImpl":
                         Graph graph = new GraphImpl(new int[][]{
                                 {1, 2},    // Knoten 0 hat als Nachfolger Knoten 1 und 2.
                                 {},    // Knoten 1 hat keine Nachfolger.
@@ -33,6 +33,8 @@ public class DefaultTestG {
                         // Bestimmung starker Zusammenhangskomponenten
                         // Bestimmung minimaler Gerüste nach Prim
                         // Bestimmung kürzester Wege nach Bellman-Ford und Dijkstra
+                case "WeightedGraphImpl"
+                    assert (WeightedGraphImpl.size = null) : "Size ist null";
                 case "test":
                             System.out.println("Test");
 
