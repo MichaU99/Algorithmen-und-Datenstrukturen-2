@@ -1,3 +1,5 @@
+import java.lang.reflect.Array;
+
 public class DefaultTestG {
     public static void main(String[] args) {
         //Testet ob Inserts aktiv sind
@@ -11,7 +13,7 @@ public class DefaultTestG {
             System.out.println("Test beginnt");
         }
 
-        String testsToDo = "graphImpl test";//Put in the tests you want to perform (test1 test2 test3 usw)
+        String testsToDo = "Tiefensuche";//Put in the tests you want to perform (test1 test2 test3 usw)
         for (String list : testsToDo.split(" ")) {
 
             switch (list) {
@@ -29,10 +31,10 @@ public class DefaultTestG {
                     graph = new GraphImpl(Muster);
                     assert (graph.size() == 7) : "Size sollte 7 sein, ist aber " + graph.size();
                     ArrayList = new int [] {1,3,0,2,2,2,3};
-                    for (int i = 0; i < ArrayList.length ;i++) {
+                    for (int i = 0; i < ArrayList.length; i++) {
                         assert (graph.deg(i) == ArrayList[i]) : "Der Knoten " + i + " sollte " + ArrayList[i] + " Nachfolger haben, ist aber " + graph.deg(i);
                     }
-                    for (int i = 0; i < ArrayList.length ;i++) {
+                    for (int i = 0; i < ArrayList.length; i++) {
                         // TODO: 28.12.2020 Testen
                         kakau:
                         for (int k = 0; k < graph.deg(i); k++) {
@@ -44,13 +46,13 @@ public class DefaultTestG {
                         }
                     }
                     int [][] Muster2 = new int[][] {
-                            {2},
-                            {0,2,4},
+                            {1,3,4},
                             {},
                             {0,1},
-                            {0,3},
                             {4,6},
-                            {3,5,6},
+                            {1,5},
+                            {6},
+                            {5,6},
                     };
                     Graph graph2 = new GraphImpl(Muster2);
                     assert (graph2.equals(graph.transpose())) : "transpose ist nicht korrekt";
@@ -58,6 +60,21 @@ public class DefaultTestG {
 
                 // Gerichteter gewichteter Graph
                 case "WeightedGraph":
+                    graph = new GraphImpl(new int [][] {
+                            {2},
+                            {0,2,4},
+                            {},
+                            {0,1},
+                            {0,3},
+                            {4,6},
+                            {3,5,6},
+                    });
+                    // Hier ist noch Baustelle
+                    WeightedGraph graphWeighted = new WeightedGraph();
+                    ArrayList = new int [] {};
+                    for (int i = 0; i < ArrayList.length; i++) {
+                        assert (graph.weight(i)) : " ";
+                    //WeightedGraph.weight(1, 1);
 
                     break;
 
@@ -75,17 +92,45 @@ public class DefaultTestG {
                     BFS graphBFS = new BFSImpl();
                     graphBFS.search(graph, 1);
                     ArrayList = new int [] {1,0,1,2,1,-1,-1};
-                    for (int i = 0; i < ArrayList.length ;i++) {
+                    for (int i = 0; i < ArrayList.length; i++) {
                         assert (graphBFS.dist(i) == ArrayList[i]) : "Distance des Knotens " + i + " sollte " + ArrayList[i] + " sein, ist aber " + graphBFS.dist(i);
                     }
                     ArrayList = new int [] {1,-1,1,4,1,-1,-1};
-                    for (int i = 0; i < ArrayList.length ;i++) {
+                    for (int i = 0; i < ArrayList.length; i++) {
                         assert (graphBFS.pred(i) == ArrayList[i]) : "Vorgänger des Knotens " + i + " sollte " + ArrayList[i] + " sein, ist aber " + graphBFS.dist(i);
                     }
                     break;
 
                 // Tiefensuche einschließlich topologischer Sortierung
                 case "Tiefensuche":
+                    graph = new GraphImpl(new int [][] {
+                            {2},
+                            {0,2,4},
+                            {},
+                            {0,1},
+                            {0,3},
+                            {4,6},
+                            {3,5,6},
+                    });
+                    DFS graphDFS = new DFSImpl();
+                    graphDFS.sort(graph);
+                    if (graphDFS.sort(graph)) {
+                        assert (true) : "Topologische Sortierung ist möglich";
+                    } else {
+                        assert (false) : "Graph enthält einen Zyklus";
+                    }
+                    ArrayList = new int[] {1,2,2,4,3,0,0,3,4,1,5,6,6,5};
+                    for (int i = 0; i < ArrayList.length; i++) {
+                        assert (graphDFS.det(i) == ArrayList[i]) : " ";
+                    }
+                    for (int i = 0; i < ArrayList.length; i++) {
+                        assert (graphDFS.fin(i) == ArrayList[i]) : " ";
+                    }
+                    // Zwei Methoden?
+
+                    for (int i = 0; i < ArrayList.length; i++) {
+                        assert (graphDFS.sequ(i) == ArrayList[i]) : "Die Eingabe stimmt nicht mit dem Knoten überein.";
+                    }
                     break;
 
                 // Bestimmung starker Zusammenhangskomponenten
