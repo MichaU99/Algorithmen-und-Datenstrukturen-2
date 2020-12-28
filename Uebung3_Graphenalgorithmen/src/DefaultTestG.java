@@ -1,6 +1,8 @@
 public class DefaultTestG {
     public static void main(String[] args) {
         //Testet ob Inserts aktiv sind
+        int [] ArrayList;
+        Graph graph;
         try {
             assert (false);
             System.out.println("Fehler: Asserts nicht aktiv");
@@ -15,36 +17,75 @@ public class DefaultTestG {
             switch (list) {
 
                 case "GraphImpl":
-                    Graph graph = new GraphImpl(new int[][]{
-                            {1, 2},    // Knoten 0 hat als Nachfolger Knoten 1 und 2.
-                            {},    // Knoten 1 hat keine Nachfolger.
-                            {2}    // Knoten 2 hat als Nachfolger sich selbst.
-                    });
+                    int [][] Muster = new int [][] {
+                            {2},
+                            {0,2,4},
+                            {},
+                            {0,1},
+                            {0,3},
+                            {4,6},
+                            {3,5,6},
+                    };
+                    graph = new GraphImpl(Muster);
+                    assert (graph.size() == 7) : "Size sollte 7 sein, ist aber " + graph.size();
+                    ArrayList = new int [] {1,3,0,2,2,2,3};
+                    for (int i = 0; i < ArrayList.length ;i++) {
+                        assert (graph.deg(i) == ArrayList[i]) : "Der Knoten " + i + " sollte " + ArrayList[i] + " Nachfolger haben, ist aber " + graph.deg(i);
+                    }
+                    for (int i = 0; i < ArrayList.length ;i++) {
+                        // TODO: 28.12.2020 Testen
+                        kakau:
+                        for (int k = 0; k < graph.deg(i); k++) {
+                            for (int j = 0; j < graph.deg(i) ;j++) {
+                                if (graph.succ(i, j) == Muster[i][k])
+                                    break kakau;
+                            }
+                            assert (true) : "Der Knoten " + i + " sollte " + ArrayList[i] + " als direkten Nachfolger haben, ist aber " + graph.succ(i, i);
+                        }
+                    }
+                    int [][] Muster2 = new int[][] {
+                            {2},
+                            {0,2,4},
+                            {},
+                            {0,1},
+                            {0,3},
+                            {4,6},
+                            {3,5,6},
+                    };
+                    Graph graph2 = new GraphImpl(Muster2);
+                    assert (graph2.equals(graph.transpose())) : "transpose ist nicht korrekt";
+                    break;
+
+                // Gerichteter gewichteter Graph
+                case "WeightedGraph":
+
                     break;
 
                 // Breitensuche
                 case "Breitensuche":
+                    graph = new GraphImpl(new int [][] {
+                            {2},
+                            {0,2,4},
+                            {},
+                            {0,1},
+                            {0,3},
+                            {4,6},
+                            {3,5,6},
+                    });
                     BFS graphBFS = new BFSImpl();
-                    graphBFS.search(Graph g, int s);
-                    graphBFS.dist(int v);
-                    graphBFS.pred(int v);
-                    assert (graphBFS.dist(int v) == null) : "Gleich null";
-                    assert (graphBFS.pred(int v) == null) : "Gleich null";
+                    graphBFS.search(graph, 1);
+                    ArrayList = new int [] {1,0,1,2,1,-1,-1};
+                    for (int i = 0; i < ArrayList.length ;i++) {
+                        assert (graphBFS.dist(i) == ArrayList[i]) : "Distance des Knotens " + i + " sollte " + ArrayList[i] + " sein, ist aber " + graphBFS.dist(i);
+                    }
+                    ArrayList = new int [] {1,-1,1,4,1,-1,-1};
+                    for (int i = 0; i < ArrayList.length ;i++) {
+                        assert (graphBFS.pred(i) == ArrayList[i]) : "Vorgänger des Knotens " + i + " sollte " + ArrayList[i] + " sein, ist aber " + graphBFS.dist(i);
+                    }
                     break;
 
                 // Tiefensuche einschließlich topologischer Sortierung
                 case "Tiefensuche":
-                    DFS graphDFS = new DFSImpl();
-                    graph.size();
-                    graphDFS.search(Graph g);
-                    graphDFS.sort(Graph g);
-                    graphDFS.det(int v);
-                    graphDFS.fin(int v);
-                    graphDFS.sequ(int i);
-                    assert (graphDFS.sort(Graph g) == true) : "Sortierung ist möglich.";
-                    assert (graphDFS.det(int v) < 0 || graph.size()) : " ";
-                    assert (graphDFS.fin(int v) < 0 || graph.size()) : " ";
-                    assert (graphDFS.sequ(int i) < 0 || graph.size()) : " ";
                     break;
 
                 // Bestimmung starker Zusammenhangskomponenten
