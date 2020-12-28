@@ -1,4 +1,5 @@
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class DefaultTestG {
     public static void main(String[] args) {
@@ -13,7 +14,7 @@ public class DefaultTestG {
             System.out.println("Test beginnt");
         }
 
-        String testsToDo = "GraphImpl";//Put in the tests you want to perform (test1 test2 test3 usw)
+        String testsToDo = "WeightedGraph";//Put in the tests you want to perform (test1 test2 test3 usw)
         for (String list : testsToDo.split(" ")) {
 
             switch (list) {
@@ -58,19 +59,32 @@ public class DefaultTestG {
                 // Gerichteter gewichteter Graph
                 case "WeightedGraph":
                     WeightedGraph Wgraph = new WeightedGraphImpl(new int [][] {
-                            {2},
-                            {0,2,4},
-                            {},
-                            {0,1},
-                            {0,3},
-                            {4,6},
-                            {3,5,6},
-                    },new double[][]{});
-                    // Hier ist noch Baustelle
-                    ArrayList = new int [] {};
-                    for (int i = 0; i < ArrayList.length; i++) {
-                        assert (Wgraph.weight(i, 0) == -2) : " "; // TODO: 28.12.2020
-
+                            {1,3,4},
+                            {0,2,3,4,5},
+                            {1,4,5},
+                            {0,1,4},
+                            {0,1,2,3,5},
+                            {1,2,4},
+                    }, new double[][]{
+                            {3,5,1},
+                            {3,8,5,2,7},
+                            {8,7,5},
+                            {5,5,4},
+                            {1,2,7,4,8},
+                            {7,5,8},
+                    });
+                    double [][] DListe = new double [][] {
+                            {3,5,1},
+                            {3,8,5,2,7},
+                            {8,7,5},
+                            {5,5,4},
+                            {1,2,7,4,8},
+                            {7,5,8},
+                    };
+                    for (int i = 0; i < DListe.length; i++) {
+                        for (int j = 0; j < DListe[1].length; j++) {
+                            assert (Wgraph.weight(i, j) == DListe.length) : "Das Gewicht von " + Wgraph.weight(i, j) + " beträgt " + DListe.length;
+                        }
                     }
                     break;
 
@@ -141,7 +155,36 @@ public class DefaultTestG {
 
                 // Bestimmung kürzester Wege nach Bellman-Ford und Dijkstra
                 case "BellmanFordDijkstra":
-                    SP graphSP = new SPImpl();
+                    SP SPgraph = new SPImpl(new int [][] {
+                            {1,3,4},
+                            {0,2,3,4,5},
+                            {1,4,5},
+                            {0,1,4},
+                            {0,1,2,3,5},
+                            {1,2,4},
+                    }, new double[][]{
+                            {3,5,1},
+                            {3,8,5,2,7},
+                            {8,7,5},
+                            {5,5,4},
+                            {1,2,7,4,8},
+                            {7,5,8},
+                    });
+                    double [][] SPListe = new double [][] {
+                            {3,5,1},
+                            {3,8,5,2,7},
+                            {8,7,5},
+                            {5,5,4},
+                            {1,2,7,4,8},
+                            {7,5,8},
+                    };
+                    ArrayList = new int [] {};
+                    for (i = 0; ArrayList.length ;i++) {
+                        assert (graphSP.bellmanFord()) : "Text";
+                    }
+                    assert (graphSP.dijkstra()) : "Text";
+                    assert (graphSP.dist()) : "Text";
+                    assert (graphSP.dist()) : "Text";
                     break;
 
                 // Test
