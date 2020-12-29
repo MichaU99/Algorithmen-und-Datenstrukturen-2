@@ -69,7 +69,7 @@ public class DFSImpl implements DFS{
         }
 
         vorgaenger = new Integer[size];
-
+       //d.sequ(g.size() - 1) bis d.sequ(0)
         for( int abstAbschl=(g.size()-1);abstAbschl > -1 ;abstAbschl--){ // wird schleife gebraucht überhaupt?
             knot=d.sequ(abstAbschl);
             if(Farbe[knot]== "white") {
@@ -79,6 +79,7 @@ public class DFSImpl implements DFS{
                 durchsuche(knot);
             }
         }
+        calculateSort();
     }
 
     @Override
