@@ -16,7 +16,7 @@ public class DefaultTestG {
             System.out.println("Test beginnt");
         }
 
-        String testsToDo = "WeightedGraph";//Put in the tests you want to perform (test1 test2 test3 usw)
+        String testsToDo = "GraphImpl WeightedGraph Breitensuche Tiefensuche Zusammenhangskomponenten minPrim BellmanFordDijkstra";//Put in the tests you want to perform (test1 test2 test3 usw)
         for (String list : testsToDo.split(" ")) {
 
             switch (list) {
@@ -49,13 +49,66 @@ public class DefaultTestG {
                             {1,3,4},
                             {3},
                             {0,1},
-                            {4},
-                            {1,5,6},
+                            {4,6},
+                            {1,5},
                             {6},
                             {5,6},
                     };
-                    Graph graph2 = new GraphImpl(Muster2);
-                    assert (graph2.equals(graph.transpose())) : "transpose ist nicht korrekt";
+                    Graph grapht=graph.transpose();
+
+                    Integer[] line;
+                    String stringMuster=new String();
+                    String stringOut=new String();
+
+
+                    for (int h=0;h<Muster2.length;h++){
+                        line=new Integer[graph.size()];
+                        for(int t=0;t<Muster2[h].length;t++){
+                            line[Muster2[h][t]]=1;
+                        }
+                        for(int i=0;i<line.length;i++){
+                            if(line[i]==null) stringMuster=stringMuster+"0 ";
+                            else stringMuster=stringMuster+"1 ";
+                        }
+                        stringMuster=stringMuster+"\n";
+                    }
+
+                    for (int h=0;h<grapht.size();h++){
+                        line=new Integer[grapht.size()];
+                        for(int t=0;t<grapht.deg(h);t++){
+                            line[grapht.succ(h,t)]=1;
+                        }
+                        for(int i=0;i<line.length;i++){
+                            if(line[i]==null) stringOut=stringOut+"0 ";
+                            else stringOut=stringOut+"1 ";
+                        }
+                        stringOut=stringOut+"\n";
+                    }
+
+                    if(!stringMuster.equals(stringOut)){
+                        System.out.println("Eingegebener Graph:");
+                        for (int h=0;h<Muster.length;h++){
+                            line=new Integer[graph.size()];
+                            for(int t=0;t<Muster[h].length;t++){
+                                line[Muster[h][t]]=1;
+                            }
+                            for(int i=0;i<line.length;i++){
+                                if(line[i]==null) System.out.print("0 ");
+                                else System.out.print("1 ");
+                            }
+                            System.out.println();
+                        }
+
+                        System.out.println("\nSo soll der Transpose Graph aussehen:");
+                        System.out.println(stringMuster);
+
+                        System.out.println("\nSo sieht die Rückgabe des Algorithmus aus:");
+                        System.out.println(stringOut);
+                        assert (false) : "transpose ist nicht korrekt";
+                    }
+
+
+
                     break;
 
                 // Gerichteter gewichteter Graph
@@ -84,8 +137,8 @@ public class DefaultTestG {
                             {7,5,8},
                     };
                     for (int i = 0; i < DListe.length; i++) {
-                        for (int j = 0; j < DListe[1].length; j++) {
-                            assert (Wgraph.weight(i, j) == DListe.length) : "Das Gewicht von " + Wgraph.weight(i, j) + " beträgt " + DListe.length;
+                        for (int j = 0; j < DListe[i].length; j++) {
+                            assert (Wgraph.weight(i, j) == DListe[i][j]) : "Das Gewicht von " + Wgraph.weight(i, j) + " beträgt " + DListe.length;
                         }
                     }
                     break;
@@ -125,21 +178,18 @@ public class DefaultTestG {
                             {3,5,6},
                     });
                     DFS graphDFS = new DFSImpl();
-                    graphDFS.sort(graph);
-                    if (graphDFS.sort(graph)) {
-                        assert (true) : "Topologische Sortierung ist möglich";
-                    } else {
-                        assert (false) : "Graph enthält einen Zyklus";
-                    }
-                    ArrayList = new int[] {1,2,2,4,3,0,0,3,4,1,5,6,6,5};
+                    graphDFS.search(graph);
+                    assert (!graphDFS.sort(graph)):"Topologische Sortierung gibt falschen Wert zurück";
+                    ArrayList = new int[] {1,5,2,7,6,11,12};
                     for (int i = 0; i < ArrayList.length; i++) {
-                        assert (graphDFS.det(i) == ArrayList[i]) : " ";
+                        assert (graphDFS.det(i) == ArrayList[i]) : "Entdeckungszeit sollte "+ArrayList[i]+" betragen, ist stattdessen "+graphDFS.det(i);
                     }
+                    ArrayList = new int[] {4,10,3,8,9,14,13};
                     for (int i = 0; i < ArrayList.length; i++) {
                         assert (graphDFS.fin(i) == ArrayList[i]) : " ";
                     }
                     // Zwei Methoden?
-
+                    ArrayList = new int[] {2,0,3,4,1,6,5};
                     for (int i = 0; i < ArrayList.length; i++) {
                         assert (graphDFS.sequ(i) == ArrayList[i]) : "Die Eingabe stimmt nicht mit dem Knoten überein.";
                     }
@@ -148,36 +198,32 @@ public class DefaultTestG {
                 // Bestimmung starker Zusammenhangskomponenten
                 case "Zusammenhangskomponenten":
                     SCC SCC = new SCCImpl();
-                    SCC.compute(graph);
                     graph = new GraphImpl((new int [][] {
-                            {2},
-                            {0,2,4},
-                            {},
-                            {0,1},
-                            {0,3},
-                            {4,6},
-                            {3,5,6},
+                        {2},
+                        {0,2,4},
+                        {},
+                        {0,1},
+                        {0,3},
+                        {4,6},
+                        {3,5,6},
                     }));
+                    SCC.compute(graph);
+
                     ArrayList2 = new int [] [] {
                             {0,1,2,3,4},
                             {5,6},
                     };
-                    ArrayList = new int [2];
-                    for (i = 0; i < ArrayList.length; i++) {
-                        kakau:
-                        for (j = 0; j < ArrayList2.length; j++) {
-                            for (k = 0; k < ArrayList2[1].length; k++) {
-                                if (i == ArrayList2[j][k] && ArrayList[i] == null) {
-                                    ArrayList[i] = SCC.component(i);
-                                    break kakau;
-                                }
-                                else if (i == ArrayList2[j][k]) {
-                                    assert (SCC.component(i) == ArrayList[i]) : "component stimmen nicht überein";
+                    Integer[] IArrayList = new Integer[2];
+                    IArrayList[0]=SCC.component(0);
+                    IArrayList[1]=SCC.component(5);
+                    for(int i=0;i< graph.size();i++) System.out.println(SCC.component(i));
+
+                        for (int j = 0; j < ArrayList2.length; j++) {
+                            for (int k = 0; k < ArrayList2[j].length; k++) {
+                                assert (SCC.component(ArrayList2[j][k])==IArrayList[j]):"component sollte "+IArrayList[j]+" sein, ist aber "+ SCC.component(ArrayList2[j][k]);
                                 }
                             }
-                        }
-                    }
-                    break;
+
 
                 // Bestimmung minimaler Gerüste nach Prim
                 case "minPrim":
@@ -189,16 +235,16 @@ public class DefaultTestG {
                             {0,1,4,5,6},
                             {1,2,3,6},
                             {3,6},
-                            {3,4,5},
-                    }, new double[][]{
+                            {3,4,5}
+                    }), new double[][]{
                             {14,10},
                             {14,16,18,13},
                             {16,9},
                             {10,18,30,17,12},
                             {13,9,30,16},
                             {17,22},
-                            {12,16,22};
-                    }));
+                            {12,16,22}
+                    });
                     graphMSF.compute(Wgraph, 0);
                     ArrayList = new int [] {-1,0,4,0,1,3,3};
                     for (int i = 0; i < ArrayList.length; i++) {
@@ -215,15 +261,15 @@ public class DefaultTestG {
                             {4},
                             {3,5},
                             {1},
-                            {},
-                    }, new double[][]{
+                            {}
+                    }), new double[][]{
                             {50},
                             {-10},
                             {-5},
                             {-1,5},
                             {-1},
-                            {},
-                    }));
+                            {}
+                    });
                     double [][] SPListe = new double [][] {
                             {50},
                             {-10},
@@ -240,15 +286,15 @@ public class DefaultTestG {
                             {4},
                             {4},
                             {5},
-                            {},
-                    }, new double[][]{
+                            {}
+                    }), new double[][]{
                             {50},
                             {-10,-1},
                             {-5},
                             {-1},
                             {5},
-                            {},
-                    }));
+                            {}
+                    });
                     double [][] SPNListe = new double [][] {
                             {50},
                             {-10,-1},
@@ -267,11 +313,6 @@ public class DefaultTestG {
                         assert (SPgraph.pred(i) == ArrayList[i]) : "Der Abstand " + i + " sollte " + ArrayList[i] + " sein, ist aber " + SPgraph.dist(i);
                     }
                     break;
-
-                // Test
-                case "test":
-                    System.out.println("Test");
-
 
 /*
         Graph graph=new GraphImpl(new int [] [] {
