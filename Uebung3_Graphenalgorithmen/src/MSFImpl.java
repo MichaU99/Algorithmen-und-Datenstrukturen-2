@@ -39,6 +39,7 @@ public class MSFImpl implements MSF{
     @Override
     public int pred(int v) {
         if(v<0 ||graph==null || vorganger==null||v>=graph.size()) return -1;
+        if(vorganger[v]==null) return -1;
         return vorganger[v];
     }
 }
