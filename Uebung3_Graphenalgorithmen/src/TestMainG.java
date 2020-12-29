@@ -10,6 +10,24 @@ public class TestMainG {
                 {2, 6},// Knoten 2 hat als Nachfolger sich selbst.
         });
 
+        WeightedGraph Wgraph = new WeightedGraphImpl(new int [][] {
+                {1,3,4},
+                {0,2,3,4,5},
+                {1,4,5},
+                {0,1,4},
+                {0,1,2,3,5},
+                {1,2,4},
+        }, new double[][]{
+                {3,5,1},
+                {3,8,5,2,7},
+                {8,7,5},
+                {5,5,4},
+                {1,2,7,4,8},
+                {7,5,8},
+        });
+        MSF msf=new MSFImpl();
+        msf.compute(Wgraph,0);
+        /*
         DFSImpl dfs = new DFSImpl();
         dfs.search(graph);
         String vergleich = "";
@@ -28,7 +46,7 @@ public class TestMainG {
         }
         System.out.println();
 
-/*
+
         BFSImpl bsf=new BFSImpl();
         bsf.search(graph,0);
 
