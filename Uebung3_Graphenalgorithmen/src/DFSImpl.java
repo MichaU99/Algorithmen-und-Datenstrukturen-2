@@ -32,19 +32,19 @@ public class DFSImpl implements DFS{
 
                vorgaenger[Knoten]=null;
 
-                durchsuche(Knoten);
+                durchsuche(g,Knoten);
             }
         }
     calculateSort();
     }
-        private void durchsuche(int knoten) {
+        private void durchsuche(Graph g,int knoten) {
             entdeckungszeit[knoten] = entdeckungszeitzahl++;
             Farbe[knoten] = "grey";
             for (int Nachfolger = 0; Nachfolger < g.deg(knoten); Nachfolger++) {
                 int succ = g.succ(knoten, Nachfolger);
                 if (Farbe[succ] == "white") {
                     vorgaenger[succ] = knoten;
-                    durchsuche(succ);
+                    durchsuche(g,succ);
                 }
                 else if (Farbe[succ] == "grey"){ //für topolpgische sortierung
                     trop=false;
@@ -76,7 +76,7 @@ public class DFSImpl implements DFS{
                 roots.add(knot);
                 vorgaenger[knot]=null;
 
-                durchsuche(knot);
+                durchsuche(g,knot);
             }
         }
         calculateSort();
