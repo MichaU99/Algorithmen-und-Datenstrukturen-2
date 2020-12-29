@@ -16,7 +16,7 @@ public class DefaultTestG {
             System.out.println("Test beginnt");
         }
 
-        String testsToDo = "GraphImpl WeightedGraph Breitensuche Tiefensuche Zusammenhangskomponenten minPrim BellmanFordDijkstra";//Put in the tests you want to perform (test1 test2 test3 usw)
+        String testsToDo = "GraphImpl WeightedGraph Breitensuche Zusammenhangskomponenten Tiefensuche minPrim ";//Put in the tests you want to perform (test1 test2 test3 usw)
         for (String list : testsToDo.split(" ")) {
 
             switch (list) {
@@ -210,19 +210,23 @@ public class DefaultTestG {
                     SCC.compute(graph);
 
                     ArrayList2 = new int [] [] {
-                            {0,1,2,3,4},
-                            {5,6},
+                            {0},
+                            {2},
+                            {1,3,4},
+                            {5,6}
                     };
-                    Integer[] IArrayList = new Integer[2];
-                    IArrayList[0]=SCC.component(0);
-                    IArrayList[1]=SCC.component(5);
-                    for(int i=0;i< graph.size();i++) System.out.println(SCC.component(i));
+                    Integer[] IArrayList = new Integer[ArrayList2.length];
+                    for(int i=0;i<IArrayList.length;i++){
+                        IArrayList[i]=SCC.component(ArrayList2[i][0]);
+                    }
 
-                        for (int j = 0; j < ArrayList2.length; j++) {
-                            for (int k = 0; k < ArrayList2[j].length; k++) {
-                                assert (SCC.component(ArrayList2[j][k])==IArrayList[j]):"component sollte "+IArrayList[j]+" sein, ist aber "+ SCC.component(ArrayList2[j][k]);
-                                }
+                    //for(int i=0;i< graph.size();i++) System.out.println(SCC.component(i));
+
+                    for (int j = 0; j < ArrayList2.length; j++) {
+                        for (int k = 0; k < ArrayList2[j].length; k++) {
+                            assert (SCC.component(ArrayList2[j][k])==IArrayList[j]):"component sollte "+IArrayList[j]+" sein, ist aber "+ SCC.component(ArrayList2[j][k]);
                             }
+                        }
 
 
                 // Bestimmung minimaler Gerüste nach Prim

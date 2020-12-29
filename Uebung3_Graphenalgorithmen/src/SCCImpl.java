@@ -17,6 +17,7 @@ public class SCCImpl implements SCC{
         DFS search;
 
         tiefensucheG.search(g);
+        int lastSeq=tiefensucheG.sequ(g.size()-1);
         tiefensucheG.search(g.transpose(),tiefensucheG); //Wie muss hier das zweite search aufgerufen werden? Mit demselben DFS oder einem anderen?
         //tiefensucheGtlive.search(g.transpose(), tiefensucheG); //Wie schaffe ich hier eine absteigende Reihenfolge in der äußeren Schleife?
 
@@ -24,7 +25,7 @@ public class SCCImpl implements SCC{
         for (i = 0; i < g.size(); i++) {
             seq[i] = search.sequ(i);
         }
-        int rootKnoten=0; //Knoten mit dem ein Baum beginnt und endet , am Anfang immer der Startknoten
+        int rootKnoten=lastSeq; //Knoten mit dem ein Baum beginnt und endet , am Anfang immer der Startknoten
         int baumzaehler=0; //Anzahl der components im Baum
         int startknoten=0;//Laufvariable
         nochNichtZugeteilt=new ArrayList<>();
@@ -44,7 +45,7 @@ public class SCCImpl implements SCC{
 
             baumzaehler++;
             for (int e:nochNichtZugeteilt){
-                if(search.det(e)==search.fin(seq[rootKnoten])){
+                if(search.det(e)==(search.fin(rootKnoten)+1)){
                     rootKnoten=e;
                     break;
                 }
