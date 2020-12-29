@@ -5,7 +5,9 @@ public class DefaultTestG {
     public static void main(String[] args) {
         //Testet ob Inserts aktiv sind
         int [] ArrayList;
+        int [] [] ArrayList2;
         Graph graph;
+        WeightedGraph Wgraph;
         try {
             assert (false);
             System.out.println("Fehler: Asserts nicht aktiv");
@@ -58,7 +60,7 @@ public class DefaultTestG {
 
                 // Gerichteter gewichteter Graph
                 case "WeightedGraph":
-                    WeightedGraph Wgraph = new WeightedGraphImpl(new int [][] {
+                    Wgraph = new WeightedGraphImpl(new int [][] {
                             {1,3,4},
                             {0,2,3,4,5},
                             {1,4,5},
@@ -145,46 +147,125 @@ public class DefaultTestG {
 
                 // Bestimmung starker Zusammenhangskomponenten
                 case "Zusammenhangskomponenten":
-                    SCC graphSCC = new SCCImpl();
+                    SCC SCC = new SCCImpl();
+                    SCC.compute(graph);
+                    graph = new GraphImpl((new int [][] {
+                            {2},
+                            {0,2,4},
+                            {},
+                            {0,1},
+                            {0,3},
+                            {4,6},
+                            {3,5,6},
+                    }));
+                    ArrayList2 = new int [] [] {
+                            {0,1,2,3,4},
+                            {5,6},
+                    };
+                    ArrayList = new int [2];
+                    for (i = 0; i < ArrayList.length; i++) {
+                        kakau:
+                        for (j = 0; j < ArrayList2.length; j++) {
+                            for (k = 0; k < ArrayList2[1].length; k++) {
+                                if (i == ArrayList2[j][k] && ArrayList[i] == null) {
+                                    ArrayList[i] = SCC.component(i);
+                                    break kakau;
+                                }
+                                else if (i == ArrayList2[j][k]) {
+                                    assert (SCC.component(i) == ArrayList[i]) : "component stimmen nicht überein";
+                                }
+                            }
+                        }
+                    }
                     break;
 
                 // Bestimmung minimaler Gerüste nach Prim
                 case "minPrim":
                     MSF graphMSF = new MSFImpl();
+                    Wgraph = new WeightedGraphImpl((new int [][] {
+                            {1,3},
+                            {0,2,3,4},
+                            {1,4},
+                            {0,1,4,5,6},
+                            {1,2,3,6},
+                            {3,6},
+                            {3,4,5},
+                    }, new double[][]{
+                            {14,10},
+                            {14,16,18,13},
+                            {16,9},
+                            {10,18,30,17,12},
+                            {13,9,30,16},
+                            {17,22},
+                            {12,16,22};
+                    }));
+                    graphMSF.compute(Wgraph, 0);
+                    ArrayList = new int [] {-1,0,4,0,1,3,3};
+                    for (int i = 0; i < ArrayList.length; i++) {
+                        assert (graphMSF.pred(i) == ArrayList[i]) : "Vorgängerknoten stimmt nicht";
+                    }
                     break;
 
                 // Bestimmung kürzester Wege nach Bellman-Ford und Dijkstra
                 case "BellmanFordDijkstra":
-                    SP SPgraph = new SPImpl(new int [][] {
-                            {1,3,4},
-                            {0,2,3,4,5},
-                            {1,4,5},
-                            {0,1,4},
-                            {0,1,2,3,5},
-                            {1,2,4},
+                    SP SPgraph = new SPImpl();
+                    Wgraph = new WeightedGraphImpl((new int [][] {
+                            {1},
+                            {2},
+                            {4},
+                            {3,5},
+                            {1},
+                            {},
                     }, new double[][]{
-                            {3,5,1},
-                            {3,8,5,2,7},
-                            {8,7,5},
-                            {5,5,4},
-                            {1,2,7,4,8},
-                            {7,5,8},
-                    });
+                            {50},
+                            {-10},
+                            {-5},
+                            {-1,5},
+                            {-1},
+                            {},
+                    }));
                     double [][] SPListe = new double [][] {
-                            {3,5,1},
-                            {3,8,5,2,7},
-                            {8,7,5},
-                            {5,5,4},
-                            {1,2,7,4,8},
-                            {7,5,8},
+                            {50},
+                            {-10},
+                            {-5},
+                            {-1,5},
+                            {-1},
+                            {},
                     };
                     ArrayList = new int [] {};
-                    for (i = 0; ArrayList.length ;i++) {
-                        assert (graphSP.bellmanFord()) : "Text";
+                    assert (!SPgraph.bellmanFord(Wgraph, 0)) : "BellmenFord liefert true zurück liefer sollte aber false zurück";
+                    Wgraph = new WeightedGraphImpl((new int [][] {
+                            {1},
+                            {2,3},
+                            {4},
+                            {4},
+                            {5},
+                            {},
+                    }, new double[][]{
+                            {50},
+                            {-10,-1},
+                            {-5},
+                            {-1},
+                            {5},
+                            {},
+                    }));
+                    double [][] SPNListe = new double [][] {
+                            {50},
+                            {-10,-1},
+                            {-5},
+                            {-1},
+                            {5},
+                            {},
+                    };
+                    assert (SPgraph.bellmanFord(Wgraph, 0)) : "BellmenFord liefert false zurück";
+                    SPgraph = new SPImpl();
+                    SPgraph.dijkstra(Wgraph, 0);
+                    for (int i = 0; i < SPNListe.length; i++) {
+                        assert (SPgraph.dist(i) == ArrayList[i]) : "Der Abstand " + i + " sollte " + ArrayList[i] + " sein, ist aber " + SPgraph.dist(i);
                     }
-                    assert (graphSP.dijkstra()) : "Text";
-                    assert (graphSP.dist()) : "Text";
-                    assert (graphSP.dist()) : "Text";
+                    for (int i = 0; i < SPListe.length; i++) {
+                        assert (SPgraph.pred(i) == ArrayList[i]) : "Der Abstand " + i + " sollte " + ArrayList[i] + " sein, ist aber " + SPgraph.dist(i);
+                    }
                     break;
 
                 // Test
