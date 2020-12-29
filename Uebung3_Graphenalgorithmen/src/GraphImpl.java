@@ -1,32 +1,13 @@
+import java.util.ArrayList;
+
 public class GraphImpl implements Graph{
     private int[][] Graph;
-    private boolean[][] Adjazenzmatrix;
     private int size;
     public int [][] tranTemp;
+    ArrayList<Integer> anzNachfolger;
     public GraphImpl(int[][] ints) {
         this.Graph=ints;
         size=size();
-        Adjazenzmatrix=new boolean[size()][size()];
-        makeAdj();
-    }
-
-    private void makeAdj(){
-        for (int adv=0;adv<size;adv++){
-            for(int adh=0;adh<size;adh++){
-                for(int intv=0;intv<deg(adv);intv++){
-                    if(Graph[adv][intv]==adh) Adjazenzmatrix[adh][adv]=true;
-                }
-            }
-        }
-    }
-    //Testfunktion
-    public void printAdjazenzMatrix(){
-        for(int i=0;i<size;i++){
-            for(int j=0;j<size;j++){
-                System.out.print(Adjazenzmatrix[j][i]+" ");
-            }
-            System.out.println();
-        }
     }
 
     public int[][] transGraph(){ // retunrstatment??
@@ -48,6 +29,19 @@ public class GraphImpl implements Graph{
                     }
             }
         }
+        for(int i=0;i<size;i++){
+            anzNachfolger=new ArrayList();
+            for(int k=0;k<size;k++){
+                if(tranTemp[i][k]!=-1) anzNachfolger.add(tranTemp[i][k]);
+            }
+            int[] array=new int[anzNachfolger.size()];
+            for(int l=0;l<array.length;l++){
+                array[l]=anzNachfolger.get(l);
+            }
+
+            tranTemp[i]= array;
+        }
+
         return tranTemp;
     }
 
@@ -72,5 +66,9 @@ public class GraphImpl implements Graph{
     @Override
     public Graph transpose() {
         return new GraphImpl(transGraph());
+    }
+
+    public int[][] getGraph() {
+        return Graph;
     }
 }
