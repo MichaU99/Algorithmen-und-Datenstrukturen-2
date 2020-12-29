@@ -16,7 +16,7 @@ public class DefaultTestG {
             System.out.println("Test beginnt");
         }
 
-        String testsToDo = "Breitensuche";//Put in the tests you want to perform (test1 test2 test3 usw)
+        String testsToDo = "GraphImpl WeightedGraph Breitensuche Tiefensuche Zusammenhangskomponenten minPrim BellmanFordDijkstra";//Put in the tests you want to perform (test1 test2 test3 usw)
         for (String list : testsToDo.split(" ")) {
 
             switch (list) {
@@ -178,21 +178,18 @@ public class DefaultTestG {
                             {3,5,6},
                     });
                     DFS graphDFS = new DFSImpl();
-                    graphDFS.sort(graph);
-                    if (graphDFS.sort(graph)) {
-                        assert (true) : "Topologische Sortierung ist möglich";
-                    } else {
-                        assert (false) : "Graph enthält einen Zyklus";
-                    }
-                    ArrayList = new int[] {1,2,2,4,3,0,0,3,4,1,5,6,6,5};
+                    graphDFS.search(graph);
+                    assert (!graphDFS.sort(graph)):"Topologische Sortierung gibt falschen Wert zurück";
+                    ArrayList = new int[] {1,5,2,7,6,11,12};
                     for (int i = 0; i < ArrayList.length; i++) {
-                        assert (graphDFS.det(i) == ArrayList[i]) : " ";
+                        assert (graphDFS.det(i) == ArrayList[i]) : "Entdeckungszeit sollte "+ArrayList[i]+" betragen, ist stattdessen "+graphDFS.det(i);
                     }
+                    ArrayList = new int[] {4,10,3,8,9,14,13};
                     for (int i = 0; i < ArrayList.length; i++) {
                         assert (graphDFS.fin(i) == ArrayList[i]) : " ";
                     }
                     // Zwei Methoden?
-
+                    ArrayList = new int[] {2,0,3,4,1,6,5};
                     for (int i = 0; i < ArrayList.length; i++) {
                         assert (graphDFS.sequ(i) == ArrayList[i]) : "Die Eingabe stimmt nicht mit dem Knoten überein.";
                     }
@@ -217,21 +214,16 @@ public class DefaultTestG {
                             {5,6},
                     };
                     Integer[] IArrayList = new Integer[2];
-                    for (int i = 0; i < IArrayList.length; i++) {
-                        kakau:
+                    IArrayList[0]=SCC.component(0);
+                    IArrayList[1]=SCC.component(5);
+                    for(int i=0;i< graph.size();i++) System.out.println(SCC.component(i));
+
                         for (int j = 0; j < ArrayList2.length; j++) {
-                            for (int k = 0; k < ArrayList2[1].length; k++) {
-                                if (i == ArrayList2[j][k] && IArrayList[i] == null) {
-                                    IArrayList[i] = SCC.component(i);
-                                    break kakau;
-                                }
-                                else if (i == ArrayList2[j][k]) {
-                                    assert (SCC.component(i) == IArrayList[i]) : "component stimmen nicht überein";
+                            for (int k = 0; k < ArrayList2[j].length; k++) {
+                                assert (SCC.component(ArrayList2[j][k])==IArrayList[j]):"component sollte "+IArrayList[j]+" sein, ist aber "+ SCC.component(ArrayList2[j][k]);
                                 }
                             }
-                        }
-                    }
-                    break;
+
 
                 // Bestimmung minimaler Gerüste nach Prim
                 case "minPrim":

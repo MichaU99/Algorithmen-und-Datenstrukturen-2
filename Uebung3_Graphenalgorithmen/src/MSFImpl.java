@@ -29,7 +29,7 @@ public class MSFImpl implements MSF{
             for(int i=0;i<succnr;i++){
                 if(heap.contains(entryArray[graph.succ((Integer) knoten.data(),i)]) && graph.weight((Integer)knoten.data(),i)<(Integer) entryArray[graph.succ((Integer) knoten.data(),i)].prio()){
                     heap.changePrio(entryArray[graph.succ((Integer) knoten.data(),i)],((Double)graph.weight((Integer)knoten.data(),i)).intValue()); // TODO: 29.12.2020  Help
-                    vorganger[(Integer) graph.succ((Integer) knoten.data(),i)]=(Integer) knoten.data();// TODO: 29.12.2020  Setze π(v)=u.
+                    vorganger[(Integer) graph.succ((Integer) knoten.data(),i)]=(Integer) knoten.data();//
 
                 }
             }
