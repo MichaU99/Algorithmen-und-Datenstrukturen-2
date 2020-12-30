@@ -47,25 +47,45 @@ public class SPImpl implements SP{
         return true;
     }
 
-
-
-
-
-
-
-
     @Override
     public void dijkstra(WeightedGraph g, int s) {
+        AbstandZuStartknoten = new double[size];
+        vorgaenger = new Integer[size];
+
+        BinHeap<Integer,Integer> heap=new BinHeap();// übernommen aus MSF
+        BinHeap.Entry[] entryArray=new BinHeap.Entry[size];
+        for (int i = 0; i < size; i++) {
+            AbstandZuStartknoten[i] = INF;
+            vorgaenger[i] = NIL;
+        }
+        AbstandZuStartknoten[s] = 0;
+
+        for(int i=0;i<size;i++){
+            entryArray[i]=heap.insert(Integer.MAX_VALUE,i);
+        }
+        do{
+            BinHeap.Entry knoten=heap.extractMin();
+            int succnr=g.deg((Integer) knoten.data());
+
+            for(int i=0;i<succnr;i++){
+                if(heap.contains(entryArray[g.succ((Integer) knoten.data(),i)]) && g.weight((Integer)knoten.data(),i)<(Integer) entryArray[g.succ((Integer) knoten.data(),i)].prio()){
+                    heap.changePrio(entryArray[g.succ((Integer) knoten.data(),i)],((Double)g.weight((Integer)knoten.data(),i)).intValue());
+                    vorgaenger[(Integer) g.succ((Integer) knoten.data(),i)]=(Integer) knoten.data();//
+
+                }
+            }
+        }while (!heap.isEmpty());
+
 
     }
 
     @Override
     public double dist(int v) {
-        return 0;
+        return AbstandZuStartknoten[v];
     }
 
     @Override
     public int pred(int v) {
-        return 0;
+        return vorgaenger[v];
     }
 }
