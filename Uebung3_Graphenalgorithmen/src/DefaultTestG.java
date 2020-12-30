@@ -321,7 +321,7 @@ public class DefaultTestG {
                         assert (SPgraph.dist(i) == AbstandListe[i][0]) : "Der Abstand " + i + " sollte " + AbstandListe[i][0] + " sein, ist aber " + SPgraph.dist(i);
                     }
                     for (int i = 0; i < VorgängerListe.length ; i++) {
-                        assert (SPgraph.pred(i) == VorgängerListe[i][0]) : "Der Abstand " + i + " sollte " + VorgängerListe[i][0] + " sein, ist aber " + SPgraph.dist(i);
+                        assert (SPgraph.pred(i) == VorgängerListe[i][0]) : "Der Vorgänger " + i + " sollte " + VorgängerListe[i][0] + " sein, ist aber " + SPgraph.dist(i);
                     }
                     // Test für dijsdjfls-Algorithmus
                     Wgraph2 = new WeightedGraphImpl((new int [][] {
@@ -337,14 +337,31 @@ public class DefaultTestG {
                             {100,250},
                             {}
                     });
+                    double [][] AbstandListeD = new double [][] {
+                            {0},
+                            {100},
+                            {200},
+                            {50},
+                            {250},
+
+                    };
+                    double [][] VorgängerListeD = new double [][] {
+                            {-1},
+                            {0},
+                            {1},
+                            {0},
+                            {2},
+                    };
 
                     SPgraph = new SPImpl();
                     SPgraph.dijkstra(Wgraph2, 0);
                     // dür dijiisdf noch test einfügen
-                    for(int i=0;i<Wgraph2.size();i++){
-                        System.out.println("Knoten "+i+": Kürzester weg:"+SPgraph.dist(i)+" und der Vorgänger: "+SPgraph.pred(i));
+                    for(int i=0;i<Wgraph2.size();i++){ // Abstände
+                        assert (SPgraph.dist(i) == AbstandListeD[i][0]) : "Der Abstand " + i + " sollte " + AbstandListeD[i][0] + " sein, ist aber " + SPgraph.dist(i);
                     }
-
+                    for(int i=0;i<Wgraph2.size();i++){ // Vorgänge
+                        assert (SPgraph.pred(i) == VorgängerListeD[i][0]) : "Der Abstand " + i + " sollte " + VorgängerListeD[i][0] + " sein, ist aber " + SPgraph.dist(i);
+                    }
                     break;
 /*
         Graph graph=new GraphImpl(new int [] [] {
