@@ -7,7 +7,7 @@ public class DefaultTestG {
         int [] ArrayList;
         int [] [] ArrayList2;
         Graph graph;
-        WeightedGraph Wgraph;
+        WeightedGraph Wgraph,Wgraph2;
         try {
             assert (false);
             System.out.println("Fehler: Asserts nicht aktiv");
@@ -299,25 +299,53 @@ public class DefaultTestG {
                             {5},
                             {}
                     });
-                    double [][] SPNListe = new double [][] {
+                    double [][] AbstandListe = new double [][] {
+                            {0},
                             {50},
-                            {-10,-1},
-                            {-5},
+                            {40},
+                            {49},
+                            {35},
+                            {40},
+                    };
+                    double [][] VorgängerListe = new double [][] {
                             {-1},
-                            {5},
-                            {},
+                            {0},
+                            {1},
+                            {1},
+                            {2},
+                            {4},
                     };
                     assert (SPgraph.bellmanFord(Wgraph, 0)) : "BellmenFord liefert false zurück";
-                    SPgraph = new SPImpl();
-                    SPgraph.dijkstra(Wgraph, 0);
-                    for (int i = 0; i < SPNListe.length; i++) {
-                        assert (SPgraph.dist(i) == ArrayList[i]) : "Der Abstand " + i + " sollte " + ArrayList[i] + " sein, ist aber " + SPgraph.dist(i);
-                    }
-                    for (int i = 0; i < SPListe.length; i++) {
-                        assert (SPgraph.pred(i) == ArrayList[i]) : "Der Abstand " + i + " sollte " + ArrayList[i] + " sein, ist aber " + SPgraph.dist(i);
-                    }
-                    break;
 
+                    for (int i = 0; i < AbstandListe.length; i++) {
+                        assert (SPgraph.dist(i) == AbstandListe[i][0]) : "Der Abstand " + i + " sollte " + AbstandListe[i][0] + " sein, ist aber " + SPgraph.dist(i);
+                    }
+                    for (int i = 0; i < VorgängerListe.length ; i++) {
+                        assert (SPgraph.pred(i) == VorgängerListe[i][0]) : "Der Abstand " + i + " sollte " + VorgängerListe[i][0] + " sein, ist aber " + SPgraph.dist(i);
+                    }
+                    // Test für dijsdjfls-Algorithmus
+                    Wgraph2 = new WeightedGraphImpl((new int [][] {
+                            {1,3},
+                            {2,4},
+                            {4},
+                            {1,4},
+                            {}
+                    }), new double[][]{
+                            {100,50},
+                            {100,250},
+                            {50},
+                            {100,250},
+                            {}
+                    });
+
+                    SPgraph = new SPImpl();
+                    SPgraph.dijkstra(Wgraph2, 0);
+                    // dür dijiisdf noch test einfügen
+                    for(int i=0;i<Wgraph2.size();i++){
+                        System.out.println("Knoten "+i+": Kürzester weg:"+SPgraph.dist(i)+" und der Vorgänger: "+SPgraph.pred(i));
+                    }
+
+                    break;
 /*
         Graph graph=new GraphImpl(new int [] [] {
                 { 1, 2 },	// Knoten 0 hat als Nachfolger Knoten 1 und 2.

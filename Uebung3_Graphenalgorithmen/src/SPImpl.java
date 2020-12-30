@@ -4,6 +4,7 @@ public class SPImpl implements SP{
     double [] AbstandZuStartknoten = null;
     Integer[] vorgaenger = null;
     int strartknoten;
+    int Startknoten;
     @Override
     public boolean bellmanFord(WeightedGraph g, int s) {
         size = g.size();
@@ -52,29 +53,41 @@ public class SPImpl implements SP{
     @Override
     public void dijkstra(WeightedGraph g, int s) {
         Size=g.size();
+        Startknoten=s;
         AbstandZuStartknoten = new double[Size];
         vorgaenger = new Integer[Size];
 
-        BinHeap<Integer,Integer> heap=new BinHeap();// übernommen aus MSF
+        BinHeap<Integer, Integer> heap=new BinHeap();// übernommen aus MSF kann ich hier duouble macheb?
         BinHeap.Entry[] entryArray=new BinHeap.Entry[Size];
         for (int i = 0; i < Size; i++) {
             AbstandZuStartknoten[i] = INF;
             vorgaenger[i] = NIL;
         }
-        AbstandZuStartknoten[s] = 0;
+        AbstandZuStartknoten[Startknoten] = 0;
 
         for(int i=0;i<Size;i++){
-            entryArray[i]=heap.insert(Integer.MAX_VALUE,i);
+            if(i == Startknoten){
+                entryArray[i]=heap.insert(0,i);
+            }
+            else{
+                entryArray[i]=heap.insert(Integer.MAX_VALUE,i);
+            }
+
         }
         do{
             BinHeap.Entry knoten=heap.extractMin();
-            int succnr=g.deg((Integer) knoten.data());
+            int Knoten =(Integer) knoten.data();
+            int succnr=g.deg(Knoten);
 
             for(int i=0;i<succnr;i++){
-                if(heap.contains(entryArray[g.succ((Integer) knoten.data(),i)]) && g.weight((Integer)knoten.data(),i)<(Integer) entryArray[g.succ((Integer) knoten.data(),i)].prio()){
-                    heap.changePrio(entryArray[g.succ((Integer) knoten.data(),i)],((Double)g.weight((Integer)knoten.data(),i)).intValue());
-                    vorgaenger[(Integer) g.succ((Integer) knoten.data(),i)]=(Integer) knoten.data();//
+                int Test=g.succ(Knoten,i);
+                if(heap.contains(entryArray[g.succ(Knoten,i)]) && (AbstandZuStartknoten[Knoten] + g.weight(Knoten,i) )< AbstandZuStartknoten[g.succ(Knoten,i)]){
+                    vorgaenger[ g.succ(Knoten,i)]=Knoten;
+                    AbstandZuStartknoten[g.succ(Knoten,i)]=AbstandZuStartknoten[Knoten] + g.weight(Knoten,i);
+                    heap.changePrio(entryArray[g.succ(Knoten,i)], (int) AbstandZuStartknoten[g.succ(Knoten,i)]);
 
+                    //AbstandZuStartknoten[Knoten] + g.weight(Knoten, nachfolger) < AbstandZuStartknoten[NachFolgerKnoten]
+                    // AbstandZuStartknoten[NachFolgerKnoten] = AbstandZuStartknoten[Knoten] + g.weight(Knoten, nachfolger);
                 }
             }
         }while (!heap.isEmpty());
