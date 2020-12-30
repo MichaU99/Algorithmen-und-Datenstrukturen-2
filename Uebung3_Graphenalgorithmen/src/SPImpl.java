@@ -1,5 +1,6 @@
 public class SPImpl implements SP{
     Integer size;
+    Integer Size;
     double [] AbstandZuStartknoten = null;
     Integer[] vorgaenger = null;
     int strartknoten;
@@ -19,16 +20,17 @@ public class SPImpl implements SP{
 
             for (int Knoten = 0; Knoten < size; Knoten++) {
                 if (Knoten == strartknoten) { // wie ist der vergleich hier? oder equals?
-                    for (int nachfolger = 0; nachfolger < g.deg(s); nachfolger++) {
-                        int NachfolgerKnoten = g.succ(s, nachfolger);
-                        AbstandZuStartknoten[NachfolgerKnoten] = g.weight(s, NachfolgerKnoten);
-                        vorgaenger[NachfolgerKnoten] = s;
+                    for (int nachfolger = 0; nachfolger < g.deg(strartknoten); nachfolger++) {
+                        int NachfolgerKnoten = g.succ(strartknoten, nachfolger);
+                        double Test = g.weight(strartknoten, nachfolger);
+                        AbstandZuStartknoten[NachfolgerKnoten] = Test;
+                        vorgaenger[NachfolgerKnoten] = strartknoten;
                     }
                 } else {
                     for (int nachfolger = 0; nachfolger < g.deg(Knoten); nachfolger++) {
                         int NachFolgerKnoten = g.succ(Knoten, nachfolger);
-                        if (AbstandZuStartknoten[Knoten] + g.weight(Knoten, NachFolgerKnoten) < AbstandZuStartknoten[NachFolgerKnoten]) {
-                            AbstandZuStartknoten[NachFolgerKnoten] = AbstandZuStartknoten[Knoten] + g.weight(Knoten, NachFolgerKnoten);
+                        if (AbstandZuStartknoten[Knoten] + g.weight(Knoten, nachfolger) < AbstandZuStartknoten[NachFolgerKnoten]) {
+                            AbstandZuStartknoten[NachFolgerKnoten] = AbstandZuStartknoten[Knoten] + g.weight(Knoten, nachfolger);
                             vorgaenger[NachFolgerKnoten] = Knoten;
                         }
                     }
@@ -38,7 +40,7 @@ public class SPImpl implements SP{
         for (int Knoten = 0; Knoten < size; Knoten++) {
             for (int nachfolger = 0; nachfolger < g.deg(Knoten); nachfolger++) {
                 int NachFolgerKnoten = g.succ(Knoten, nachfolger);
-                if (AbstandZuStartknoten[Knoten] + g.weight(Knoten, NachFolgerKnoten) < AbstandZuStartknoten[NachFolgerKnoten]) {
+                if (AbstandZuStartknoten[Knoten] + g.weight(Knoten, nachfolger) < AbstandZuStartknoten[NachFolgerKnoten]) {
                     return false;
                 }
             }
@@ -49,18 +51,19 @@ public class SPImpl implements SP{
 
     @Override
     public void dijkstra(WeightedGraph g, int s) {
-        AbstandZuStartknoten = new double[size];
-        vorgaenger = new Integer[size];
+        Size=g.size();
+        AbstandZuStartknoten = new double[Size];
+        vorgaenger = new Integer[Size];
 
         BinHeap<Integer,Integer> heap=new BinHeap();// übernommen aus MSF
-        BinHeap.Entry[] entryArray=new BinHeap.Entry[size];
-        for (int i = 0; i < size; i++) {
+        BinHeap.Entry[] entryArray=new BinHeap.Entry[Size];
+        for (int i = 0; i < Size; i++) {
             AbstandZuStartknoten[i] = INF;
             vorgaenger[i] = NIL;
         }
         AbstandZuStartknoten[s] = 0;
 
-        for(int i=0;i<size;i++){
+        for(int i=0;i<Size;i++){
             entryArray[i]=heap.insert(Integer.MAX_VALUE,i);
         }
         do{
