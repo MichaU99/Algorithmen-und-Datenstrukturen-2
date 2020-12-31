@@ -27,7 +27,8 @@ public class SPImpl implements SP{
                         AbstandZuStartknoten[NachfolgerKnoten] = Test;
                         vorgaenger[NachfolgerKnoten] = strartknoten;
                     }
-                } else {
+                }
+                else {
                     for (int nachfolger = 0; nachfolger < g.deg(Knoten); nachfolger++) {
                         int NachFolgerKnoten = g.succ(Knoten, nachfolger);
                         if (AbstandZuStartknoten[Knoten] + g.weight(Knoten, nachfolger) < AbstandZuStartknoten[NachFolgerKnoten]) {
