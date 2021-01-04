@@ -521,6 +521,7 @@ public class DefaultTestG {
                     for (int i = 0; i < VorgängerListe4.length ; i++) {
                         assert (SPgraph.pred(i) == VorgängerListe4[i][0]) : "Der Vorgänger " + i + " sollte " + VorgängerListe4[i][0] + " sein, ist aber " + SPgraph.pred(i);
                     }
+                    break;
 
 
 /*
