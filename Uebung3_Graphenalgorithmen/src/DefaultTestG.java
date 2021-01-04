@@ -18,7 +18,7 @@ public class DefaultTestG {
 
         String testsToDo = "GraphImpl WeightedGraph Breitensuche Zusammenhangskomponenten Tiefensuche minPrim BellmanFordDijkstra Bellman2 Dijkstra2";//Put in the tests you want to perform (test1 test2 test3 usw)
         for (String list : testsToDo.split(" ")) {
-
+            System.out.println("Running Test:"+list);
             switch (list) {
 
                 case "GraphImpl":
@@ -227,7 +227,7 @@ public class DefaultTestG {
                             assert (SCC.component(ArrayList2[j][k])==IArrayList[j]):"component sollte "+IArrayList[j]+" sein, ist aber "+ SCC.component(ArrayList2[j][k]);
                             }
                         }
-
+                    break;
 
                 // Bestimmung minimaler Gerüste nach Prim
                 case "minPrim":
@@ -472,6 +472,8 @@ public class DefaultTestG {
                 default:
                     System.out.println("Fehlerhafte Eingabe bei der Testfallwahl");
                     }
+            System.out.println("Test bestanden");
+            System.out.println();
         }
     }
 }

@@ -5,17 +5,16 @@ public class MSFImpl implements MSF{
     Integer[] vorganger;
     @Override
     public void compute(WeightedGraph g, int s) {
+        if(g==null || g.size()==0) return;
         graph=g;
         startknoten=s;
         size=graph.size();
         vorganger=new Integer[g.size()];
-        BinHeap<Integer,Integer> heap=new BinHeap();
+        BinHeap<Double,Integer> heap=new BinHeap<>();
         BinHeap.Entry[] entryArray=new BinHeap.Entry[size]; //Ist diese Umsetzung sinnvoll/möglich?
 
-        if(g==null || g.size()==0) return;
         for(int i=0;i<size;i++){
-            entryArray[i]=heap.insert(Integer.MAX_VALUE,i);
-
+            entryArray[i]=heap.insert(Double.POSITIVE_INFINITY,i);
         }
         //Test
         for (int i=0;i< size;i++){
@@ -27,9 +26,9 @@ public class MSFImpl implements MSF{
             int succnr=graph.deg((Integer) knoten.data());
 
             for(int i=0;i<succnr;i++){
-                if(heap.contains(entryArray[graph.succ((Integer) knoten.data(),i)]) && graph.weight((Integer)knoten.data(),i)<(Integer) entryArray[graph.succ((Integer) knoten.data(),i)].prio()){
-                    heap.changePrio(entryArray[graph.succ((Integer) knoten.data(),i)],((Double)graph.weight((Integer)knoten.data(),i)).intValue()); // TODO: 29.12.2020  Help
-                    vorganger[(Integer) graph.succ((Integer) knoten.data(),i)]=(Integer) knoten.data();//
+                if(heap.contains(entryArray[graph.succ((Integer) knoten.data(),i)]) && ( (graph.weight((Integer)knoten.data(),i))      < (Double) entryArray[graph.succ((Integer) knoten.data(),i)].prio())){
+                    heap.changePrio(entryArray[graph.succ((Integer) knoten.data(),i)],graph.weight((Integer)knoten.data(),i)); //
+                    vorganger[graph.succ((Integer) knoten.data(),i)]=(Integer) knoten.data();//
 
                 }
             }
