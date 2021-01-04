@@ -1,15 +1,18 @@
+import java.util.Map;
+
 public class BFSImpl implements BFS {
-    FIFOList fifo;
     Integer [] ergebnis=null;
     Integer[] vorgaenger=null;
     @Override
     public void search(Graph g, int s) {
+        int lauf=0;
+        BinHeap<Integer,Integer> heap=new BinHeap<>();
         if(g==null ||g.size()-1<s|| s<0) return; // müssen abgefangen werden?
 
         int size=g.size();
         ergebnis=new Integer[g.size()];
         vorgaenger=new Integer[g.size()];
-        fifo=new FIFOList(s);
+        heap.insert(lauf++,s);
         //Initialise ergebnis
         for(int i=0;i<size;i++){
             if(i!=s) ergebnis[i]=null;
@@ -17,13 +20,14 @@ public class BFSImpl implements BFS {
             vorgaenger[i]=null;
         }
 
-        for(Integer e=fifo.extractFirst();e!=null;e=fifo.extractFirst()){
-            for (int i=0;i< g.deg(e);i++){
-                int succ=g.succ(e,i);
+        for(BinHeap.Entry<Integer,Integer>e=heap.minimum(); !heap.isEmpty(); e=heap.minimum()){
+            heap.remove(e);
+            for (int i=0;i< g.deg(e.data());i++){
+                int succ=g.succ(e.data(),i);
                 if(ergebnis[succ]==null){
-                    ergebnis[succ]=ergebnis[e]+1;
-                    vorgaenger[succ]=e;
-                    fifo.add(succ);
+                    ergebnis[succ]=ergebnis[e.data()]+1;
+                    vorgaenger[succ]=e.data();
+                    heap.insert(lauf++,succ);
                 }
 
             }
