@@ -16,7 +16,7 @@ public class DefaultTestG {
             System.out.println("Test beginnt");
         }
 
-        String testsToDo = "GraphImpl WeightedGraph Breitensuche Zusammenhangskomponenten Tiefensuche minPrim BellmanFordDijkstra Bellman2 Dijkstra2";//Put in the tests you want to perform (test1 test2 test3 usw)
+        String testsToDo = "GraphImpl WeightedGraph Breitensuche Zusammenhangskomponenten Tiefensuche minPrim BellmanFordDijkstra Bellman2 Dijkstra2 Bellman3 Dijkstra3";//Put in the tests you want to perform (test1 test2 test3 usw)
         for (String list : testsToDo.split(" ")) {
             System.out.println("Running Test:"+list);
             switch (list) {
@@ -337,7 +337,7 @@ public class DefaultTestG {
                         assert (SPgraph.dist(i) == AbstandListe[i][0]) : "Der Abstand " + i + " sollte " + AbstandListe[i][0] + " sein, ist aber " + SPgraph.dist(i);
                     }
                     for (int i = 0; i < VorgängerListe.length ; i++) {
-                        assert (SPgraph.pred(i) == VorgängerListe[i][0]) : "Der Vorgänger " + i + " sollte " + VorgängerListe[i][0] + " sein, ist aber " + SPgraph.dist(i);
+                        assert (SPgraph.pred(i) == VorgängerListe[i][0]) : "Der Vorgänger " + i + " sollte " + VorgängerListe[i][0] + " sein, ist aber " + SPgraph.pred(i);
                     }
                     // Test für dijsdjfls-Algorithmus
                     Wgraph2 = new WeightedGraphImpl((new int [][] {
@@ -376,7 +376,7 @@ public class DefaultTestG {
                         assert (SPgraph.dist(i) == AbstandListeD[i][0]) : "Der Abstand " + i + " sollte " + AbstandListeD[i][0] + " sein, ist aber " + SPgraph.dist(i);
                     }
                     for(int i=0;i<Wgraph2.size();i++){ // Vorgänge
-                        assert (SPgraph.pred(i) == VorgängerListeD[i][0]) : "Der Abstand " + i + " sollte " + VorgängerListeD[i][0] + " sein, ist aber " + SPgraph.dist(i);
+                        assert (SPgraph.pred(i) == VorgängerListeD[i][0]) : "Der Abstand " + i + " sollte " + VorgängerListeD[i][0] + " sein, ist aber " + SPgraph.pred(i);
                     }
                     break;
 
@@ -392,35 +392,37 @@ public class DefaultTestG {
                             {6,7},
                             {5,-4,8},
                             {-2},
-                            {1,7},
+                            {2,7},
                             {-3,9},
 
                     });
                     double [][] AbstandListe2 = new double [][] {
                             {0},
-                            {6},
-                            {4},
                             {2},
+                            {4},
+                            {-2},
                             {7},
 
                     };
                     double [][] VorgängerListe2 = new double [][] {
                             {-1},
-                            {0},
+                            {2},
                             {4},
                             {1},
                             {0},
 
                     };
                     SPgraph = new SPImpl();
+
                     SPgraph.bellmanFord(Wgraph, 0);
-                    //assert (SPgraph.bellmanFord(Wgraph, 0)) : "BellmenFord liefert false zurück"; todo nachschauen was ist
+                    assert (SPgraph.bellmanFord(Wgraph, 0)) : "BellmenFord liefert false zurück"; //todo nachschauen was ist
 
                     for (int i = 0; i < AbstandListe2.length; i++) {
-                        //assert (SPgraph.dist(i) == AbstandListe2[i][0]) : "Der Abstand " + i + " sollte " + AbstandListe2[i][0] + " sein, ist aber " + SPgraph.dist(i);
+                        //System.out.println("Knoten "+i+" Abstand: "+SPgraph.dist(i)+" und Vorgänger"+SPgraph.pred(i));
+                        assert (SPgraph.dist(i) == AbstandListe2[i][0]) : "Der Abstand " + i + " sollte " + AbstandListe2[i][0] + " sein, ist aber " + SPgraph.dist(i);
                     }
                     for (int i = 0; i < VorgängerListe2.length ; i++) {
-                       // assert (SPgraph.pred(i) == VorgängerListe2[i][0]) : "Der Vorgänger " + i + " sollte " + VorgängerListe2[i][0] + " sein, ist aber " + SPgraph.dist(i);
+                        assert (SPgraph.pred(i) == VorgängerListe2[i][0]) : "Der Vorgänger " + i + " sollte " + VorgängerListe2[i][0] + " sein, ist aber " + SPgraph.pred(i);
                     }
                     break;
                 case "Dijkstra2":
@@ -441,32 +443,155 @@ public class DefaultTestG {
                     });
                     double [][] AbstandListe3 = new double [][] {
                             {0},
-                            {6},
-                            {4},
-                            {2},
+                            {8},
+                            {9},
                             {7},
+                            {5},
 
                     };
                     double [][] VorgängerListe3 = new double [][] {
                             {-1},
-                            {0},
                             {4},
                             {1},
+                            {4},
                             {0},
 
                     };
                     SPgraph = new SPImpl();
                     SPgraph.dijkstra(Wgraph, 0);
-                    //assert (SPgraph.bellmanFord(Wgraph, 0)) : "BellmenFord liefert false zurück";
+
 
                     for (int i = 0; i < AbstandListe3.length; i++) {
-                        System.out.println("Knoten "+i+" Abstand: "+SPgraph.dist(i)+" und Vorgänger"+SPgraph.pred(i));
-                        //assert (SPgraph.dist(i) == AbstandListe3[i][0]) : "Der Abstand " + i + " sollte " + AbstandListe3[i][0] + " sein, ist aber " + SPgraph.dist(i);
+                      //  System.out.println("Knoten "+i+" Abstand: "+SPgraph.dist(i)+" und Vorgänger"+SPgraph.pred(i));
+                        assert (SPgraph.dist(i) == AbstandListe3[i][0]) : "Der Abstand " + i + " sollte " + AbstandListe3[i][0] + " sein, ist aber " + SPgraph.dist(i);
                     }
                     for (int i = 0; i < VorgängerListe3.length ; i++) {
-                        //assert (SPgraph.pred(i) == VorgängerListe3[i][0]) : "Der Vorgänger " + i + " sollte " + VorgängerListe3[i][0] + " sein, ist aber " + SPgraph.dist(i);
+                        assert (SPgraph.pred(i) == VorgängerListe3[i][0]) : "Der Vorgänger " + i + " sollte " + VorgängerListe3[i][0] + " sein, ist aber " + SPgraph.pred(i);
                     }
                     break;
+                case "Bellman3":
+                    Wgraph = new WeightedGraphImpl((new int [][] {
+                            {1,3,8,10},
+                            {2},
+                            {4},
+                            {2,4,7},
+                            {5},
+                            {6},
+                            {7},
+                            {2,4,9},
+                            {2,7},
+                            {},
+                            {9},
+
+                    }), new double[][]{
+                            {100,20,10,76},
+                            {67},
+                            {1},
+                            {33,3,20},
+                            {2},
+                            {71},
+                            {72},
+                            {-20,-2,4},
+                            {10,50},
+                            {},
+                            {2},
+
+                    });
+                    double [][] AbstandListe4 = new double [][] {
+                            {0},
+                            {100},
+                            {20},
+                            {20},
+                            {21},
+                            {23},
+                            {94},
+                            {40},
+                            {10},
+                            {44},
+                            {76},
+
+                    };
+                    double [][] VorgängerListe4 = new double [][] {
+                            {-1},
+                            {0},
+                            {7}, // hier gibt es möglichkeit 8 oder 7
+                            {0},
+                            {2},
+                            {4},
+                            {5},
+                            {3},
+                            {0},
+                            {7},
+                            {0},
+
+                    };
+                    SPgraph = new SPImpl();
+
+                    SPgraph.bellmanFord(Wgraph, 0);
+                    assert (SPgraph.bellmanFord(Wgraph, 0)) : "BellmenFord liefert false zurück"; //todo nachschauen was ist
+
+                    for (int i = 0; i < AbstandListe4.length; i++) {
+                        //System.out.println("Knoten "+i+" Abstand: "+SPgraph.dist(i)+" und Vorgänger"+SPgraph.pred(i));
+                        assert (SPgraph.dist(i) == AbstandListe4[i][0]) : "Der Abstand " + i + " sollte " + AbstandListe4[i][0] + " sein, ist aber " + SPgraph.dist(i);
+                    }
+                    for (int i = 0; i < VorgängerListe4.length ; i++) {
+                        assert (SPgraph.pred(i) == VorgängerListe4[i][0]) : "Der Vorgänger " + i + " sollte " + VorgängerListe4[i][0] + " sein, ist aber " + SPgraph.pred(i);
+                    }
+                    break;
+                case "Dijkstra3":
+                    Wgraph = new WeightedGraphImpl((new int [][] {
+                            {1,2,3},
+                            {2,5,6},
+                            {},
+                            {4},
+                            {},
+                            {4,6},
+                            {},
+
+                    }), new double[][]{
+                            {19,98,10},
+                            {20,74,86},
+                            {},
+                            {55},
+                            {},
+                            {45,50},
+                            {},
+
+                    });
+                    double [][] AbstandListe5 = new double [][] {
+                            {0},
+                            {19},
+                            {39},
+                            {10},
+                            {65},
+                            {93},
+                            {105},
+
+                    };
+                    double [][] VorgängerListe5 = new double [][] {
+                            {-1},
+                            {0},
+                            {1},
+                            {0},
+                            {3},
+                            {1},
+                            {1},
+
+                    };
+                    SPgraph = new SPImpl();
+                    SPgraph.dijkstra(Wgraph, 0);
+
+
+                    for (int i = 0; i < AbstandListe5.length; i++) {
+                        //  System.out.println("Knoten "+i+" Abstand: "+SPgraph.dist(i)+" und Vorgänger"+SPgraph.pred(i));
+                        assert (SPgraph.dist(i) == AbstandListe5[i][0]) : "Der Abstand " + i + " sollte " + AbstandListe5[i][0] + " sein, ist aber " + SPgraph.dist(i);
+                    }
+                    for (int i = 0; i < VorgängerListe5.length ; i++) {
+                        assert (SPgraph.pred(i) == VorgängerListe5[i][0]) : "Der Vorgänger " + i + " sollte " + VorgängerListe5[i][0] + " sein, ist aber " + SPgraph.pred(i);
+                    }
+                    break;
+
+
 /*
         Graph graph=new GraphImpl(new int [] [] {
                 { 1, 2 },	// Knoten 0 hat als Nachfolger Knoten 1 und 2.
