@@ -249,10 +249,26 @@ public class DefaultTestG {
                             {17,22},
                             {12,16,22}
                     });
+                    /*Wgraph = new WeightedGraphImpl((new int[][]{
+                            {1,4,5},
+                            {0,2,3,4,5},
+                            {1,3,4},
+                            {1,2,4},
+                            {0,1,2,3,5},
+                            {0,1,4}}),
+                            new double[][]{
+                                    {3,-0.789,5},
+                                    {3,8,7,2,5},
+                                    {8,5,7},
+                                    {7,5,8},
+                                    {-0.789,2,7,8,4},
+                                    {5,5,4}
+                    });*/
                     graphMSF.compute(Wgraph, 0);
                     ArrayList = new int [] {-1,0,4,0,1,3,3};
+                    //ArrayList = new int [] {-1,4,4,4,0,2};
                     for (int i = 0; i < ArrayList.length; i++) {
-                        assert (graphMSF.pred(i) == ArrayList[i]) : "Vorgängerknoten stimmt nicht";
+                        assert (graphMSF.pred(i) == ArrayList[i]) : "Vorgängerknoten an der Stelle "+i+" soll "+ArrayList[i]+" sein, ist aber "+graphMSF.pred(i);
                     }
                     break;
 
