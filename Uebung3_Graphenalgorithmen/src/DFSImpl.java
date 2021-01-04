@@ -83,7 +83,8 @@ public class DFSImpl implements DFS{
     }
 
     @Override
-    public boolean sort(Graph g) {
+    public boolean sort(Graph g) { // TODO: 04.01.2021 erstmal integriert indem anderen
+        search(g);
         return trop;
     }
 
