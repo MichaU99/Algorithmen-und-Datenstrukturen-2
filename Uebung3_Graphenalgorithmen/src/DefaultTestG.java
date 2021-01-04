@@ -227,7 +227,7 @@ public class DefaultTestG {
                             assert (SCC.component(ArrayList2[j][k])==IArrayList[j]):"component sollte "+IArrayList[j]+" sein, ist aber "+ SCC.component(ArrayList2[j][k]);
                             }
                         }
-
+                    break;
 
                 // Bestimmung minimaler Gerüste nach Prim
                 case "minPrim":

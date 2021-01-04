@@ -9,6 +9,8 @@ public class SCCImpl implements SCC{
 
     @Override
     public void compute(Graph g) {
+        if(g==null) return;
+
         this.g=g;
         int i,j,tmp=-1; //laufvariabeln
         woodOfTrees = new ArrayList<>();
@@ -18,19 +20,18 @@ public class SCCImpl implements SCC{
 
         tiefensucheG.search(g);
         int lastSeq=tiefensucheG.sequ(g.size()-1);
-        tiefensucheG.search(g.transpose(),tiefensucheG); //Wie muss hier das zweite search aufgerufen werden? Mit demselben DFS oder einem anderen?
-        //tiefensucheGtlive.search(g.transpose(), tiefensucheG); //Wie schaffe ich hier eine absteigende Reihenfolge in der äußeren Schleife?
+        tiefensucheG.search(g.transpose(),tiefensucheG);
 
         search = tiefensucheG; //search muss auf die Scueh gesezt werden die die richtigen Inforamtionen enthält
         for (i = 0; i < g.size(); i++) {
             seq[i] = search.sequ(i);
         }
+
         int rootKnoten=lastSeq; //Knoten mit dem ein Baum beginnt und endet , am Anfang immer der Startknoten
         int baumzaehler=0; //Anzahl der components im Baum
         int startknoten=0;//Laufvariable
         nochNichtZugeteilt=new ArrayList<>();
         for(int a=0;a< g.size();a++) nochNichtZugeteilt.add(a);
-// TODO: 29.12.2020 leere Graphen abfangen
         do{
             woodOfTrees.add(new ArrayList<>());
             while(startknoten< seq.length){
@@ -68,7 +69,6 @@ public class SCCImpl implements SCC{
         return false;
     }
 
-// TODO: 27.12.2020  wir haben immernoch keine Möglichkeit die components aus der Rückgaben der Tiefensuche zu berechnen
     @Override
     public int component(int v) {
         for(int i=0;i<woodOfTrees.size();i++){
