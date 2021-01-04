@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class DFSImpl implements DFS{
     int[] seq=null;
     Integer [] entdeckungszeit = null;
-    int entdeckungszeitzahl =1;
+    int entdeckungszeitzahl;
     Integer [] abschlusszeit = null;
     Integer[] vorgaenger = null;
     String [] Farbe = null;
@@ -16,7 +16,7 @@ public class DFSImpl implements DFS{
     // TODO: 23.12.2020
     @Override
     public void search(Graph g) {
-
+        entdeckungszeitzahl =1;
         entdeckungszeit= new Integer[g.size()];
         abschlusszeit= new Integer[g.size()];
         this.g=g;
