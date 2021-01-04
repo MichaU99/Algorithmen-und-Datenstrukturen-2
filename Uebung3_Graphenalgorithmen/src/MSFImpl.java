@@ -14,22 +14,16 @@ public class MSFImpl implements MSF{
         BinHeap.Entry[] entryArray=new BinHeap.Entry[size]; //Ist diese Umsetzung sinnvoll/möglich?
 
         for(int i=0;i<size;i++){
-            entryArray[i]=heap.insert(Double.POSITIVE_INFINITY,i);
+            if(i!=startknoten)entryArray[i]=heap.insert(Double.POSITIVE_INFINITY,i);
+            else entryArray[i]=heap.insert(0.0,i);
         }
-        //Test
-        for (int i=0;i< size;i++){
-            assert (heap.contains(entryArray[i])) ;
-        }
-        //
         do{
             BinHeap.Entry knoten=heap.extractMin();
             int succnr=graph.deg((Integer) knoten.data());
-
             for(int i=0;i<succnr;i++){
-                if(heap.contains(entryArray[graph.succ((Integer) knoten.data(),i)]) && ( (graph.weight((Integer)knoten.data(),i))      < (Double) entryArray[graph.succ((Integer) knoten.data(),i)].prio())){
-                    heap.changePrio(entryArray[graph.succ((Integer) knoten.data(),i)],graph.weight((Integer)knoten.data(),i)); //
-                    vorganger[graph.succ((Integer) knoten.data(),i)]=(Integer) knoten.data();//
-
+                if(heap.contains(entryArray[graph.succ((Integer) knoten.data(),i)]) && ( (graph.weight((Integer)knoten.data(),i)) < (Double) entryArray[graph.succ((Integer) knoten.data(),i)].prio())){
+                    heap.changePrio(entryArray[graph.succ((Integer) knoten.data(),i)],graph.weight((Integer)knoten.data(),i));
+                    vorganger[graph.succ((Integer) knoten.data(),i)]=(Integer) knoten.data();
                 }
             }
         }while (!heap.isEmpty());
