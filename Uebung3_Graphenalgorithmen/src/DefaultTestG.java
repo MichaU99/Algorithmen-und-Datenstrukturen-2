@@ -498,11 +498,11 @@ public class DefaultTestG {
                     double [][] VorgängerListe4 = new double [][] {
                             {-1},
                             {0},
-                            {8},
+                            {7}, // hier gibt es möglichkeit 8 oder 7
                             {0},
                             {2},
                             {4},
-                            {6},
+                            {5},
                             {3},
                             {0},
                             {7},
