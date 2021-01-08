@@ -18,7 +18,7 @@ public class SPImpl implements SP{
             vorgaenger[i] = NIL;
         }
         AbstandZuStartknoten[s] = 0;
-        int k=1; // @todo wegmachen nach test
+
         for (int i = 0; i < size - 1; i++) {
 
             for (int Knoten = 0; Knoten < size; Knoten++) {
@@ -63,7 +63,7 @@ public class SPImpl implements SP{
 
         for(int i=0;i<Size;i++){
             if(i == Startknoten){
-                entryArray[i]=heap.insert(0.0,i); // todo hier ok 0.0??
+                entryArray[i]=heap.insert(0.0,i);
             }
             else{
                 entryArray[i]=heap.insert(Double.POSITIVE_INFINITY,i);
