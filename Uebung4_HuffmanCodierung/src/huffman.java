@@ -64,8 +64,20 @@ class Huffman {
 	// Dekodierung eines Huffman-Kodierten Textes. (Skipt S.107)
 	// Die Ergebnis-Zeichenkette ist der ursprüngliche Text vor der Huffman-Kodierung
 	public String decode(String huffmanEncoded){
-		// TODO
-		return "";
+		String resultString="";
+		HNode laufNode=root;
+		char[] stringAsChar=huffmanEncoded.toCharArray();
+		for(char c:stringAsChar){
+			if(laufNode.leftChild==null && laufNode.rightChild==null){
+				resultString=resultString+laufNode.chars;
+				laufNode=root;
+			}
+			if(c==0){
+				laufNode= laufNode.leftChild;
+			}
+			else laufNode=laufNode.rightChild;
+		}
+		return resultString;
 	}
 
 	// Dekodierung eines Huffman-Kodierten Textes mithilfe des übergebenen Präfix-Codebaums. (Skipt S.107) Der aktuelle Baum soll dabei nicht überschrieben werden.
