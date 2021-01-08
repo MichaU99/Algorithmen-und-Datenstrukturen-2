@@ -1,5 +1,19 @@
+import java.util.Map;
+
 // Knoten für den Huffman-Trie
 class HNode{
+	public HNode(String c){
+		this.chars=c;
+	}
+	public HNode(HNode leftChild,HNode rightChild){
+		this.leftChild=leftChild;
+		this.rightChild=rightChild;
+	}
+	public HNode(String c,HNode leftChild,HNode rightChild){
+		this.chars=c;
+		this.leftChild=leftChild;
+		this.rightChild=rightChild;
+	}
 	// chars enthält bei Blattknoten ein Zeichen, ansonsten alle Zeichen der darunterliegenden Knoten
 	// Beispiel:
 	// 			ab
@@ -21,13 +35,18 @@ class Huffman {
 
 	// Konstruktor
 	public Huffman() {
-		// TODO
+		// TODO why tho
 	}
 	
 	// Prüfen, ob ein Text mit dem aktuell erstellten Huffman-Code kodiert werden kann, ob also alle Zeichen einen Präfix-Code besitzen. Wenn ja, return true, wenn nein, return false. 
 	// Prüfen, ob ein Text mit dem aktuell erstellten Huffman-Code kodiert werden kann, ob also alle Zeichen einen Präfix-Code besitzen. Wenn ja, return true, wenn nein, return false.
 	public boolean canEncode(String text){
-		// TODO
+		Integer[] sollArray=calculateFrequencies(text);
+		char[] istArray=root.chars.toCharArray();
+
+		for(char c: istArray){
+			if(sollArray[c]==null) return false;
+		}
 		return true;
 	}
 
@@ -37,7 +56,13 @@ class Huffman {
 	// Zur Erinnerung: ein char kann wie eine Ganzzahl verwendet werden, daher funktioniert f[c] für jedes char c.
 	public Integer[] calculateFrequencies(String text){
 		Integer[] f = new Integer[256];
-		// TODO
+		for(char c: text.toCharArray()){
+			if(f[c]==null) f[c]=1;
+			else f[c]++;
+		}
+		for (int i=0;i<f.length;i++){ //Setzt alle null Felder im Feld auf 0
+			if(f[i]==null) f[i]=0;
+		}
 		return f;
 	}
 
@@ -45,7 +70,18 @@ class Huffman {
 	// frequencies enthält die Häufigkeiten (siehe calculateFrequencies). Häufigkeit von 0 bedeutet, das entsprechende Zeichen ist nicht im Text vorhanden und wir brauchen keinen Präfixcode dafür.
 	// Die Funktion setzt den Knoten root auf den Wurzelknoten des PräfixCode-Baums und gibt diesen Wurzelknoten außerdem zurück
 	public HNode constructPrefixCode(Integer[] frequencies){
-		// TODO
+		BinHeap<Integer,HNode> heap=new BinHeap<>();
+		for(int i=0;i<frequencies.length;i++){
+			if(frequencies[i]==0) continue;
+			heap.insert(frequencies[i],new HNode(String.valueOf(((char)i))));
+		}
+		while (heap.size()>=2){
+			BinHeap.Entry<Integer,HNode> X= heap.extractMin();
+			BinHeap.Entry<Integer,HNode> Y= heap.extractMin();
+
+			heap.insert(X.prio()+Y.prio(),new HNode(X.data().chars+Y.data().chars,X.data(), Y.data()));
+		}
+		root=heap.extractMin().data();
 		return root;
 	}
 
@@ -55,10 +91,45 @@ class Huffman {
 	// Kodierung: linker Teilbaum -> 0, rechter Teilbaum -> 1
 	// Erster Parameter: Zu kodierender Text
 	// Zweiter Parameter zeigt an, ob ein neuer Präfixcode erzeugt werden soll (true) oder mit dem aktuellen Präfixcode gearbeitet werden soll (false)
+	// TODO: 08.01.2021 Ist das so korrekt
 	public String encode(String text, boolean newPrefixCode){
+		if(!newPrefixCode && !canEncode(text)){
+			System.out.println("FEHLER: Es soll kein neuer Prefixcode generiert werden, aber der bisherige ist mit dem Text nicht kompatibel");
+		}
+
 		String result = "";
-		// TODO
+		if(newPrefixCode){
+			root=constructPrefixCode(calculateFrequencies(text));
+		}
+		for(char c: text.toCharArray()){
+			result=result+searchCharInTree(c,root);
+		}
+
 		return result;
+	}
+
+	private String searchCharInTree(char c,HNode hNode){
+		char[] chars=hNode.chars.toCharArray();
+		if(chars.length>=3) {
+			for (int i=0;i<chars.length;i++) {
+				if(chars[i]==c){
+					if(i<chars.length/2) return "1"+searchCharInTree(c,hNode.leftChild);
+					else return "0"+searchCharInTree(c,hNode.rightChild);
+				}
+			}
+			assert (false):"Code sollte nie hier im searchCharInTree ankommen";
+		}
+		else {
+			for (int i=0;i<chars.length;i++) {
+				if(chars[i]==c){
+					if(i<chars.length/2) return "1";
+					else return "0";
+				}
+			}
+			assert (false):"Code sollte nie hier im searchCharInTree ankommen";
+		}
+		assert (false):"Fehler, char wurde nicht im String gefunden";
+		return null;
 	}
 
 	// Dekodierung eines Huffman-Kodierten Textes. (Skipt S.107)
