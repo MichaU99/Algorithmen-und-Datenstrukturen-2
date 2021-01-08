@@ -142,12 +142,13 @@ class Huffman {
 		String resultString="";
 		HNode laufNode=rootNode;
 		char[] stringAsChar=huffmanEncoded.toCharArray();
+
 		for(char c:stringAsChar){
 			if(laufNode.leftChild==null && laufNode.rightChild==null){
 				resultString=resultString+laufNode.chars;
 				laufNode=rootNode;
 			}
-			if(c==0){
+			if(c=='0'){
 				laufNode= laufNode.leftChild;
 			}
 			else laufNode=laufNode.rightChild;
