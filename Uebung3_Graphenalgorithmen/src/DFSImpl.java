@@ -12,7 +12,7 @@ public class DFSImpl implements DFS{
     int knot;
     Graph g;
     boolean trop=true;
-    public ArrayList<Integer> roots;
+
     // TODO: 23.12.2020
     @Override
     public void search(Graph g) {
@@ -62,7 +62,7 @@ public class DFSImpl implements DFS{
 
     @Override
     public void search(Graph g, DFS d) { // erstmal keine neuen Entdeckungs und abschlussArrays gemacht
-        roots = new ArrayList<>();
+
         entdeckungszeitzahl =1;
         for( knot=0;knot<size;knot++){
             Farbe[knot]="white";
@@ -73,7 +73,7 @@ public class DFSImpl implements DFS{
         for( int abstAbschl=(g.size()-1);abstAbschl > -1 ;abstAbschl--){ // wird schleife gebraucht überhaupt?
             knot=d.sequ(abstAbschl);
             if(Farbe[knot]== "white") {
-                roots.add(knot);
+
                 vorgaenger[knot]=null;
 
                 durchsuche(g,knot);
@@ -83,7 +83,7 @@ public class DFSImpl implements DFS{
     }
 
     @Override
-    public boolean sort(Graph g) { // TODO: 04.01.2021 erstmal integriert indem anderen
+    public boolean sort(Graph g) {
         search(g);
         return trop;
     }
