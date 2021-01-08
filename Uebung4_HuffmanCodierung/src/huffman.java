@@ -93,7 +93,13 @@ class Huffman {
 	// Präfixcodes ausgeben
 	// Reihenfolge: preOrder, also WLR, zuerst Wurzel, dann linker Teilbaum, dann rechter Teilbaum
 	public void dumpPrefixCodes(){
-		// TODO
+		if(root==null) return;
+		dumpPrefixCodesRecursive(root);
+	}
+	private void dumpPrefixCodesRecursive(HNode node){
+		System.out.println(node);
+		if(node.leftChild!=null) dumpPrefixCodesRecursive(node.leftChild);
+		if(node.rightChild!=null) dumpPrefixCodesRecursive(node.rightChild);
 	}
 }
 
