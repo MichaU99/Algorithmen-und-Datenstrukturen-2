@@ -109,25 +109,19 @@ class Huffman {
 	}
 
 	private String searchCharInTree(char c,HNode hNode){
-		char[] chars=hNode.chars.toCharArray();
-		if(chars.length>=3) {
-			for (int i=0;i<chars.length;i++) {
-				if(chars[i]==c){
-					if(i<chars.length/2) return "1"+searchCharInTree(c,hNode.leftChild);
-					else return "0"+searchCharInTree(c,hNode.rightChild);
-				}
+		char[] charsL=null;
+		char[] charsR=null;
+		if(hNode.leftChild!=null) charsL=hNode.leftChild.chars.toCharArray();
+		if(hNode.rightChild!=null) charsR= hNode.rightChild.chars.toCharArray();
+		if(charsL!=null || charsR!=null) {
+			for (int i=0;charsL!=null && i<charsL.length;i++) {
+				if (charsL[i] == c) return  "1" + searchCharInTree(c, hNode.leftChild);
 			}
-			assert (false):"Code sollte nie hier im searchCharInTree ankommen";
-		}
-		else {
-			for (int i=0;i<chars.length;i++) {
-				if(chars[i]==c){
-					if(i<chars.length/2) return "1";
-					else return "0";
-				}
+			for (int i=0; charsR!=null && i<charsR.length;i++){
+				if(charsR[i]==c) return "0"+searchCharInTree(c,hNode.rightChild);
 			}
-			assert (false):"Code sollte nie hier im searchCharInTree ankommen";
 		}
+		else return "";
 		assert (false):"Fehler, char wurde nicht im String gefunden";
 		return null;
 	}
