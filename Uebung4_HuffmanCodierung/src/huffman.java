@@ -64,6 +64,10 @@ class Huffman {
 	// Dekodierung eines Huffman-Kodierten Textes. (Skipt S.107)
 	// Die Ergebnis-Zeichenkette ist der ursprüngliche Text vor der Huffman-Kodierung
 	public String decode(String huffmanEncoded){
+		if(huffmanEncoded==null){
+			System.out.println("Fehler: Decode wurde mit einem null-String aufgerufen");
+			return null;
+		}
 		String resultString="";
 		HNode laufNode=root;
 		char[] stringAsChar=huffmanEncoded.toCharArray();
