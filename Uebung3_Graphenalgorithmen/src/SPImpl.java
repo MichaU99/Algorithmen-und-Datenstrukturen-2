@@ -22,15 +22,6 @@ public class SPImpl implements SP{
         for (int i = 0; i < size - 1; i++) {
 
             for (int Knoten = 0; Knoten < size; Knoten++) {
-              /*  if (Knoten == strartknoten) { // wie ist der vergleich hier? oder equals?
-                    for (int nachfolger = 0; nachfolger < g.deg(strartknoten); nachfolger++) {
-                        int NachfolgerKnoten = g.succ(strartknoten, nachfolger);
-
-                        double Test = g.weight(strartknoten, nachfolger);
-                        AbstandZuStartknoten[NachfolgerKnoten] = Test;
-                        vorgaenger[NachfolgerKnoten] = strartknoten;
-                    }
-                }*/
 
                     for (int nachfolger = 0; nachfolger < g.deg(Knoten); nachfolger++) {
                         int NachFolgerKnoten = g.succ(Knoten, nachfolger);
@@ -41,13 +32,7 @@ public class SPImpl implements SP{
                     }
 
             }
-            /*
-            System.out.println("Durchgang"+k+":");
-            for (int l = 0; l < size; l++){
-                System.out.println("Knoten "+l+" Abstand: "+AbstandZuStartknoten[l]+" und Vorgänger"+vorgaenger[l]);
-            }
-            k++;
-            */
+
 
         }
         for (int Knoten = 0; Knoten < size; Knoten++) {
@@ -68,7 +53,7 @@ public class SPImpl implements SP{
         AbstandZuStartknoten = new double[Size];
         vorgaenger = new Integer[Size];
 
-        BinHeap<Double, Integer> heap=new BinHeap();// übernommen aus MSF kann ich hier duouble macheb?
+        BinHeap<Double, Integer> heap=new BinHeap();
         BinHeap.Entry[] entryArray=new BinHeap.Entry[Size];
         for (int i = 0; i < Size; i++) {
             AbstandZuStartknoten[i] = INF;
@@ -86,19 +71,18 @@ public class SPImpl implements SP{
 
         }
         do{
-            BinHeap.Entry knoten=heap.extractMin();
-            int Knoten =(Integer) knoten.data();
+            BinHeap.Entry<Double,Integer> knoten=heap.extractMin();
+            int Knoten =knoten.data();
             int succnr=g.deg(Knoten);
 
             for(int i=0;i<succnr;i++){
-                int Test=g.succ(Knoten,i);
+
                 if(heap.contains(entryArray[g.succ(Knoten,i)]) && (AbstandZuStartknoten[Knoten] + g.weight(Knoten,i) )< AbstandZuStartknoten[g.succ(Knoten,i)]){
                     vorgaenger[ g.succ(Knoten,i)]=Knoten;
                     AbstandZuStartknoten[g.succ(Knoten,i)]=AbstandZuStartknoten[Knoten] + g.weight(Knoten,i);
                     heap.changePrio(entryArray[g.succ(Knoten,i)],  AbstandZuStartknoten[g.succ(Knoten,i)]);
 
-                    //AbstandZuStartknoten[Knoten] + g.weight(Knoten, nachfolger) < AbstandZuStartknoten[NachFolgerKnoten]
-                    // AbstandZuStartknoten[NachFolgerKnoten] = AbstandZuStartknoten[Knoten] + g.weight(Knoten, nachfolger);
+
                 }
             }
         }while (!heap.isEmpty());
