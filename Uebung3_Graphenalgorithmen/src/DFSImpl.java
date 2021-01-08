@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+
 
 public class DFSImpl implements DFS{
     int[] seq=null;
@@ -8,7 +8,7 @@ public class DFSImpl implements DFS{
     Integer[] vorgaenger = null;
     String [] Farbe = null;
     Integer size;
-    int Knoten;
+
     int knot;
     Graph g;
     boolean trop=true;
@@ -19,16 +19,17 @@ public class DFSImpl implements DFS{
         entdeckungszeitzahl =1;
         entdeckungszeit= new Integer[g.size()];
         abschlusszeit= new Integer[g.size()];
+        Farbe= new String[g.size()];
         this.g=g;
         size = g.size();
         Farbe= new String [size];
-        for( Knoten=0;Knoten<size;Knoten++){
+        for(int Knoten=0;Knoten<size;Knoten++){
                 Farbe[Knoten]="white";
             }
         vorgaenger = new Integer[size];
 
-        for( Knoten=0;Knoten < size;Knoten++){ // wird schleife gebraucht überhaupt?
-            if(Farbe[Knoten]== "white") {
+        for( int Knoten=0;Knoten < size;Knoten++){ // wird schleife gebraucht überhaupt?
+            if(Farbe[Knoten].equals("white")) {
 
                vorgaenger[Knoten]=null;
 
@@ -42,11 +43,11 @@ public class DFSImpl implements DFS{
             Farbe[knoten] = "grey";
             for (int Nachfolger = 0; Nachfolger < g.deg(knoten); Nachfolger++) {
                 int succ = g.succ(knoten, Nachfolger);
-                if (Farbe[succ] == "white") {
+                if (Farbe[succ].equals("white")) {
                     vorgaenger[succ] = knoten;
                     durchsuche(g,succ);
                 }
-                else if (Farbe[succ] == "grey"){ //für topolpgische sortierung
+                else if (Farbe[succ].equals("grey")){ //für topolpgische sortierung
                     trop=false;
                 }
             }
@@ -54,11 +55,7 @@ public class DFSImpl implements DFS{
             Farbe[knoten] = "black";
         }
 
-        public void druckDFS(Graph g) {
-            for (int l = 0; l < g.size(); l++) {
-                System.out.println("DFS "+l + " " + entdeckungszeit[l] + " " + abschlusszeit[l]);
-            }
-        }
+
 
     @Override
     public void search(Graph g, DFS d) { // erstmal keine neuen Entdeckungs und abschlussArrays gemacht
@@ -72,7 +69,7 @@ public class DFSImpl implements DFS{
        //d.sequ(g.size() - 1) bis d.sequ(0)
         for( int abstAbschl=(g.size()-1);abstAbschl > -1 ;abstAbschl--){ // wird schleife gebraucht überhaupt?
             knot=d.sequ(abstAbschl);
-            if(Farbe[knot]== "white") {
+            if(Farbe[knot].equals("white")) {
 
                 vorgaenger[knot]=null;
 
@@ -107,20 +104,20 @@ public class DFSImpl implements DFS{
     }
     private void calculateSort(){
         Integer q,q_place;
-        Integer[] nochEinzufügen=new Integer[abschlusszeit.length];
-        for(int i=0;i<abschlusszeit.length;i++) nochEinzufügen[i]=abschlusszeit[i];
+        Integer[] nochEinzufuegen=new Integer[abschlusszeit.length];
+        for(int i=0;i<abschlusszeit.length;i++) nochEinzufuegen[i]=abschlusszeit[i];
         seq=new int[abschlusszeit.length];
 
         for(int k=0;k<seq.length;k++){
             q_place=q=null;
-            for(int lauf=0;lauf<nochEinzufügen.length;lauf++){
-                if((nochEinzufügen[lauf]!=null && q==null) || (nochEinzufügen[lauf]!=null && q>nochEinzufügen[lauf])){
-                    q=nochEinzufügen[lauf];
+            for(int lauf=0;lauf<nochEinzufuegen.length;lauf++){
+                if((nochEinzufuegen[lauf]!=null && q==null) || (nochEinzufuegen[lauf]!=null && q>nochEinzufuegen[lauf])){
+                    q=nochEinzufuegen[lauf];
                     q_place=lauf;
                 }
             }
             if(q==null || q_place==null) break;
-            nochEinzufügen[q_place]=null;
+            nochEinzufuegen[q_place]=null;
             seq[k]=q_place;
         }
     }
