@@ -18,12 +18,12 @@ public class MSFImpl implements MSF{
             else entryArray[i]=heap.insert(0.0,i);
         }
         do{
-            BinHeap.Entry knoten=heap.extractMin();
-            int succnr=graph.deg((Integer) knoten.data());
+            BinHeap.Entry<Double,Integer> knoten=heap.extractMin();
+            int succnr=graph.deg( knoten.data());
             for(int i=0;i<succnr;i++){
-                if(heap.contains(entryArray[graph.succ((Integer) knoten.data(),i)]) && ( (graph.weight((Integer)knoten.data(),i)) < (Double) entryArray[graph.succ((Integer) knoten.data(),i)].prio())){
-                    heap.changePrio(entryArray[graph.succ((Integer) knoten.data(),i)],graph.weight((Integer)knoten.data(),i));
-                    vorganger[graph.succ((Integer) knoten.data(),i)]=(Integer) knoten.data();
+                if(heap.contains(entryArray[graph.succ( knoten.data(),i)]) && ( (graph.weight(knoten.data(),i)) < (Double) entryArray[graph.succ( knoten.data(),i)].prio())){
+                    heap.changePrio(entryArray[graph.succ( knoten.data(),i)],graph.weight(knoten.data(),i));
+                    vorganger[graph.succ( knoten.data(),i)]= knoten.data();
                 }
             }
         }while (!heap.isEmpty());
