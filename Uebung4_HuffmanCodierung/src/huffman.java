@@ -115,10 +115,10 @@ class Huffman {
 		if(hNode.rightChild!=null) charsR= hNode.rightChild.chars.toCharArray();
 		if(charsL!=null || charsR!=null) {
 			for (int i=0;charsL!=null && i<charsL.length;i++) {
-				if (charsL[i] == c) return  "1" + searchCharInTree(c, hNode.leftChild);
+				if (charsL[i] == c) return  "0" + searchCharInTree(c, hNode.leftChild);
 			}
 			for (int i=0; charsR!=null && i<charsR.length;i++){
-				if(charsR[i]==c) return "0"+searchCharInTree(c,hNode.rightChild);
+				if(charsR[i]==c) return "1"+searchCharInTree(c,hNode.rightChild);
 			}
 		}
 		else return "";
@@ -144,15 +144,16 @@ class Huffman {
 		char[] stringAsChar=huffmanEncoded.toCharArray();
 
 		for(char c:stringAsChar){
-			if(laufNode.leftChild==null && laufNode.rightChild==null){
-				resultString=resultString+laufNode.chars;
-				laufNode=rootNode;
-			}
 			if(c=='0'){
 				laufNode= laufNode.leftChild;
 			}
 			else laufNode=laufNode.rightChild;
+			if(laufNode.leftChild==null && laufNode.rightChild==null){
+				resultString=resultString+laufNode.chars;
+				laufNode=rootNode;
+			}
 		}
+
 		return resultString;
 	}
 
