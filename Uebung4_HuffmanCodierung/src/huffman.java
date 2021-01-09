@@ -1,5 +1,3 @@
-import java.util.Map;
-
 // Knoten für den Huffman-Trie
 class HNode{
 	public HNode(String c){
@@ -28,7 +26,7 @@ class HNode{
 class Huffman {
 	// Feld mit Huffman-Codes zu den einzelnen Zeichen.
 	// Wenn char c = 'a', dann ist codes[c] ein Code, der aus Nullen und Einsen besteht, mit dem das Zeichen a kodiert werden soll.
-	private String[] codes;
+	private String[] codes; // TODO: 09.01.2021 Wofür`?
 
 	// Wurzelknoten des Präfix-Codebaums
 	private HNode root;
@@ -54,7 +52,17 @@ class Huffman {
 	// Hierzu kann die Anzahl des Vorkommens eines Zeichens berechnet werden und in einem Array gespeichert werden.
 	// Für jedes Zeichen c enthält das Array f an Stelle c die Häufigkeit (also f['a'] ist die Häufigkeit von a im Text. Kommt das Zeichen nicht vor, ist die Häufigkeit 0.)
 	// Zur Erinnerung: ein char kann wie eine Ganzzahl verwendet werden, daher funktioniert f[c] für jedes char c.
+
+	/**
+	 * Laufzeit für Textlänge n,von O(2n), wenn null=0, dann O(n)
+	 * @param text
+	 * @return
+	 */
 	public Integer[] calculateFrequencies(String text){
+		if(text==null){
+			System.out.println("Fehler calculate Frequencies wurde ohne Text aufgerufen");
+			return null;
+		}
 		Integer[] f = new Integer[256];
 		for(char c: text.toCharArray()){
 			if(f[c]==null) f[c]=1;
@@ -69,7 +77,17 @@ class Huffman {
 	// Iterativer Algorithmus zur Erstellung des Präfix-Codes (Skript S.115) mithilfe von BinHeap.
 	// frequencies enthält die Häufigkeiten (siehe calculateFrequencies). Häufigkeit von 0 bedeutet, das entsprechende Zeichen ist nicht im Text vorhanden und wir brauchen keinen Präfixcode dafür.
 	// Die Funktion setzt den Knoten root auf den Wurzelknoten des PräfixCode-Baums und gibt diesen Wurzelknoten außerdem zurück
+
+	/**
+	 * Laufzeit ~O(n), erste Schleife O(n)-> n=frequencies.length, zweite Schleife O(d), d->Anzahl !0 Felder in frequencies
+	 * @param frequencies
+	 * @return
+	 */
 	public HNode constructPrefixCode(Integer[] frequencies){
+		if(frequencies==null){
+			System.out.println("Fehler: constructPrefixCode wurde ohne frequencies aufgerufen");
+			return null;
+		}
 		BinHeap<Integer,HNode> heap=new BinHeap<>();
 		for(int i=0;i<frequencies.length;i++){
 			if(frequencies[i]==0) continue;
@@ -92,6 +110,13 @@ class Huffman {
 	// Erster Parameter: Zu kodierender Text
 	// Zweiter Parameter zeigt an, ob ein neuer Präfixcode erzeugt werden soll (true) oder mit dem aktuellen Präfixcode gearbeitet werden soll (false)
 	// TODO: 08.01.2021 Ist das so korrekt
+
+	/**
+	 * Laufzeit O(n*log(n))
+	 * @param text
+	 * @param newPrefixCode
+	 * @return
+	 */
 	public String encode(String text, boolean newPrefixCode){
 		if(!newPrefixCode && !canEncode(text)){
 			System.out.println("FEHLER: Es soll kein neuer Prefixcode generiert werden, aber der bisherige ist mit dem Text nicht kompatibel");
@@ -129,11 +154,21 @@ class Huffman {
 	// Dekodierung eines Huffman-Kodierten Textes. (Skipt S.107)
 	// Die Ergebnis-Zeichenkette ist der ursprüngliche Text vor der Huffman-Kodierung
 	public String decode(String huffmanEncoded){
+		if(huffmanEncoded==null){
+			System.out.println("Fehler: decode wurde ohne Text aufgerufen");
+		}
 		return decode(huffmanEncoded,root);
 	}
 
 	// Dekodierung eines Huffman-Kodierten Textes mithilfe des übergebenen Präfix-Codebaums. (Skipt S.107) Der aktuelle Baum soll dabei nicht überschrieben werden.
 	// Die Ergebnis-Zeichenkette ist der ursprüngliche Text vor der Huffman-Kodierung
+
+	/**
+	 * Laufzeit O(n)
+	 * @param huffmanEncoded
+	 * @param rootNode
+	 * @return
+	 */
 	public String decode(String huffmanEncoded, HNode rootNode){
 		if(huffmanEncoded==null || rootNode==null){
 			System.out.println("Fehler: Decode wurde mit einem null-String oder null-HNode aufgerufen");
@@ -164,10 +199,20 @@ class Huffman {
 		dumpPrefixCodesRecursive(root);
 	}
 	private void dumpPrefixCodesRecursive(HNode node){
-		System.out.println(node);
+		print("",root,false);
 		if(node.leftChild!=null) dumpPrefixCodesRecursive(node.leftChild);
 		if(node.rightChild!=null) dumpPrefixCodesRecursive(node.rightChild);
 	}
+
+	////Printtests
+	public void print(String prefix, HNode n, boolean isLeft) {
+		if (n != null) {
+			print(prefix + "     ", n.rightChild, false);
+			System.out.println (prefix + ("|-- ") + n.chars);
+			print(prefix + "     ", n.leftChild, true);
+		}
+	}
+	//
 }
 
 // Interaktives Testprogramm für die Klasse Huffman.
