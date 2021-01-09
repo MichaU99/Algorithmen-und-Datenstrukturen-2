@@ -35,7 +35,23 @@ class Huffman {
 	public Huffman() {
 		// TODO why tho
 	}
-	
+
+	private void calcCodes(){
+		codes=new String[256];
+		searchAllCodes(root,"");
+	}
+	private void searchAllCodes(HNode node,String code){
+		if(node.leftChild==null && node.rightChild==null) {
+			codes[(node.chars.charAt(0))] = code;
+			return;
+		}
+		if(node.leftChild!=null){
+			searchAllCodes(node.leftChild,code+"0");
+		}
+		if(node.rightChild!=null){
+			searchAllCodes(node.rightChild,code+"1");
+		}
+	}
 	// Prüfen, ob ein Text mit dem aktuell erstellten Huffman-Code kodiert werden kann, ob also alle Zeichen einen Präfix-Code besitzen. Wenn ja, return true, wenn nein, return false. 
 	// Prüfen, ob ein Text mit dem aktuell erstellten Huffman-Code kodiert werden kann, ob also alle Zeichen einen Präfix-Code besitzen. Wenn ja, return true, wenn nein, return false.
 	public boolean canEncode(String text){
@@ -200,8 +216,15 @@ class Huffman {
 	}
 	private void dumpPrefixCodesRecursive(HNode node){
 		print("",root,false);
-		if(node.leftChild!=null) dumpPrefixCodesRecursive(node.leftChild);
-		if(node.rightChild!=null) dumpPrefixCodesRecursive(node.rightChild);
+		calcCodes();
+		int i=0;
+		for(String s: codes){
+
+			if(s!=null)System.out.println(s+" char:"+ ((char) i)+" ASCII: "+i);
+			i++;
+		}
+		//if(node.leftChild!=null) dumpPrefixCodesRecursive(node.leftChild);
+		//if(node.rightChild!=null) dumpPrefixCodesRecursive(node.rightChild);
 	}
 
 	////Printtests
