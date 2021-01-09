@@ -33,7 +33,6 @@ class Huffman {
 
 	// Konstruktor
 	public Huffman() {
-		// TODO why tho
 	}
 
 	private void calcCodes(){
@@ -55,6 +54,10 @@ class Huffman {
 	// Prüfen, ob ein Text mit dem aktuell erstellten Huffman-Code kodiert werden kann, ob also alle Zeichen einen Präfix-Code besitzen. Wenn ja, return true, wenn nein, return false. 
 	// Prüfen, ob ein Text mit dem aktuell erstellten Huffman-Code kodiert werden kann, ob also alle Zeichen einen Präfix-Code besitzen. Wenn ja, return true, wenn nein, return false.
 	public boolean canEncode(String text){
+		if(text==null){
+			System.out.println("FEHLER: Kein Text beim CanEncode übergeben");
+			return false;
+		}
 		Integer[] sollArray=calculateFrequencies(text);
 		char[] istArray=root.chars.toCharArray();
 
@@ -125,7 +128,6 @@ class Huffman {
 	// Kodierung: linker Teilbaum -> 0, rechter Teilbaum -> 1
 	// Erster Parameter: Zu kodierender Text
 	// Zweiter Parameter zeigt an, ob ein neuer Präfixcode erzeugt werden soll (true) oder mit dem aktuellen Präfixcode gearbeitet werden soll (false)
-	// TODO: 08.01.2021 Ist das so korrekt
 
 	/**
 	 * Laufzeit O(n*log(n))
@@ -134,6 +136,9 @@ class Huffman {
 	 * @return
 	 */
 	public String encode(String text, boolean newPrefixCode){
+		if(text==null){
+			System.out.println("FEHLER: Kein Text zum Encode übergeben");
+		}
 		if(!newPrefixCode && !canEncode(text)){
 			System.out.println("FEHLER: Es soll kein neuer Prefixcode generiert werden, aber der bisherige ist mit dem Text nicht kompatibel");
 		}
@@ -142,6 +147,7 @@ class Huffman {
 		if(newPrefixCode){
 			root=constructPrefixCode(calculateFrequencies(text));
 		}
+		// TODO: 09.01.2021 Do it with codes 
 		for(char c: text.toCharArray()){
 			result=result+searchCharInTree(c,root);
 		}
@@ -215,16 +221,9 @@ class Huffman {
 		dumpPrefixCodesRecursive(root);
 	}
 	private void dumpPrefixCodesRecursive(HNode node){
-		print("",root,false);
-		calcCodes();
-		int i=0;
-		for(String s: codes){
-
-			if(s!=null)System.out.println(s+" char:"+ ((char) i)+" ASCII: "+i);
-			i++;
-		}
-		//if(node.leftChild!=null) dumpPrefixCodesRecursive(node.leftChild);
-		//if(node.rightChild!=null) dumpPrefixCodesRecursive(node.rightChild);
+		System.out.println(node.chars);
+		if(node.leftChild!=null) dumpPrefixCodesRecursive(node.leftChild);
+		if(node.rightChild!=null) dumpPrefixCodesRecursive(node.rightChild);
 	}
 
 	////Printtests
