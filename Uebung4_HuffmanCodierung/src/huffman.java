@@ -169,7 +169,7 @@ class Huffman {
 			}
 		}
 		else return "";
-		assert (false):"Fehler, char wurde nicht im String gefunden";
+		assert (false):"Fehler: char wurde nicht im String gefunden";
 		return null;
 	}
 
@@ -201,11 +201,19 @@ class Huffman {
 		char[] stringAsChar=huffmanEncoded.toCharArray();
 
 		for(char c:stringAsChar){
+			if(laufNode==null){
+				System.out.println("FEHLER: LaufNode ist null, Baum ohne Kinder");
+				break;
+			}
+			if(c!='0' && c!='1'){
+				System.out.println("FEHLER: Decode Sequenz darf nur 1 und 0 enthalten");
+				return null;
+			}
 			if(c=='0'){
 				laufNode= laufNode.leftChild;
 			}
 			else laufNode=laufNode.rightChild;
-			if(laufNode.leftChild==null && laufNode.rightChild==null){
+			if(laufNode!=null && laufNode.leftChild==null && laufNode.rightChild==null){
 				resultString=resultString+laufNode.chars;
 				laufNode=rootNode;
 			}
