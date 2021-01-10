@@ -9,6 +9,7 @@ public class SPImpl implements SP{
     int Startknoten;
     @Override
     public boolean bellmanFord(WeightedGraph g, int s) {
+        if(g==null || g.size()<=0 || g.size()<=s) return false;
         size = g.size();
         strartknoten = s;
         AbstandZuStartknoten = new double[size];
@@ -63,6 +64,7 @@ public class SPImpl implements SP{
 
     @Override
     public void dijkstra(WeightedGraph g, int s) {
+        if(g==null || g.size()<=0 || g.size()<=s) return ;
         Size=g.size();
         Startknoten=s;
         AbstandZuStartknoten = new double[Size];
