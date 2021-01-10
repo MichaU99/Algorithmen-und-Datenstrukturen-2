@@ -1,9 +1,12 @@
+import java.util.ArrayList;
+
 public class WeightedGraphImpl implements WeightedGraph{
     private int[][] Graph;
     private boolean[][] Adjazenzmatrix;
     private int size;
     public int [][] tranTemp;
     private double[][] weight;
+    ArrayList<Integer> anzNachfolger;
 
     public WeightedGraphImpl(int[][] ints, double[][] doubles) {
         this.Graph=ints;
@@ -42,6 +45,19 @@ public class WeightedGraphImpl implements WeightedGraph{
                 }
             }
         }
+        for(int i=0;i<size;i++){
+            anzNachfolger=new ArrayList<>();
+            for(int k=0;k<size;k++){
+                if(tranTemp[i][k]!=-1) anzNachfolger.add(tranTemp[i][k]);
+            }
+            int[] array=new int[anzNachfolger.size()];
+            for(int l=0;l<array.length;l++){
+                array[l]=anzNachfolger.get(l);
+            }
+
+            tranTemp[i]= array;
+        }
+
         return tranTemp;
     }
 
