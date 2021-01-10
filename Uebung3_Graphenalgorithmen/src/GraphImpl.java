@@ -30,7 +30,7 @@ public class GraphImpl implements Graph{
             }
         }
         for(int i=0;i<size;i++){
-            anzNachfolger=new ArrayList();
+            anzNachfolger=new ArrayList<>();
             for(int k=0;k<size;k++){
                 if(tranTemp[i][k]!=-1) anzNachfolger.add(tranTemp[i][k]);
             }
