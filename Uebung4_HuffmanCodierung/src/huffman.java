@@ -1,5 +1,16 @@
 // Knoten für den Huffman-Trie
 class HNode{
+	// chars enthält bei Blattknoten ein Zeichen, ansonsten alle Zeichen der darunterliegenden Knoten
+	// Beispiel:
+	// 			ab
+	//         /  \
+	//        a    b
+	public String chars;
+	// Linkes Kind
+	public HNode leftChild;
+	// Rechtes Kind
+	public HNode rightChild;
+
 	public HNode(String c){
 		this.chars=c;
 	}
@@ -12,16 +23,7 @@ class HNode{
 		this.leftChild=leftChild;
 		this.rightChild=rightChild;
 	}
-	// chars enthält bei Blattknoten ein Zeichen, ansonsten alle Zeichen der darunterliegenden Knoten
-	// Beispiel:
-	// 			ab
-	//         /  \
-	//        a    b
-	public String chars;
-	// Linkes Kind
-	public HNode leftChild;
-	// Rechtes Kind
-	public HNode rightChild;
+
 }
 class Huffman {
 	// Feld mit Huffman-Codes zu den einzelnen Zeichen.
@@ -112,13 +114,13 @@ class Huffman {
 			if(frequencies[i]==0) continue;
 			heap.insert(frequencies[i],new HNode(String.valueOf(((char)i))));
 		}
-		while (heap.size()>=2){
+		while (heap.size()>=2){ // TODO: 13.01.2021 warum >= 2 ey
 			BinHeap.Entry<Integer,HNode> X= heap.extractMin();
 			BinHeap.Entry<Integer,HNode> Y= heap.extractMin();
 
 			heap.insert(X.prio()+Y.prio(),new HNode(X.data().chars+Y.data().chars,X.data(), Y.data()));
 		}
-		root=heap.extractMin().data();
+		root=heap.minimum().data(); // TODO: 13.01.2021 Michael hier war davor heap.extractMin().date(), habe das zu minimum geändert weil soll das nicht rausnehmen sondern nur darauf zeigen
 		return root;
 	}
 
