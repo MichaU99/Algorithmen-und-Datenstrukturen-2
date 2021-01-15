@@ -86,8 +86,14 @@ class Huffman {
 		}
 		Integer[] f = new Integer[256];
 		for(char c: text.toCharArray()){
-			if(f[c]==null) f[c]=1;
-			else f[c]++;
+			try {
+				if (f[c] == null) f[c] = 1;
+				else f[c]++;
+			}
+			catch (IndexOutOfBoundsException e){
+				System.out.println("Character ist nicht im ASCII Bereich enthalten");
+				return null;
+			}
 		}
 		for (int i=0;i<f.length;i++){ //Setzt alle null Felder im Feld auf 0
 			if(f[i]==null) f[i]=0;
@@ -140,18 +146,25 @@ class Huffman {
 	public String encode(String text, boolean newPrefixCode){
 		if(text==null){
 			System.out.println("FEHLER: Kein Text zum Encode übergeben");
+			return null;
 		}
-		if(!newPrefixCode && !canEncode(text)){
+		if(!newPrefixCode && !canEncode(text) || root==null){
 			System.out.println("FEHLER: Es soll kein neuer Prefixcode generiert werden, aber der bisherige ist mit dem Text nicht kompatibel");
+			return null;
 		}
 
 		String result = "";
 		if(newPrefixCode){
 			root=constructPrefixCode(calculateFrequencies(text));
 		}
-		// TODO: 09.01.2021 Do it with codes 
+		// TODO: 09.01.2021 Do it with codes
+		calcCodes();
 		for(char c: text.toCharArray()){
-			result=result+searchCharInTree(c,root);
+			//Testen
+			if(c>=codes.length) return null;
+			result=result+codes[c];
+			//
+			//result=result+searchCharInTree(c,root);
 		}
 
 		return result;
@@ -171,7 +184,6 @@ class Huffman {
 			}
 		}
 		else return "";
-		assert (false):"Fehler: char wurde nicht im String gefunden";
 		return null;
 	}
 
@@ -226,10 +238,19 @@ class Huffman {
 
 	// Präfixcodes ausgeben
 	// Reihenfolge: preOrder, also WLR, zuerst Wurzel, dann linker Teilbaum, dann rechter Teilbaum
-	public void dumpPrefixCodes(){
+	public void dumpPrefixCodes(boolean modus){
 		if(root==null) return;
-		dumpPrefixCodesRecursive(root);
+		if(modus){
+			for(int i=0;i<codes.length;i++){
+				if(codes[i]!=null) System.out.println(((char) i)+": "+codes[i]);
+			}
+		}
+		else {
+			dumpPrefixCodesRecursive(root);
+		}
+
 	}
+
 	private void dumpPrefixCodesRecursive(HNode node){
 		System.out.println(node.chars);
 		if(node.leftChild!=null) dumpPrefixCodesRecursive(node.leftChild);
@@ -328,7 +349,7 @@ class HuffmanTest {
 					lastPrefixCode = h.constructPrefixCode(exampleFrequencies);
 					break;
 				case "dump": // Präfix-Codes ausgeben
-					h.dumpPrefixCodes();
+					h.dumpPrefixCodes(true);
 					break;
 				default:
 					System.out.println("Unknown Function: " + funct);
