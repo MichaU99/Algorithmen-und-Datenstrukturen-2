@@ -245,9 +245,7 @@ class Huffman {
 	public void dumpPrefixCodes(boolean modus){
 		if(root==null) return;
 		if(modus){
-			for(int i=0;i<codes.length;i++){
-				if(codes[i]!=null) System.out.println(((char) i)+": "+codes[i]);
-			}
+			dumpPrefixCodeRecursiveCodes(root,"");
 		}
 		else {
 			dumpPrefixCodesRecursive(root);
@@ -259,6 +257,19 @@ class Huffman {
 		System.out.println(node.chars);
 		if(node.leftChild!=null) dumpPrefixCodesRecursive(node.leftChild);
 		if(node.rightChild!=null) dumpPrefixCodesRecursive(node.rightChild);
+	}
+
+	private void dumpPrefixCodeRecursiveCodes(HNode node,String code){
+		if(node.leftChild==null && node.rightChild==null) {
+			System.out.println(node.chars.charAt(0)+": "+code);
+			return;
+		}
+		if(node.leftChild!=null){
+			dumpPrefixCodeRecursiveCodes(node.leftChild,code+"0");
+		}
+		if(node.rightChild!=null){
+			dumpPrefixCodeRecursiveCodes(node.rightChild,code+"1");
+		}
 	}
 
 	////Printtests
