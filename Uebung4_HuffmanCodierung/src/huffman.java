@@ -28,7 +28,7 @@ class HNode{
 class Huffman {
 	// Feld mit Huffman-Codes zu den einzelnen Zeichen.
 	// Wenn char c = 'a', dann ist codes[c] ein Code, der aus Nullen und Einsen besteht, mit dem das Zeichen a kodiert werden soll.
-	private String[] codes; // TODO: 09.01.2021 Wofür`?
+	private String[] codes;
 
 	// Wurzelknoten des Präfix-Codebaums
 	private HNode root;
@@ -57,7 +57,11 @@ class Huffman {
 	// Prüfen, ob ein Text mit dem aktuell erstellten Huffman-Code kodiert werden kann, ob also alle Zeichen einen Präfix-Code besitzen. Wenn ja, return true, wenn nein, return false.
 	public boolean canEncode(String text){
 		if(text==null){
-			System.out.println("FEHLER: Kein Text beim CanEncode übergeben");
+			System.out.println("FEHLER canEncode: Kein Text beim CanEncode übergeben");
+			return false;
+		}
+		if(root==null){
+			System.out.println("FEHLER canEncode: Text kann nicht codiert werden");
 			return false;
 		}
 		Integer[] sollArray=calculateFrequencies(text);
@@ -81,7 +85,7 @@ class Huffman {
 	 */
 	public Integer[] calculateFrequencies(String text){
 		if(text==null){
-			System.out.println("Fehler calculate Frequencies wurde ohne Text aufgerufen");
+			System.out.println("Fehler calcFreq: calculate Frequencies wurde ohne Text aufgerufen");
 			return null;
 		}
 		Integer[] f = new Integer[256];
@@ -91,7 +95,7 @@ class Huffman {
 				else f[c]++;
 			}
 			catch (IndexOutOfBoundsException e){
-				System.out.println("Character ist nicht im ASCII Bereich enthalten");
+				System.out.println("Fehler calcFreq: Character ist nicht im ASCII Bereich enthalten");
 				return null;
 			}
 		}
@@ -126,7 +130,7 @@ class Huffman {
 
 			heap.insert(X.prio()+Y.prio(),new HNode(X.data().chars+Y.data().chars,X.data(), Y.data()));
 		}
-		root=heap.minimum().data(); // TODO: 13.01.2021 Michael hier war davor heap.extractMin().date(), habe das zu minimum geändert weil soll das nicht rausnehmen sondern nur darauf zeigen
+		root=heap.extractMin().data(); // TODO: 13.01.2021 Michael hier war davor heap.extractMin().date(), habe das zu minimum geändert weil soll das nicht rausnehmen sondern nur darauf zeigen
 		return root;
 	}
 
@@ -139,16 +143,13 @@ class Huffman {
 
 	/**
 	 * Laufzeit O(n*log(n))
-	 * @param text
-	 * @param newPrefixCode
-	 * @return
 	 */
 	public String encode(String text, boolean newPrefixCode){
 		if(text==null){
 			System.out.println("FEHLER: Kein Text zum Encode übergeben");
 			return null;
 		}
-		if(!newPrefixCode && !canEncode(text) || root==null){
+		if(!newPrefixCode && !canEncode(text) ||(!newPrefixCode && root==null)){
 			System.out.println("FEHLER: Es soll kein neuer Prefixcode generiert werden, aber der bisherige ist mit dem Text nicht kompatibel");
 			return null;
 		}
@@ -156,14 +157,17 @@ class Huffman {
 		String result = "";
 		if(newPrefixCode){
 			root=constructPrefixCode(calculateFrequencies(text));
+			calcCodes();
 		}
-		// TODO: 09.01.2021 Do it with codes
-		calcCodes();
+		if(codes==null){
+			System.out.println("FEHLER encode: codes konnten nicht generiert werden");
+			return null;
+		}
 		for(char c: text.toCharArray()){
 			//Testen
 			if(c>=codes.length) return null;
+			if(codes[c]==null) continue;
 			result=result+codes[c];
-			//
 			//result=result+searchCharInTree(c,root);
 		}
 
@@ -350,6 +354,9 @@ class HuffmanTest {
 					break;
 				case "dump": // Präfix-Codes ausgeben
 					h.dumpPrefixCodes(true);
+					break;
+				case"dumptree":
+					h.dumpPrefixCodes(false);
 					break;
 				default:
 					System.out.println("Unknown Function: " + funct);
