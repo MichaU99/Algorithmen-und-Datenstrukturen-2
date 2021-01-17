@@ -124,13 +124,13 @@ class Huffman {
 			if(frequencies[i]==0) continue;
 			heap.insert(frequencies[i],new HNode(String.valueOf(((char)i))));
 		}
-		while (heap.size()>=2){ // TODO: 13.01.2021 warum >= 2 ey
+		while (heap.size()>=2){
 			BinHeap.Entry<Integer,HNode> X= heap.extractMin();
 			BinHeap.Entry<Integer,HNode> Y= heap.extractMin();
 
 			heap.insert(X.prio()+Y.prio(),new HNode(X.data().chars+Y.data().chars,X.data(), Y.data()));
 		}
-		root=heap.extractMin().data(); // TODO: 13.01.2021 Michael hier war davor heap.extractMin().date(), habe das zu minimum geändert weil soll das nicht rausnehmen sondern nur darauf zeigen
+		root=heap.extractMin().data();
 		return root;
 	}
 
@@ -157,6 +157,10 @@ class Huffman {
 		String result = "";
 		if(newPrefixCode){
 			root=constructPrefixCode(calculateFrequencies(text));
+			if(root==null){
+				System.out.println("FEHLER ENCODE: Fehler in der Präfixcodekonstruktion");
+				return null;
+			}
 			calcCodes();
 		}
 		if(codes==null){
