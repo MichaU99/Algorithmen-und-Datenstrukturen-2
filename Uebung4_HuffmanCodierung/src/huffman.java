@@ -64,11 +64,11 @@ class Huffman {
 			System.out.println("FEHLER canEncode: Text kann nicht codiert werden");
 			return false;
 		}
-		Integer[] sollArray=calculateFrequencies(text);
-		char[] istArray=root.chars.toCharArray();
+		calcCodes();
+		char[] sollArray=root.chars.toCharArray();
 
-		for(char c: istArray){
-			if(sollArray[c]==null) return false;
+		for(char c: sollArray){
+			if(codes[c]==null) return false;
 		}
 		return true;
 	}
