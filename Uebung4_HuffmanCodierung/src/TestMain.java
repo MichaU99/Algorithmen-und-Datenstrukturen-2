@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import java.util.Scanner;
 
 public class TestMain {
@@ -24,25 +25,76 @@ public class TestMain {
 
 
         Huffman test = new Huffman();
-
+        String text = null;
         String text1 = "Chr. Die chinesische Schrift (chinesisch 中文字, Pinyin zhōngwénzì, Zhuyin ㄓㄨㄥ ㄨ";
         String text2 = "12";
-        String text3 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwx ,";
+        String text3 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwx ,";
         String text4 = "Ein Toller text";
         String text5 = "Ein anderer toller Text mit allen MOEGLICHEN Zeichen, die in drei enhalten sind";
         String text6 = "ETto";
+        String text8 = "Aa";
+        String text9 = "h";
+        String text10 = null;
 	/*	String text3 = "ab1cdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ().:;,&$ßäöüielen wie Federn vom Himmel herab. Da saß eine Königin an einem Fenster, das ÄÖÜe Es war einmal mitten im Winter, und die Schneeflocken fielen wie Federn vom Himmel herab. Da saß eine Königin an einem Fenster, das einen Rahmen von schwarzem Ebenholz hatte, und nähte. Und wie sie so nähte und nach dem Schnee aufblickte, stach sie sich mit der Nadel in den Finger, und es fielen drei Tropfen Blut in den Schnee. Und weil das Rote im weißen Schnee so schön aussah, dachte sie bei sich: Hätt' ich ein Kind, so weiß wie Schnee, so rot wie Blut und so schwarz wie das Holz an dem Rahmen! Bald darauf bekam sie ein Töchterlein, das war so weiß wie Schnee, so rot wie Blut und so schwarzhaarig wie Ebenholz und ward darum Schneewittchen (Schneeweißchen) genannt. Und wie das Kind geboren war, starb die Königin. Über ein Jahr nahm sich der König eine andere Gemahlin. Es war eine schöne Frau, aber sie war stolz und übermütig und konnte nicht leiden, daß sie an Schönheit von jemand sollte übertroffen werden. Sie hatte einen wunderbaren Spiegel wenn sie vor den trat und sich darin beschaute, sprach sie:";
 		String text4 = "Die chinesische Schrift oder Hanzì fixiert die chinesischen Sprachen, vor allem das Hochchinesische, mit chinesischen Schriftzeichen. Sie ist damit ein zentraler Träger der chinesischen Kultur und diente als Grundlage der japanischen Schriften, einer der koreanischen Schriften und einer der vietnamesischen Schriften.";
 		String text5 = "Es war einmal mitten im Winter, und die Schneeflocken fielen wie Federn vom Himmel herab. Da saß eine Königin an einem Fenster, das einen Rahmen von schwarzem Ebenholz hatte, und nähte. Und wie sie so nähte und nach dem Schnee aufblickte, stach sie sich mit der Nadel in den Finger, und es fielen drei Tropfen Blut in den Schnee. Und weil das Rote im weißen Schnee so schön aussah, dachte sie bei sich: Hätt' ich ein Kind, so weiß wie Schnee, so rot wie Blut und so schwarz wie das Holz an dem Rahmen! Bald darauf bekam sie ein Töchterlein, das war so weiß wie Schnee, so rot wie Blut und so schwarzhaarig wie Ebenholz und ward darum Schneewittchen (Schneeweißchen) genannt. Und wie das Kind geboren war, starb die Königin. Über ein Jahr nahm sich der König eine andere Gemahlin. Es war eine schöne Frau, aber sie war stolz und übermütig und konnte nicht leiden, daß sie an Schönheit von jemand sollte übertroffen werden. Sie hatte einen wunderbaren Spiegel wenn sie vor den trat und sich darin beschaute, sprach sie:";
 */
+        //Randombuchstaben:
+        String text7 = "";
+        for(int i=0;i<=900;i++){
+            Random rnd = new Random();
+            char c = (char) (32 + rnd.nextInt(96));
+            text7 = text7 + c;
+        }
+
+
+
         String result1;
         String result2;
         String result3;
         String result4;
         String result5;
+        String result7;
+        String result8;
+        String result9;
+        String result10;
+        String result11;
+
 
         HNode root1;
         HNode root2;
+
+        Integer[] emptyFrequencies = new Integer[]{ };
+        Integer[] emptyFrequencies1 = new Integer[]{
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 65 = A
+                0, 0, 0, 0, 9, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0,
+        };
+        Integer[] sameFrequencies = new Integer[]{
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 3676, 3, 160, 1, 1, 1, 1, 1,
+                1, 1, 1, 1, 472, 1, 252, 8, 39, 38,
+                18, 12, 13, 14, 13, 9, 9, 15, 45, 12,
+                1, 1, 1, 18, 1, 23, 76, 110, 160, 62, // 65 = A
+                66, 104, 19, 33, 9, 74, 148, 108, 402, 11,
+                44, 1, 300, 270, 270, 12, 40, 62, 2, 11,
+                42, 0, 0, 0, 0, 0, 0, 1164, 389, 593, // 97 = a
+                832, 3186, 332, 525, 908, 1666, 46, 370, 739, 541,
+                2010, 560, 220, 5, 1508, 1382, 1348, 648, 199, 313,
+                13, 56, 214, 1, 1, 1, 1, 1
+        };
 
 
         assert (!test.canEncode(text1)) : "Kein Präfixcode vorhanden, kann nicht codiert werden";
@@ -98,6 +150,59 @@ public class TestMain {
         result2 = test.decode(result1);
         assert (result2.equals(text3)) : "Kodierung + Dekodierung != gleicher Text";
 
+        //TEstfall Randomtext encode und decode
+        result7 = test.encode(text7, true);
+        result8 = test.decode(result7);
+        System.out.println("text7: "+text7);
+        System.out.println("result8: "+result8);
+        assert (result8.equals(text7)) : "Random: Kodierung + Dekodierung != gleicher Text";
+
+        //TestFall canEncode Fehlermeldungen Testen:
+        System.out.println("canEncode: ");
+        result2= test.encode(text8,true);
+        result3= test.encode(text4,false); // TODO: 23.01.2021  kommt mit leerem STring
+        assert (!test.canEncode(text4)) : "Encode: bisheriger Präfixcode sollte nicht komatibel sein"; // TODO: 23.01.2021 soll string ist null in Canencode
+        result2 = test.encode(text3,true);
+        assert (test.canEncode(text4)) : "canEncode: bisheriger Präfixcode sollte komatibel sein";
+
+        assert (!test.canEncode(text)) :"canEncode: Text sollte Fehler ausgeben, da null " ;
+
+        //Testfall encode:
+        System.out.println("Encode: ");
+        result1= test.encode(text,true);
+        assert (result1 == null) :"Encode: Text sollte Fehler ausgeben, da null " ;
+        result1= test.encode(text,false);
+        assert (result1 == null) :"Encode: Text sollte Fehler ausgeben, da null " ;
+        result1= test.encode(text8,true);
+        result2= test.encode(text4,false);
+        result3= test.decode(result1);
+        assert (result3.equals(text8)):"Encode: Eingabe ungleich decodierter eingabe";
+        //assert (result2 == null):"Encode: Vorheriger Baum kann nicht benutz werden, Resultat muss null sein"; // TODO: 23.01.2021 wieder das mit voherigen baum
+        result1= test.encode(text5,true);
+        result2= test.encode(text4,false);
+        assert (result2 != null): "Encode: Vorheriger Baum sollte benutzbar sein";
+        //Fehler in der Präficconstruktion:
+        String text11 = "";
+        result1= test.encode(text10,false); // TODO: 23.01.2021 liefert gleich nullpointerexeptions was passiett beim leeren String
+        //assert (result1 == null):"Es gibt nichts zu encoden, muss null sein";
+
+        //Testfall decode
+        System.out.println("Decode");
+        result2= test.encode(text4,true);
+        result1= test.decode(text7);
+        assert (result1 == null ): "Decode: Sequenz darf nur 1 und 0 enthalten";
+        result3 = test.encode(text7,true);
+        result1 = test.encode(text9,true);
+        result2 = test.decode(result3);
+        assert (result2 == ""): "Fehlerausgabe weil Baum keine Kidner";
+        // test mit verschidenen Frequ
+        root1 = test.constructPrefixCode(emptyFrequencies1); // TODO: 23.01.2021 gibt gleich nullpointerexeptions bei null-frequ
+        result3 = test.encode(text7,true);
+        result2 = test.decode(result3,root1); // hier nochmal :Fehlerausgabe weil Baum keine Kidner
+        root1 = test.constructPrefixCode(test.calculateFrequencies(text3));
+        result1 = test.decode(text10,root1);
+        //assert (result2 == null): "Decode:  wurde mit null-HNode aufgerufen";
+        assert (result1 == null): "Decode: wurde mit einer null-String aufgerufen";
 
         /*
         char c='A';
