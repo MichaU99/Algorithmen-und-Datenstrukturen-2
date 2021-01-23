@@ -68,6 +68,10 @@ class Huffman {
 		char[] sollArray=root.chars.toCharArray();
 
 		for(char c: sollArray){
+			if(c>=256){
+				System.out.println("Text kann mit dem aktuellen Baum nicht verschlüsselt werden weil ASCII Zeichen >256 verwendet werden");
+				return false;
+			}
 			if(codes[c]==null) return false;
 		}
 		return true;
