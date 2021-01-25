@@ -35,6 +35,7 @@ public class TestMain {
         String text8 = "Aa";
         String text9 = "h";
         String text10 = null;
+        String text12 = "aaaaaabbccdddeeeffffffffff";
 	/*	String text3 = "ab1cdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ().:;,&$ßäöüielen wie Federn vom Himmel herab. Da saß eine Königin an einem Fenster, das ÄÖÜe Es war einmal mitten im Winter, und die Schneeflocken fielen wie Federn vom Himmel herab. Da saß eine Königin an einem Fenster, das einen Rahmen von schwarzem Ebenholz hatte, und nähte. Und wie sie so nähte und nach dem Schnee aufblickte, stach sie sich mit der Nadel in den Finger, und es fielen drei Tropfen Blut in den Schnee. Und weil das Rote im weißen Schnee so schön aussah, dachte sie bei sich: Hätt' ich ein Kind, so weiß wie Schnee, so rot wie Blut und so schwarz wie das Holz an dem Rahmen! Bald darauf bekam sie ein Töchterlein, das war so weiß wie Schnee, so rot wie Blut und so schwarzhaarig wie Ebenholz und ward darum Schneewittchen (Schneeweißchen) genannt. Und wie das Kind geboren war, starb die Königin. Über ein Jahr nahm sich der König eine andere Gemahlin. Es war eine schöne Frau, aber sie war stolz und übermütig und konnte nicht leiden, daß sie an Schönheit von jemand sollte übertroffen werden. Sie hatte einen wunderbaren Spiegel wenn sie vor den trat und sich darin beschaute, sprach sie:";
 		String text4 = "Die chinesische Schrift oder Hanzì fixiert die chinesischen Sprachen, vor allem das Hochchinesische, mit chinesischen Schriftzeichen. Sie ist damit ein zentraler Träger der chinesischen Kultur und diente als Grundlage der japanischen Schriften, einer der koreanischen Schriften und einer der vietnamesischen Schriften.";
 		String text5 = "Es war einmal mitten im Winter, und die Schneeflocken fielen wie Federn vom Himmel herab. Da saß eine Königin an einem Fenster, das einen Rahmen von schwarzem Ebenholz hatte, und nähte. Und wie sie so nähte und nach dem Schnee aufblickte, stach sie sich mit der Nadel in den Finger, und es fielen drei Tropfen Blut in den Schnee. Und weil das Rote im weißen Schnee so schön aussah, dachte sie bei sich: Hätt' ich ein Kind, so weiß wie Schnee, so rot wie Blut und so schwarz wie das Holz an dem Rahmen! Bald darauf bekam sie ein Töchterlein, das war so weiß wie Schnee, so rot wie Blut und so schwarzhaarig wie Ebenholz und ward darum Schneewittchen (Schneeweißchen) genannt. Und wie das Kind geboren war, starb die Königin. Über ein Jahr nahm sich der König eine andere Gemahlin. Es war eine schöne Frau, aber sie war stolz und übermütig und konnte nicht leiden, daß sie an Schönheit von jemand sollte übertroffen werden. Sie hatte einen wunderbaren Spiegel wenn sie vor den trat und sich darin beschaute, sprach sie:";
@@ -84,16 +85,16 @@ public class TestMain {
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 3676, 3, 160, 1, 1, 1, 1, 1,
-                1, 1, 1, 1, 472, 1, 252, 8, 39, 38,
-                18, 12, 13, 14, 13, 9, 9, 15, 45, 12,
-                1, 1, 1, 18, 1, 23, 76, 110, 160, 62, // 65 = A
-                66, 104, 19, 33, 9, 74, 148, 108, 402, 11,
-                44, 1, 300, 270, 270, 12, 40, 62, 2, 11,
-                42, 0, 0, 0, 0, 0, 0, 1164, 389, 593, // 97 = a
-                832, 3186, 332, 525, 908, 1666, 46, 370, 739, 541,
-                2010, 560, 220, 5, 1508, 1382, 1348, 648, 199, 313,
-                13, 56, 214, 1, 1, 1, 1, 1
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 10, 10, 10, 10, 10, // 65 = A
+                10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+                10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+                10, 10, 10, 10, 10, 10, 10, 10, 10, 10, // 97 = a
+                10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+                10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+                10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
         };
 
 
@@ -177,14 +178,14 @@ public class TestMain {
         result2= test.encode(text4,false);
         result3= test.decode(result1);
         assert (result3.equals(text8)):"Encode: Eingabe ungleich decodierter eingabe";
-        //assert (result2 == null):"Encode: Vorheriger Baum kann nicht benutz werden, Resultat muss null sein"; // TODO: 23.01.2021 wieder das mit voherigen baum
+        assert (result2 == null):"Encode: Vorheriger Baum kann nicht benutz werden, Resultat muss null sein"; // TODO: 23.01.2021 wieder das mit voherigen baum
         result1= test.encode(text5,true);
         result2= test.encode(text4,false);
         assert (result2 != null): "Encode: Vorheriger Baum sollte benutzbar sein";
         //Fehler in der Präficconstruktion:
         String text11 = "";
         result1= test.encode(text10,false); // TODO: 23.01.2021 liefert gleich nullpointerexeptions was passiett beim leeren String
-        //assert (result1 == null):"Es gibt nichts zu encoden, muss null sein";
+        assert (result1 == null):"Es gibt nichts zu encoden, muss null sein";
 
         //Testfall decode
         System.out.println("Decode");
@@ -201,8 +202,42 @@ public class TestMain {
         result2 = test.decode(result3,root1); // hier nochmal :Fehlerausgabe weil Baum keine Kidner
         root1 = test.constructPrefixCode(test.calculateFrequencies(text3));
         result1 = test.decode(text10,root1);
-        //assert (result2 == null): "Decode:  wurde mit null-HNode aufgerufen";
+       // assert (result2 == null): "Decode:  wurde mit null-HNode aufgerufen"; //warum wird mit "" sTring initialisiert
         assert (result1 == null): "Decode: wurde mit einer null-String aufgerufen";
+
+        //Testfall decode und Päfixbaum übergben
+        root1 = test.constructPrefixCode(sameFrequencies);
+        result1 = test.encode(text5,false);
+        result2 = test.decode(result1,root1);
+        //assert(result2.equals(text5)): "Decodierung mit sameFranquencies";
+        // mit falschem Baum
+        root1 = test.constructPrefixCode(test.calculateFrequencies(text4));
+        result1 = test.encode(text5,false);
+        assert (result1 == null): "Fehlerausgabe, da Baum nicht passend";
+        Integer [] frequ = test.calculateFrequencies(text10);
+        assert(frequ == null): "Text ist null, damit keine Frequ.";
+
+        // mit randomzahlen:
+        int i= 0;
+        while( i < 10){
+            root1 = test.constructPrefixCode(sameFrequencies);
+            result1 = test.encode(text7,false);
+            result2 = test.decode(result1,root1);
+            if(result2 == null){
+                assert(result2 == null): "solte immer stimmen, nur zum Abfangen";
+            }
+            else{
+                assert(result2.equals(text7)): "Decodierung mit sameFranquencies";
+            }
+            i++;
+        }
+
+        result1 = test.encode(text12,true);
+        // testfall Dump
+        System.out.println("dump");
+        test.dumpPrefixCodes(true);
+        test.dumpPrefixCodes(false);
+
 
         /*
         char c='A';

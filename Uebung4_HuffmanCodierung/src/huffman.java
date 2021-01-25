@@ -65,7 +65,7 @@ class Huffman {
 			return false;
 		}
 		calcCodes();
-		char[] sollArray=root.chars.toCharArray();
+		char[] sollArray=text.toCharArray();
 
 		for(char c: sollArray){
 			if(c>=256){
