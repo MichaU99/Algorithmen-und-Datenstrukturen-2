@@ -202,14 +202,15 @@ public class TestMain {
         result2 = test.decode(result3,root1); // hier nochmal :Fehlerausgabe weil Baum keine Kidner
         root1 = test.constructPrefixCode(test.calculateFrequencies(text3));
         result1 = test.decode(text10,root1);
-       // assert (result2 == null): "Decode:  wurde mit null-HNode aufgerufen"; //warum wird mit "" sTring initialisiert
+      // assert (result2 == null): "Decode:  wurde mit null-HNode aufgerufen,sollte -null- sein,ist -"+result2+"-"; //warum wird mit "" sTring initialisiert
         assert (result1 == null): "Decode: wurde mit einer null-String aufgerufen";
 
         //Testfall decode und Päfixbaum übergben
         root1 = test.constructPrefixCode(sameFrequencies);
         result1 = test.encode(text5,false);
         result2 = test.decode(result1,root1);
-        //assert(result2.equals(text5)): "Decodierung mit sameFranquencies";
+
+        //assert(result2.equals(text5)): "Decodierung mit sameFranquenciessollte -null- sein,ist -"+result2+"-";
         // mit falschem Baum
         root1 = test.constructPrefixCode(test.calculateFrequencies(text4));
         result1 = test.encode(text5,false);

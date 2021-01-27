@@ -181,23 +181,7 @@ class Huffman {
 
 		return result;
 	}
-
-	private String searchCharInTree(char c,HNode hNode){
-		char[] charsL=null;
-		char[] charsR=null;
-		if(hNode.leftChild!=null) charsL=hNode.leftChild.chars.toCharArray();
-		if(hNode.rightChild!=null) charsR= hNode.rightChild.chars.toCharArray();
-		if(charsL!=null || charsR!=null) {
-			for (int i=0;charsL!=null && i<charsL.length;i++) {
-				if (charsL[i] == c) return  "0" + searchCharInTree(c, hNode.leftChild);
-			}
-			for (int i=0; charsR!=null && i<charsR.length;i++){
-				if(charsR[i]==c) return "1"+searchCharInTree(c,hNode.rightChild);
-			}
-		}
-		else return "";
-		return null;
-	}
+	
 
 	// Dekodierung eines Huffman-Kodierten Textes. (Skipt S.107)
 	// Die Ergebnis-Zeichenkette ist der ursprüngliche Text vor der Huffman-Kodierung
@@ -280,114 +264,6 @@ class Huffman {
 		}
 	}
 
-	////Printtests
-	public void print(String prefix, HNode n, boolean isLeft) {
-		if (n != null) {
-			print(prefix + "     ", n.rightChild, false);
-			System.out.println (prefix + ("|-- ") + n.chars);
-			print(prefix + "     ", n.leftChild, true);
-		}
-	}
-	//
+
 }
 
-// Interaktives Testprogramm für die Klasse Huffman.
-class HuffmanTest {
-	public static void main(String[] args) throws java.io.IOException {
-		// Häufigkeiten (ASCII-Tabelle)
-		Integer[] exampleFrequencies = new Integer[]{
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 3676, 3, 160, 1, 1, 1, 1, 1,
-				1, 1, 1, 1, 472, 1, 252, 8, 39, 38,
-				18, 12, 13, 14, 13, 9, 9, 15, 45, 12,
-				1, 1, 1, 18, 1, 23, 76, 110, 160, 62, // 65 = A
-				66, 104, 19, 33, 9, 74, 148, 108, 402, 11,
-				44, 1, 300, 270, 270, 12, 40, 62, 2, 11,
-				42, 0, 0, 0, 0, 0, 0, 1164, 389, 593, // 97 = a
-				832, 3186, 332, 525, 908, 1666, 46, 370, 739, 541,
-				2010, 560, 220, 5, 1508, 1382, 1348, 648, 199, 313,
-				13, 56, 214, 1, 1, 1, 1, 1
-		};
-
-		HNode lastPrefixCode = null;
-
-		// Standardeingabestrom System.in als InputStreamReader
-		// und diesen wiederum als BufferedReader "verpacken",
-		// damit man bequem zeilenweise lesen kann.
-		java.io.BufferedReader r = new java.io.BufferedReader(
-				new java.io.InputStreamReader(System.in));
-		Huffman h = new Huffman();
-		// Endlosschleife.
-		while (true) {
-
-			// Eingabezeile vom Benutzer lesen, ggf. ausgeben (wenn das
-			// Programm nicht interaktiv verwendet wird) und in einzelne
-			// Wörter zerlegen.
-			// Abbruch bei Ende der Eingabe oder leerer Eingabezeile.
-			System.out.print(">>> ");
-			String line = r.readLine();
-			if (line == null || line.equals("")) return;
-			if (System.console() == null) System.out.println(line);
-			String[] cmd = line.split(" ");
-
-			String funct = cmd[0];
-			String text = null;
-			if (cmd.length == 1) {
-				if (funct == "dec") {
-					System.out.println("Nothing to decode.");
-					continue;
-				} else
-					if (funct.startsWith("enc")){
-						System.out.println("Nothing to encode.");
-						continue;
-					}
-			} else {
-				text = line.substring(line.indexOf(' ')+1);
-			}
-			String result;
-			switch (funct) {
-				case "enc0": // Kodieren ohne neue Präfixcodes zu errechnen
-					result = h.encode(text, false);
-					if (result!=null)
-						System.out.println("Kodierter Text: "+result);
-					break;
-				case "enc1": // Kodieren mit Berechnung neuer Präfixcodes
-					result = h.encode(text, true);
-					if (result!=null)
-						System.out.println("Kodierter Text: "+result);
-					break;
-				case "dec": // Dekodieren eines Textes mit aktuellem Präfixcode
-					result = h.decode(text);
-					if (result!=null)
-						System.out.println("Dekodierter Text: "+result);
-					break;
-				case "decpref": // Dekodieren mit übergebenem Präfixcode
-					result = h.decode(text, lastPrefixCode);
-					if (result!=null)
-						System.out.println("Dekodierter Text: "+result);
-					break;
-				case "prefixes": // Präfix-Codes erstellen mit Häufigkeiten aus vorgeg. Feld
-					lastPrefixCode = h.constructPrefixCode(exampleFrequencies);
-					break;
-				case "dump": // Präfix-Codes ausgeben
-					h.dumpPrefixCodes(true);
-					break;
-				case"dumptree":
-					h.dumpPrefixCodes(false);
-					break;
-				default:
-					System.out.println("Unknown Function: " + funct);
-					System.out.println("	Possible values: ");
-					System.out.println("		enc0 - Encode using current prefix codes");
-					System.out.println("		enc1 - Construct new prefix codes and then encode");
-					System.out.println("		dec - Decode using current prefix codes");
-					System.out.println("		decpref - Decode using a given prefix code");
-					System.out.println("		prefixes - Construct new prefix codes");
-					System.out.println("		dump - Dump prefix code tree");
-					return;
-			}
-		}
-	}
-}
